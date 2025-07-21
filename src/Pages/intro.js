@@ -8,12 +8,19 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Logo from "../../assets/imgs/Logo.png";
+import { useNavigation } from "@react-navigation/native";
+import { PATHS } from "../routes/Router";
 
 function IntroPage() {
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;
-
+const {replace}=useNavigation();
+useEffect(()=>{
+  setTimeout(() => {
+    replace(PATHS.Login)
+  }, 3000);
+},[])
   useEffect(() => {
     const animateDot = (dot, delay) => {
       Animated.loop(
@@ -39,6 +46,8 @@ function IntroPage() {
     animateDot(dot2, 150);
     animateDot(dot3, 300);
   }, []);
+
+
 
   return (
     <LinearGradient
