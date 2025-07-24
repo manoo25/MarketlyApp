@@ -2,6 +2,7 @@
   "expo": {
     "name": "MarketlyApp",
     "slug": "MarketlyApp",
+    "scheme": "marketly",                   
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,20 +14,31 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.marketlyapp"  
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.yourcompany.marketlyapp",         
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": {
+            "scheme": "marketly",
+            "host": "auth",
+            "pathPrefix": "/callback"
+          },
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ]
+    "plugins": ["expo-font", "expo-web-browser"]
   }
 }

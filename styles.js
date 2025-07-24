@@ -16,6 +16,7 @@ export const useAppFonts = () =>
 export const colors = {
   primary: "#46B8F0",
   BtnsColor: "#327AFF",
+  LightBtnsColor: "#327AFF1A",
   secondary: "#FF6F61",
   text: "#333333",
   background: "#F5F7FA",
@@ -77,7 +78,7 @@ paddingView: {
   paddingTop: 25,
   backgroundColor:'#FFFFFF',
   flex: 1,
-  paddingHorizontal: 16,
+  paddingHorizontal: 15,
   alignItems: 'flex-end',
 },
 LoginLogo: {
@@ -86,7 +87,7 @@ height: 67.23076629638672,
 }
 ,
   container: {
-    padding: 15,
+    paddingVertical: 15,
     width:'100%',
      textAlign: 'right'
   },
@@ -101,13 +102,15 @@ inputWrapper: {
   height:52,
 borderRadius:15,
 
+
 }
 ,
   input: {
     flex: 1,
     paddingHorizontal: 0,
     textAlign: 'right',
-    marginTop:5
+    marginTop:5,
+    
   },
   icon: {
     marginLeft: 10,
@@ -116,17 +119,25 @@ borderRadius:15,
     color: 'red',
     fontSize: 13,
     textAlign: 'right',
-    marginTop:5
+    marginTop:4
   },
   Btn:{
     flex:1,
     backgroundColor:colors.BtnsColor,
     flexDirection:'row',
     alignItems:'center',
+    gap:10,
     justifyContent:'center',
     paddingHorizontal:12,
     paddingVertical:16,
     borderRadius:12,
   
-  }
+  },
+  picker: {
+    height: 150,
+    color: "#000",
+    backgroundColor:'lightgray',
+    zIndex:2000,
+    top:0
+  },
 });

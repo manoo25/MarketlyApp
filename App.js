@@ -1,9 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { colors, styles, useAppFonts } from './styles'; 
-import IntroPage from './src/Pages/intro';
+import { useAppFonts, styles, colors } from './styles';
 import Router from './src/routes/Router';
+import { Provider } from 'react-redux';
+import { store } from './src/Redux/Store';
 
 export default function App() {
   const [fontsLoaded] = useAppFonts();
@@ -11,7 +10,8 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-
-    <Router/>
+    <Provider store={store}>
+      <Router />
+    </Provider>
   );
 }

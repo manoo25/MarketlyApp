@@ -6,6 +6,7 @@ import Logo from "../../assets/imgs/Logo2.png";
 import LoginComponents from '../Components/LoginComponents/LoginComponents';
 
 export default function LoginPage() {
+ 
   return (
    <ScrollView style={{flex:1,backgroundColor:colors.white}}>
      <View style={styles.paddingView}>

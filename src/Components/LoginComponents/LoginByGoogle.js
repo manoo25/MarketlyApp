@@ -1,7 +1,7 @@
 import React from 'react'
-import { colors, styles } from '../../styles'
+import { colors, styles } from '../../../styles'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
-import googleLogo from "../../assets/imgs/google.png";
+import googleLogo from "../../../assets/imgs/google.png";
 
 export default function LoginByGoogle() {
   return (
