@@ -7,6 +7,12 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import RecommendedProducts from '../Components/ProductDeatailsComponents/RecommendedProducts';
 
 
+const products = [
+    { id: '1', title: 'رقائق البطاطس بطعم الملح, ١٠٠جم ', details: 'تذوق الطعم الاصلى لرقائق البطاطس اللذيذة', image: require("../../assets/products/chips.png") }
+];
+
+
+
 function ProductDetails() {
     return (
         <>
@@ -23,17 +29,17 @@ function ProductDetails() {
                     </View>
                     <View style={{ marginTop: 16 }}>
                         {/* product.image */}
-                        <Image source={require("../../assets/products/chips.png")} style={{ width: 200, height: 215 }} />
+                        <Image source={products[0].image} style={{ width: 200, height: 215 }} />
                     </View>
                 </View>
                 <View style={[{ marginTop: 16 }, style.top, styles.paddingView]}>
                     {/* product.title */}
                     <Text style={[styles.h3, { textAlign: 'right' }]}>
-                        رقائق البطاطس بطعم الملح, ١٠٠جم
+                        {products[0].title}
                     </Text>
                     {/* product.details */}
                     <Text style={[{ marginTop: 10 }, styles.paragraph]}>
-                        تذوق الطعم الاصلى لرقائق البطاطس اللذيذة
+                        {products[0].details}
                     </Text>
                     <View style={styles.dividerLine} />
                     <Text style={[{ marginTop: 24 }, styles.h4]}>

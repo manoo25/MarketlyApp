@@ -28,12 +28,14 @@
     "expo-updates": "~0.28.17",
     "expo-web-browser": "~14.2.0",
     "formik": "^2.4.6",
+    "iconsax-react-nativejs": "^0.0.8",
     "react": "19.0.0",
     "react-native": "0.79.5",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-get-random-values": "~1.11.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-redux": "^9.2.0",
+    "react-native-svg": "15.11.2",
     "yup": "^1.6.1"
   },
   "devDependencies": {
