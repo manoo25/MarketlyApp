@@ -28,7 +28,13 @@ export const colors = {
 
 export const styles = StyleSheet.create({
  
-  h1: {
+  dividerLine: {
+    height: 1,
+    width: "100%",
+    backgroundColor: "#aeaeae",
+    marginVertical: 15,
+  }
+  ,h1: {
     fontFamily: "Tajawal-Bold",
     fontSize: 32,
     color: colors.text,

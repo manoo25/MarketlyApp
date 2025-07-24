@@ -5,9 +5,9 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import LoadingSpinner from "../GlobalComponents/LoadingSpinner";
 import { colors, styles } from '../../../styles';
 import { sendOtpToEmail, verifyOtp } from '../../Redux/Supabase/ForgetPassword';
-import { PATHS } from '../../routes/Router';
 import { useNavigation } from '@react-navigation/native';
 import BackToSignUp from '../GlobalComponents/BackToSignUp';
+import { PATHS } from '../../routes/Paths';
 
 export default function ForgetPasswordForm() {
   const [Email, SetEmail] = useState('');

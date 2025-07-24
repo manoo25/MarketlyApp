@@ -9,7 +9,8 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Logo from "../../assets/imgs/Logo.png";
 import { useNavigation } from "@react-navigation/native";
-import { PATHS } from "../routes/Router";
+import { PATHS } from "../routes/Paths";
+
 
 function IntroPage() {
   const dot1 = useRef(new Animated.Value(0)).current;

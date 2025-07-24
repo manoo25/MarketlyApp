@@ -19,7 +19,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { colors, styles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { PATHS } from "../../routes/Router";
 import LabelInpts from "../GlobalComponents/LabelInpts";
 import { useDispatch, useSelector } from "react-redux";
 import TestPicker from "../GlobalComponents/Picker";
@@ -28,6 +27,7 @@ import LoadingSpinner from "../GlobalComponents/LoadingSpinner";
 import { UserRegister } from "../../Redux/Slices/users";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { compressImage, uploadUserImage } from "../../Redux/UploadAndDeleteImages";
+import { PATHS } from "../../routes/Paths";
 
 
 export default function RegisterForm() {

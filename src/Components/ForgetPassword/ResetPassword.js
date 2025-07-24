@@ -9,7 +9,7 @@ import BackToSignUp from "../GlobalComponents/BackToSignUp";
 import { fetchUserIdByEmail, updateUser } from "../../Redux/Slices/users";
 import { useDispatch } from "react-redux";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { PATHS } from "../../routes/Router";
+import { PATHS } from "../../routes/Paths";
 
 export default function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);

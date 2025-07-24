@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native';
 import { colors, styles } from '../../../styles';
-import { PATHS } from '../../routes/Router';
+import { PATHS } from '../../routes/Paths';
 
 export default function BackToSignUp() {
     const {replace}=useNavigation();

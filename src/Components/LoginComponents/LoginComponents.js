@@ -8,11 +8,11 @@ import * as Yup from "yup";
 import { colors, styles } from "../../../styles";
 import LoginByGoogle from "./LoginByGoogle";
 import { useNavigation } from "@react-navigation/native";
-import { PATHS } from "../../routes/Router";
 import { useDispatch, useSelector } from "react-redux";
 import { UserLogin } from "../../Redux/Slices/users";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingSpinner from "../GlobalComponents/LoadingSpinner";
+import { PATHS } from "../../routes/Paths";
 
 export default function LoginForm() {
   const dispatch = useDispatch();

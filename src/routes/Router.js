@@ -8,19 +8,13 @@ import RegisterPage from '../Pages/RegisterPage';
 import Home from '../Pages/Home';
 import ForgetPasswordPage from '../Pages/ForgetPasswordPage';
 import ResetPasswordForm from '../Components/ForgetPassword/ResetPassword';
+import { PATHS } from './Paths';
 
 
-export  const PATHS={
-  Intro:'Intro',
-  Login:'Login',
-  Register:'Register',
-  Home:'Home',
-  ForgetPassword:'ForgetPassword',
-  ResetPasswordForm:'ResetPasswordForm',
-}
+
 export default function Router() {
-   
-const Stack = createNativeStackNavigator();
+
+  const Stack = createNativeStackNavigator();
 
 
   return (
@@ -42,4 +36,3 @@ screenOptions={
    </NavigationContainer>
   )
 }
-  
