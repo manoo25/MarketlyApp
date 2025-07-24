@@ -5,6 +5,7 @@ import { colors, styles, useAppFonts } from './styles';
 import IntroPage from './src/Pages/intro';
 import Router from './src/routes/Router';
 import ProductDetails from './src/Pages/ProductDetails';
+import Cart from './src/Pages/Cart';
 
 export default function App() {
   const [fontsLoaded] = useAppFonts();

@@ -1,7 +1,7 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-// Sample data - replace with your actual data source
+
 const recommendedProductsData = [
     { id: '1', title: 'شعيرية سريعة التحضير', price: '10.0 EGP', image: require("../../../assets/products/noodle.png") },
     { id: '2', title: 'مشروب غازى', price: '15.0 EGP', image: require("../../../assets/products/cute-cartoon-cola-drink-vector-Photoroom.png") },
@@ -50,7 +50,7 @@ const componentStyles = StyleSheet.create({
         width: 155,
         marginTop: 16,
         marginBottom: 10,
-        marginLeft: 15, // Use marginLeft for spacing in inverted list
+        marginLeft: 15,
     },
     imageContainer: {
         height: 150,
