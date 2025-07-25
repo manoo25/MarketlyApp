@@ -26,10 +26,11 @@ screenOptions={
   }
 }
 >
+   
   <Stack.Screen name={PATHS.Intro} component={IntroPage}/>
   <Stack.Screen name={PATHS.Login} component={LoginPage}/>
   <Stack.Screen name={PATHS.Register} component={RegisterPage}/>
-  <Stack.Screen name={PATHS.Home} component={Home}/>
+ <Stack.Screen name={PATHS.Home} component={Home}/>
   <Stack.Screen name={PATHS.ForgetPassword} component={ForgetPasswordPage}/>
   <Stack.Screen name={PATHS.ResetPasswordForm} component={ResetPasswordForm}/>
 </Stack.Navigator>
