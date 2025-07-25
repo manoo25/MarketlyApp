@@ -1,10 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { useAppFonts, styles, colors } from './styles';
-import Router from './src/routes/Router';
-import { Provider } from 'react-redux';
-import { store } from './src/Redux/Store';
-import ProductDetails from './src/Pages/ProductDetails';
-import Cart from './src/Pages/Cart';
+import { StatusBar } from "expo-status-bar";
+import { useAppFonts, styles, colors } from "./styles";
+import Router from "./src/routes/Router";
+import { Provider } from "react-redux";
+import { store } from "./src/Redux/Store";
+import ProductDetails from "./src/Pages/ProductDetails";
+import Cart from "./src/Pages/Cart";
 
 export default function App() {
   const [fontsLoaded] = useAppFonts();
