@@ -7,6 +7,9 @@ import ProductDetails from './src/Pages/ProductDetails';
 import Cart from './src/Pages/Cart';
 import UserOptions from './src/Pages/UserOptions';
 import ChangePassword from './src/Pages/ChangePassword';
+import AccountDetails from './src/Pages/AccountDetails';
+import DeleteAccount from './src/Pages/DeleteAccount';
+import DeleteAccountConfirmation from './src/Pages/DeleteAccountConfirmation';
 
 export default function App() {
   const [fontsLoaded] = useAppFonts();
@@ -14,9 +17,8 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    // <Provider store={store}>
-    //   <Router />
-    // </Provider>
-    <ChangePassword />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   );
 }

@@ -1,12 +1,29 @@
-import { Image, StyleSheet, Text, TouchableOpacity, ScrollView, View, Modal, TextInput, Alert, Dimensions } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput } from "react-native";
 import { useState } from 'react';
 import { colors, styles } from '../../styles';
 import { ArrowRight2 } from 'iconsax-react-nativejs';
 import { Edit } from 'iconsax-react-nativejs';
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { useSelector } from "react-redux";
+import LabelInpts from "../Components/GlobalComponents/LabelInpts";
+
+
 
 
 function AccountDetails() {
+
+    const { currentUser, error, loading } = useSelector((state) => state.Users);
+
+    const validationSchema = Yup.object().shape({
+        email: Yup.string()
+            .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "صيغة البريد الإلكتروني غير صحيحة")
+            .required("البريد مطلوب")
+    });
+
+
     return (
+
         <View style={style.container}>
             {/* الهيدر */}
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
@@ -55,10 +72,109 @@ function AccountDetails() {
                 </View>
             </View>
             {/* المحتوى */}
+
             <ScrollView style={{ flex: 1, paddingHorizontal: 16 }}>
-                
+
+                <Formik
+                    initialValues={{ email: "" }}
+                    validationSchema={validationSchema}
+                >
+                    {({
+                        handleChange,
+                        handleBlur,
+                        values,
+                        errors,
+                        touched,
+                    }) => (
+                        <>
+                            <View style={styles.container}>
+                                {/* Email Input */}
+                                <Text style={[styles.h4, { textAlign: 'right', marginTop: 24 }]}>البريد الالكترونى</Text>
+                                <View style={styles.inputWrapper}>
+                                    <TextInput
+                                        placeholder="البريد الإلكتروني"
+                                        placeholderTextColor="#7B7686"
+                                        style={[styles.input, styles.h4]}
+                                        onChangeText={handleChange("email")}
+                                        onBlur={handleBlur("email")}
+                                        value={values.email}
+                                        keyboardType="email-address"
+                                        autoCapitalize="none"
+                                        textAlign="right"
+                                    />
+                                </View>
+                                {touched.email && errors.email && (
+                                    <Text style={styles.errorText}>{errors.email}</Text>
+                                )}
+
+                                <LabelInpts text="اسم المستخدم" />
+                                <View style={styles.inputWrapper}>
+                                    <TextInput
+                                        placeholder="ادخل اسمك ثلاثى"
+                                        placeholderTextColor="#7B7686"
+                                        style={[styles.input, styles.h4]}
+                                        onChangeText={handleChange("name")}
+                                        onBlur={handleBlur("name")}
+                                        value={values.name}
+                                        autoCapitalize="none"
+                                    />
+                                </View>
+                                {touched.name && errors.name && (
+                                    <Text style={styles.errorText}>{errors.name}</Text>
+                                )}
+
+                                <LabelInpts text="رقم الهاتف" />
+                                <View style={styles.inputWrapper}>
+                                    <TextInput
+                                        placeholder="+20 "
+                                        placeholderTextColor="#7B7686"
+                                        style={[styles.input, styles.h4, { textAlign: "left" }]}
+                                        onChangeText={handleChange("phone")}
+                                        onBlur={handleBlur("phone")}
+                                        value={values.phone}
+                                        autoCapitalize="none"
+                                        keyboardType="numeric"
+                                    />
+                                </View>
+                                {touched.phone && errors.phone && (
+                                    <Text style={styles.errorText}>{errors.phone}</Text>
+                                )}
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginTop: 22,
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={style.Btn}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.h3,
+                                            {
+                                                textAlign: "right",
+                                                fontSize: 20,
+                                                color: '#7B7686',
+                                            },
+                                        ]}
+                                    >
+                                        حذف الحساب
+
+                                    </Text>
+
+                                </TouchableOpacity>
+                            </View>
+                        </>
+                    )}
+                </Formik>
+
             </ScrollView>
+
         </View>
+
     )
 }
 
@@ -67,6 +183,20 @@ const style = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#fff',
+    },
+    Btn: {
+        flex: 1,
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        justifyContent: 'center',
+        paddingHorizontal: 12,
+        paddingVertical: 16,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+
     },
 })
 
