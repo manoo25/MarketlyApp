@@ -33,7 +33,7 @@ useEffect(()=>{
       }
     };
     fetchUser();
-  }, 200);
+  }, 3200);
 },[])
   useEffect(() => {
     const animateDot = (dot, delay) => {

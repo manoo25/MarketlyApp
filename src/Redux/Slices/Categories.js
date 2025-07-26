@@ -1,14 +1,15 @@
+// src/Redux/Slices/Categories.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { supabase } from "../Supabase";
 
+
+// جلب الأقسام من Supabase
 export const fetchcategories = createAsyncThunk(
   "categories/fetchcategories",
   async (_, { rejectWithValue }) => {
     try {
       const { data, error } = await supabase.from("categories").select("*");
       if (error) throw error;
-      console.log('Categories Data: '+data);
-      
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -16,10 +17,8 @@ export const fetchcategories = createAsyncThunk(
   }
 );
 
-
-
-const categoriesSlice = createSlice({
-  name: "categories",
+const CategoriesSlice = createSlice({
+  name: "Categories",
   initialState: {
     categories: [],
     loading: false,
@@ -28,7 +27,6 @@ const categoriesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-
       .addCase(fetchcategories.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -40,10 +38,8 @@ const categoriesSlice = createSlice({
       .addCase(fetchcategories.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
-
-     
+      });
   },
 });
 
-export default categoriesSlice;
+export default CategoriesSlice;

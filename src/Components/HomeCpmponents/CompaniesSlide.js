@@ -3,6 +3,7 @@ import { colors, styles } from "../../../styles";
 import SectionHeader from "../GlobalComponents/SectionHeader";
 import { fetchCompanies } from "../../Redux/Slices/companiesSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 
 

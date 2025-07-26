@@ -3,24 +3,17 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import SectionHeader from "./SectionHeader";
 import { colors, styles } from "../../../styles";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchProducts } from "../../Redux/Slices/productsSlice";
 
 
-const recommendedProductsData = [
-    { id: '1', title: 'شعيرية سريعة التحضير', price: '10.0 EGP', image: require("../../../assets/products/noodle.png") },
-    { id: '2', title: 'مشروب غازى', price: '15.0 EGP', image: require("../../../assets/products/cute-cartoon-cola-drink-vector-Photoroom.png") },
-    { id: '3', title: 'شيبسى', price: '10.0 EGP', image: require("../../../assets/products/CHIPS_006-Photoroom.png") },
-    { id: '4', title: 'خبز', price: '10.0 EGP', image: require("../../../assets/products/81d97f939dc5d0c3ad370eea66cbb3cb-flat-bakery-bread-image.webp") },
-    { id: '5', title: 'خبز', price: '10.0 EGP', image: require("../../../assets/products/81d97f939dc5d0c3ad370eea66cbb3cb-flat-bakery-bread-image.webp") },
-    { id: '6', title: 'خبز', price: '10.0 EGP', image: require("../../../assets/products/81d97f939dc5d0c3ad370eea66cbb3cb-flat-bakery-bread-image.webp") },
-];
+
 
 const ProductCard = ({ item }) => (
     <View style={componentStyles.cardContainer}>
        <TouchableOpacity onPress={() => console.log('Card pressed')}>
          <View style={componentStyles.imageContainer}>
-            <Image source={item.image} style={componentStyles.image} />
+            <Image  source={{uri: item.image}} style={componentStyles.image} />
             <TouchableOpacity
             onPress={() => console.log('Add button pressed')}
             style={componentStyles.addButton}>
@@ -28,8 +21,8 @@ const ProductCard = ({ item }) => (
             </TouchableOpacity>
         </View>
         <View style={componentStyles.infoContainer}>
-            <Text style={[styles.h3,componentStyles.titleText]}>{item.title}</Text>
-            <Text style={[styles.h3,componentStyles.priceText]}>{item.price}</Text>
+            <Text style={[styles.h3,componentStyles.titleText]}>{item.name}</Text>
+            <Text style={[styles.h3,componentStyles.priceText]}>{item.endPrice}</Text>
         </View>
        </TouchableOpacity>
     </View>
@@ -38,11 +31,16 @@ const ProductCard = ({ item }) => (
 function ProductSlider({sectionName,navigate,data}) {
 const dispatch=useDispatch();
     const {products}=useSelector((state)=>state.products);
-
+    const[SalePro,SetSalePro]=useState([])
     useEffect(()=>{
-// dispatch(fetchProducts());
+dispatch(fetchProducts());
     },[]);
-
+ useEffect(() => {
+  if(products.length > 0){
+    const TargetData=products.slice(0,6)
+SetSalePro(TargetData)
+  }
+  }, [products]);
     return (
         <View style={{marginTop:15}}>
             
@@ -77,7 +75,7 @@ const dispatch=useDispatch();
                 horizontal
                 inverted
                 showsHorizontalScrollIndicator={false}
-                data={recommendedProductsData}
+                data={SalePro}
                 renderItem={({ item }) => <ProductCard item={item} />}
                 keyExtractor={item => item.id}
                 contentContainerStyle={componentStyles.listContentContainer}
@@ -91,7 +89,7 @@ const componentStyles = StyleSheet.create({
     cardContainer: {
         height: 188,
         width: 155,
-        // marginTop: 12,
+        marginTop: 12,
        paddingRight:15,
     //    backgroundColor:'green'
        
@@ -111,7 +109,7 @@ const componentStyles = StyleSheet.create({
         position: 'absolute',
         left: 10,
         bottom: 10,
-        backgroundColor: 'white',
+        backgroundColor: '#EBF2FF',
         borderRadius: 25,
         width: 35,
         height: 35,

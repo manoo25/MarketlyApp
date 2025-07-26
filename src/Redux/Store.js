@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import usersSlice from "./Slices/users";
 import companiesReducer from "./Slices/companiesSlice";
 import productsSlice from "./Slices/productsSlice";
-import categoriesSlice from "./Slices/Categories";
+import CategoriesSlice from "./Slices/Categories";
 
 
 export  const store = configureStore({
@@ -10,6 +10,6 @@ export  const store = configureStore({
     Users: usersSlice.reducer,
     companies: companiesReducer.reducer,
     products: productsSlice.reducer,
-    Categories: categoriesSlice.reducer,
+    Categories: CategoriesSlice.reducer,
   },
 });

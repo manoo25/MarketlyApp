@@ -5,11 +5,11 @@ import { styles } from "../../../styles";
 import SectionHeader from "../GlobalComponents/SectionHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchcategories } from "../../Redux/Slices/Categories";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 const MoreObj = 
-    { id: '6', title: 'المزيد',  image: require("../../../assets/HomeSlide/more.png") }
+    { id: '6', name: 'المزيد',  img: require("../../../assets/HomeSlide/more.png") }
 
 
 
@@ -17,9 +17,16 @@ const CategoryCard = ({ item }) => (
     <View style={componentStyles.cardContainer}>
         <TouchableOpacity>
             <View style={componentStyles.imageContainer}>
-            <Image  source={{ uri: item.image }} style={componentStyles.image} 
+          {
+             item.id=='6'?
+            <Image  source={item.img} style={componentStyles.image} 
             resizeMode="contain"
             />
+            :
+             <Image  source={{ uri: item.img }} style={componentStyles.image} 
+            resizeMode="contain"
+            />
+          }
         </View>
         <View >
             <Text style={[componentStyles.titleText, styles.h2,{fontSize:11}]}>{item.name}</Text>
@@ -43,7 +50,7 @@ const[MoreCat,SetMoreCat]=useState([])
     const TargetData=categories.slice(0,5)
 SetMoreCat([...TargetData,MoreObj])
   }
-  }, []);
+  }, [categories]);
     return (
         <View style={{ height:'auto' }}>
              <SectionHeader text=" الأقسام" />
@@ -66,7 +73,7 @@ const componentStyles = StyleSheet.create({
     listContentContainer: {
         flex:1,
         flexDirection:'row',
-        justifyContent:'space-between',
+      
         paddingHorizontal:16,
         flexWrap:'wrap',
         gap:16,
