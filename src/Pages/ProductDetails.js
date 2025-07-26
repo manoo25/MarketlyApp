@@ -3,7 +3,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors, styles } from '../../styles';
 import { ScrollView, View } from 'react-native';
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { ArrowRight2 } from 'iconsax-react-nativejs';
 import RecommendedProducts from '../Components/ProductDeatailsComponents/RecommendedProducts';
 
 
@@ -20,11 +20,7 @@ function ProductDetails() {
                 <View style={{ alignItems: 'center', marginTop: 60 }}>
                     <View style={{ width: '90%', alignItems: 'flex-end' }}>
                         <TouchableOpacity >
-                            <MaterialIcons
-                                name="arrow-forward-ios"
-                                size={24}
-                                color="black"
-                            />
+                            <ArrowRight2 size="32" color="#424047" />
                         </TouchableOpacity>
                     </View>
                     <View style={{ marginTop: 16 }}>
@@ -47,8 +43,8 @@ function ProductDetails() {
                     </Text>
                     <RecommendedProducts />
                     <View style={styles.dividerLine} />
-                    <View style={{ alignSelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row-reverse', marginTop: 25, marginBottom: 25 }}>
-                        <View style={{marginRight: 10}}>
+                    <View style={{ alignSelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row-reverse', marginTop: 12 }}>
+                        <View style={{ marginRight: 10 }}>
                             <Text style={[styles.h2, { color: colors.BtnsColor }]}>15.0 EGP</Text>
                         </View>
                         <View

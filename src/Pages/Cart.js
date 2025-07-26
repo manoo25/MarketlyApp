@@ -8,7 +8,7 @@ import RecommendedProducts from '../Components/ProductDeatailsComponents/Recomme
 import { MessageText1 } from 'iconsax-react-nativejs';
 import { CloseCircle } from 'iconsax-react-nativejs';
 import { BagCross } from 'iconsax-react-nativejs';
-
+import { ArrowRight2 } from 'iconsax-react-nativejs';
 
 
 
@@ -97,16 +97,12 @@ function Cart() {
         <View style={style.container}>
             {/* الهيدر */}
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
-                <View style={{ width: '100%', alignItems: 'flex-end' }}>
+                <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
                     <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'flex-end' }}>
                         <TouchableOpacity>
-                            <MaterialIcons
-                                name="arrow-forward-ios"
-                                size={24}
-                                color="black"
-                            />
+                            <ArrowRight2 size="32" color="#424047" />
                         </TouchableOpacity>
-                        <Text style={[styles.h3, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>سلة التسوق</Text>
+                        <Text style={[styles.h2, { textAlign: 'right' }]}>سلة التسوق</Text>
                     </View>
                 </View>
             </View>
@@ -280,8 +276,8 @@ function Cart() {
 const EmptyCart = () => (
     <View style={style.emptyContainer}>
         <BagCross size="200" color="#424047" />
-        <Text style={[styles.h3, { marginTop : 12}]}>لا يوجد شىء فى سلة التسوق !</Text>
-        <Text style={[styles.paragraph,{marginTop : 8}]}>جاهز لطلب شىء ؟</Text>
+        <Text style={[styles.h3, { marginTop: 12 }]}>لا يوجد شىء فى سلة التسوق !</Text>
+        <Text style={[styles.paragraph, { marginTop: 8 }]}>جاهز لطلب شىء ؟</Text>
         <View
             style={{
                 flexDirection: "row",
@@ -376,7 +372,7 @@ const style = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)', // خلفية شبه شفافة
+        backgroundColor: 'rgba(0,0,0,0.5)',
     },
     modalView: {
         margin: 20,
@@ -392,7 +388,7 @@ const style = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        width: '80%', // عرض الـ Modal
+        width: '80%',
     },
     modalTitle: {
         fontSize: 20,
@@ -403,17 +399,17 @@ const style = StyleSheet.create({
     },
     textInput: {
         width: '100%',
-        height: 100, // ارتفاع كبير لعدة أسطر
+        height: 100,
         borderColor: '#ddd',
         borderWidth: 1,
         borderRadius: 10,
         padding: 10,
         marginBottom: 20,
-        textAlignVertical: 'top', // يبدأ النص من الأعلى
-        textAlign: 'right', // لضمان اتجاه النص
+        textAlignVertical: 'top',
+        textAlign: 'right',
     },
     buttonContainer: {
-        flexDirection: 'row-reverse', // لجعل الأزرار من اليمين لليسار
+        flexDirection: 'row-reverse',
         justifyContent: 'space-around',
         width: '100%',
     },
@@ -421,14 +417,14 @@ const style = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         elevation: 2,
-        width: '45%', // لتوزيع الأزرار
+        width: '45%',
         alignItems: 'center',
     },
     buttonSave: {
-        backgroundColor: '#327AFF', // أزرق للحفظ
+        backgroundColor: '#327AFF',
     },
     buttonCancel: {
-        backgroundColor: '#f44336', // أحمر للإلغاء
+        backgroundColor: '#f44336',
     },
     buttonText: {
         color: 'white',
