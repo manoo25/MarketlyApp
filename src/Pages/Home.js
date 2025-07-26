@@ -1,43 +1,53 @@
-import React, { useRef } from 'react';
-import { Alert, ScrollView, Text, Animated, View, TouchableOpacity } from 'react-native';
-import { colors, styles } from '../../styles';
-import { sendOTP, sendOtp, sendOtpToEmail, verifyOtp } from '../Redux/Supabase/ForgetPassword';
+import React, { useEffect, useRef, useState } from 'react';
+import { ScrollView, Text, Animated, View } from 'react-native';
+import { colors } from '../../styles';
 import Header from '../Components/HomeCpmponents/Header';
 import MainSlider from '../Components/HomeCpmponents/MainSlider';
 import MainCategories from '../Components/HomeCpmponents/MainCategories';
 import ProductSlider from '../Components/GlobalComponents/ProductSlider';
 import Statusbar from '../Components/GlobalComponents/Statusbar';
 import CompaniesSlide from '../Components/HomeCpmponents/CompaniesSlide';
+import { UserData } from '../Redux/Slices/GetUserData';
 
 export default function Home() {
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [userData, setUserData] = useState({});
 
- const scrollY = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await UserData();
+      if (user) {
+        
+        setUserData(user);
+      
+      }
+    };
+    fetchUser();
+  }, []);
+
   return (
-  <View style={{ flex: 1,backgroundColor:colors.white }}>
-  <Statusbar scrollY={scrollY}/>
-  
-  <ScrollView 
-    showsVerticalScrollIndicator={false}
-     style={{flex:1,backgroundColor:colors.white,position:'relative'}}
-      onScroll={Animated.event(
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
+      <Statusbar scrollY={scrollY} />
+      
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1, backgroundColor: colors.white, position: 'relative' }}
+        onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false }
         )}
         scrollEventThrottle={16}
-     >
+      >
+
+        <Header city={userData&&userData.city} governorate={userData&&userData.governorate}/>
+
      
-    <Header/>
-   
-      <MainSlider/>
-    <MainCategories/>
 
-      <ProductSlider sectionName="الأكثر مبيعًا🔥"/>
-      <CompaniesSlide sectionName="تسوق الشركات"/>
-    
-
-    </ScrollView>
-</View>
-    
- 
+        <MainSlider />
+        <MainCategories />
+        <ProductSlider sectionName="الأكثر مبيعًا🔥" />
+        <CompaniesSlide sectionName="تسوق الشركات" />
+      </ScrollView>
+    </View>
   );
 }

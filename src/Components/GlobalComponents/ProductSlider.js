@@ -2,6 +2,9 @@ import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react
 import AntDesign from "@expo/vector-icons/AntDesign";
 import SectionHeader from "./SectionHeader";
 import { colors, styles } from "../../../styles";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchProducts } from "../../Redux/Slices/productsSlice";
 
 
 const recommendedProductsData = [
@@ -33,6 +36,13 @@ const ProductCard = ({ item }) => (
 );
 
 function ProductSlider({sectionName,navigate,data}) {
+const dispatch=useDispatch();
+    const {products}=useSelector((state)=>state.products);
+
+    useEffect(()=>{
+// dispatch(fetchProducts());
+    },[]);
+
     return (
         <View style={{marginTop:15}}>
             

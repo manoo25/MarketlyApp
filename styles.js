@@ -55,6 +55,11 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.text,
   },
+  titleNavegator: {
+    fontFamily: "Tajawal-Medium",
+    fontSize: 11,
+    marginTop:4
+  },
   h5: {
     fontFamily: "Tajawal-Light",
     fontSize: 16,

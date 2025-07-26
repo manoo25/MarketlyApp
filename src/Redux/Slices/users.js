@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { supabase } from "../Supabase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 // ✅ تسجيل دخول يدوي من جدول users
 export const UserLogin = createAsyncThunk(

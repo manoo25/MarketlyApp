@@ -8,7 +8,7 @@ import SearchInput from './SearchInput'
 
 
 
-export default function Header() {
+export default function Header({city,governorate}) {
   return (
    <View style={{height:160}}>
       <LinearGradient
@@ -27,7 +27,7 @@ export default function Header() {
         
          <Text 
          style={[styles.h3,{textAlign:'right',color:'white',fontSize:15}]}
-         >التوصيل إلى : محافظة القاهرة
+         >التوصيل إلى : {governorate},{city}
          </Text>
          <EvilIcons name="location" size={22} color="white" />
        </View>

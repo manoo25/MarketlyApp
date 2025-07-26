@@ -7,24 +7,33 @@ export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (_, { rejectWithValue }) => {
     try {
-      const userId = await AsyncStorage.getItem("userID");
-      const userRole = await AsyncStorage.getItem("userRole");
-
-      let query = supabase.from("products").select(`
+      const UserData = JSON.parse(await AsyncStorage.getItem("userData"));
+      
+      // You need to actually execute the query with .select()
+      const { data, error } = await supabase
+        .from("products")
+        .select(`
           *,
-          category:category_id (*),
-          trader:trader_id (*),
-          company:company_id (name, image)
+          category:category_id (name),
+          trader:trader_id (routes),
+          company:company_id (name)
         `);
+        
 
-      if (userRole !== "admin") {
-        query = query.eq("trader_id", userId);
-      }
-
-      const { data, error } = await query;
       if (error) throw error;
+const filterPro = data.filter(
+  x =>
+    x.publish === true &&
+    x.state === true &&
+    x.trader.routes
+      ?.split(',')
+      .map(r => r.trim())
+      .includes(UserData.governorate)
+);
 
-      return data;
+console.log(filterPro);
+
+      return filterPro;
     } catch (error) {
       return rejectWithValue(error.message);
     }
