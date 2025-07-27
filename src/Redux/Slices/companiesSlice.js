@@ -15,7 +15,6 @@ export const fetchCompanies = createAsyncThunk(
 );
 
 
-
 const companiesSlice = createSlice({
   name: "companies",
   initialState: {

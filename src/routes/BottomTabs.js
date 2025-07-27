@@ -5,14 +5,29 @@ import Home from '../Pages/Home';
 import Cart from '../Pages/Cart';
 import UserOptions from '../Pages/UserOptions';
 import { Platform, View, Text } from 'react-native';
-import { useSelector } from 'react-redux';
 import { styles } from '../../styles';
+import AllCategoriesScreen from '../Pages/categories/AllCategoriesScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
+import SoftDrinks from '../Pages/categories/SoftDrinks';
+import CartIcon from '../Components/GlobalComponents/CartIcon';
+import Orders from '../Pages/orders';
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function BottomTabs() {
-  const { cartItems } = useSelector((state) => state.CartItems);
+function HomeStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeMain" component={Home} />
+      <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
+      <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
+      <Stack.Screen name="SoftDrinks" component={SoftDrinks} />
+    </Stack.Navigator>
+  );
+}
 
+export default function BottomTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -29,28 +44,7 @@ export default function BottomTabs() {
           } else if (route.name === 'Sales') {
             icon = <DiscountShape size={35} color={iconColor} variant={variant} />;
           } else if (route.name === 'Cart') {
-            icon = (
-              <View>
-                <Bag size={35} color={iconColor} variant={variant} />
-                {cartItems.length > 0 && (
-                  <View style={{
-                    position: 'absolute',
-                    top: -5,
-                    right: -10,
-                    backgroundColor: 'red',
-                    borderRadius: 10,
-                    width: 21,
-                    height: 21,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                    <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
-                      {cartItems.length}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            );
+            icon = <CartIcon focused={focused} />; 
           } else if (route.name === 'Orders') {
             icon = <Receipt1 size={35} color={iconColor} variant={variant} />;
           } else if (route.name === 'Profile') {
@@ -73,10 +67,10 @@ export default function BottomTabs() {
       })}
     >
       <Tab.Screen name="Profile" component={UserOptions} options={{ title: 'الحساب' }} />
-      <Tab.Screen name="Orders" component={Cart} options={{ title: 'الطلبات' }} />
+      <Tab.Screen name="Orders" component={Orders} options={{ title: 'الطلبات' }} />
       <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
       <Tab.Screen name="Sales" component={Home} options={{ title: 'العروض' }} />
-      <Tab.Screen name="Home" component={Home} options={{ title: 'الرئيسية' }} />
+      <Tab.Screen name="Home" component={HomeStack} options={{ title: 'الرئيسية' }} />
     </Tab.Navigator>
   );
 }
