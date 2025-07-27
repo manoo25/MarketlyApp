@@ -1,132 +1,166 @@
-// SoftDrinks.js
-import { React, useState } from "react";
+// CategoryProductsPage.js
+import React, { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
   ScrollView,
+  TouchableOpacity,
   Image,
+  StyleSheet,
   I18nManager,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import CustomAppBar from "../../Components/Categories/CustomAppBar";
-import useFetchCompanies from "../../Components/Categories/useFetchCompanies";
 import { Feather } from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import RecommendedProducts from "../../Components/Categories/ListProducts";
-// import useFetchProducts from "../../Components/Categories/useFetchProducts";
-// import ProductList from "../../Components/Categories/ProductList";
+import CustomAppBar from "../../Components/Categories/CustomAppBar";
+import useFetchCompanies from "../../Components/Categories/useFetchCompanies";
+import { useSelector } from "react-redux";
+import ListProducts from "../../Components/Categories/ListProducts";
 
-const SoftDrinks = () => {
-  // const navigation = useNavigation();
-
+const CategoryProductsPage = ({ route, navigation }) => {
+  const { category } = route.params;
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [isFilterVisible, setFilterVisible] = useState(false);
+  const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
 
   const { companies } = useFetchCompanies();
-  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const allProducts = useSelector((state) => state.products.products);
 
-  const handleSelect = (id) => {
+  const handleSelectCompany = (id) => {
     setSelectedCompanyId(id);
-    console.log("Selected company:", id);
   };
 
-  
-  // ✅ تم تعليق الفيتش الحقيقي مؤقتًا
-  // const { products } = useFetchProducts();
-  // const softDrinkProducts = products.filter(
-    //   (product) => product.category?.name === "مشروبات غازية"
-    // );
-    // const filteredProducts = softDrinkProducts;
-    
-    const [isFilterVisible, setFilterVisible] = useState(false);
-    const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
+  const handleApplySort = () => {
+    // sort logic can go here later
+    setFilterVisible(false);
+  };
 
-    const handleFilterPress = () => {
-        console.log("Filter icon pressed");
-        setFilterVisible(true);
-    };
 
-    const handleApplySort = () => {
-        console.log("Sorting by:", selectedSortOption);
-        setFilterVisible(false);
-    };
+const companiesInThisCategory = Array.from(
+  new Set(
+    (allProducts || [])
+      .filter((product) => product.category_id === category.id)
+      .map((product) => product.company_id)
+  )
+);
 
-    return (
-        <View style={styles.container}>
+
+  const filteredCompanies = (companies || []).filter((company) =>
+    companiesInThisCategory.includes(company.id)
+  );
+
+  // ✅ فلترة المنتجات بناءً على القسم والشركة المختارة مؤقتًا
+const filteredProducts = (allProducts || []).filter((product) => {
+  const belongsToCategory = product.category_id === category.id;
+  const matchesCompany =
+    selectedCompanyId === null || product.company_id === selectedCompanyId;
+  const matchesSearch =
+    searchQuery.trim() === "" ||
+    product.name?.toLowerCase().includes(searchQuery.trim().toLowerCase());
+
+  return belongsToCategory && matchesCompany && matchesSearch;
+});
+
+
+
+const getProductPrice = (product) =>
+  parseFloat(product.endPrice ?? product.traderprice ?? 0);
+
+const sortedProducts = filteredProducts.slice();
+
+if (selectedSortOption === "highToLow") {
+  sortedProducts.sort((a, b) => getProductPrice(b) - getProductPrice(a));
+} else if (selectedSortOption === "lowToHigh") {
+  sortedProducts.sort((a, b) => getProductPrice(a) - getProductPrice(b));
+}
+
+
+    // const filteredProducts = allProducts || [];
+
+    console.log("allProducts =>", allProducts);
+
+
+  return (
+    <View style={styles.container}>
       <CustomAppBar
-        title="المشروبات الغازية"
-        // onBack={() => navigation.goBack()}
-        onBack={() => console.log("Back Arrow Clciked")}
+        title={category.name}
+        onBack={() => navigation.goBack()}
         showSearch={true}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onSearchClose={() => setSearchQuery("")}
       />
 
-      {/* ScrollView للشركات */}
-      <View style={styles.scrollWrapper}>
+      {/* الشركات */}
+      <View>
         <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ direction: "rtl" }}
-          contentContainerStyle={{
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{ direction: "rtl" }} // ✅ أضف دي هنا
+            contentContainerStyle={{
             flexDirection: "row-reverse",
-          }}
+            paddingHorizontal: 12,
+                paddingVertical: 10,
+            }}
         >
-          {/* الشركات */}
-          {companies
+            {filteredCompanies
             .slice()
             .reverse()
             .map((company) => (
-              <View key={company.id} style={styles.companyItem}>
+                <View key={company.id} style={styles.companyItem}>
                 <TouchableOpacity
-                  onPress={() => handleSelect(company.id)}
-                  style={[
+                    onPress={() => handleSelectCompany(company.id)}
+                    style={[
                     styles.imageWrapper,
                     selectedCompanyId === company.id && styles.selected,
-                  ]}
+                    ]}
                 >
-                  <Image
+                    <Image
                     source={{ uri: company.image }}
                     style={styles.image}
                     resizeMode="contain"
-                  />
+                    />
                 </TouchableOpacity>
                 <Text style={styles.name}>{company.name}</Text>
-              </View>
+                </View>
             ))}
 
-          {/* "جميع الشركات" */}
-          <View style={styles.companyItem}>
+            {/* "جميع الشركات" */}
+            <View style={styles.companyItem}>
             <TouchableOpacity
-              onPress={() => handleSelect(null)}
-              style={[
+                onPress={() => handleSelectCompany(null)}
+                style={[
                 styles.imageWrapper,
                 selectedCompanyId === null && styles.selected,
-              ]}
+                ]}
             >
-              <Image
+                <Image
                 source={require("../../../assets/imgs/company-icon.png")}
                 style={styles.image}
-              />
+                />
             </TouchableOpacity>
             <Text style={styles.name}>جميع{"\n"}الشركات</Text>
-          </View>
+            </View>
         </ScrollView>
       </View>
 
-      {/* فلتر المنتجات */}
+      
+      {/* زر الفلتر */}
       <View style={styles.filterRow}>
         <Text style={styles.filterText}>رتب حسب</Text>
-        <TouchableOpacity onPress={handleFilterPress} style={styles.iconButton}>
+        <TouchableOpacity
+          onPress={() => setFilterVisible(true)}
+          style={styles.iconButton}
+        >
           <Feather name="filter" size={18} color="#333" />
         </TouchableOpacity>
       </View>
 
-      {/* ✅ عرض منتجات static */}
-      <RecommendedProducts />
+      {/* عرض المنتجات (مؤقتًا استاتيك) */}
+      <ListProducts products={sortedProducts} />
+
+      {/* المودال للفلترة */}
       <Modal
         isVisible={isFilterVisible}
         onBackdropPress={() => setFilterVisible(false)}
@@ -136,35 +170,24 @@ const SoftDrinks = () => {
       >
         <View style={styles.modalContent}>
           <View style={styles.dragIndicator} />
-
-          {/* العنوان + زر الإغلاق */}
           <View style={styles.modalHeader}>
             <TouchableOpacity
               onPress={() => setFilterVisible(false)}
               style={styles.closeButton}
             >
-              <Feather
-                style={styles.closeButtonText}
-                name="x"
-                size={18}
-                color="#424047"
-              />
+              <Feather name="x" size={18} color="#424047" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>رتب حسب</Text>
           </View>
 
-          {/* اختيارات الفلتر */}
           {[
-            { label: "السعر (من الأعلى الى الأقل)", value: "highToLow" },
-            { label: "السعر (من الأقل الى الأعلى)", value: "lowToHigh" },
+            { label: "السعر من الأعلى", value: "highToLow" },
+            { label: "السعر من الأقل", value: "lowToHigh" },
             { label: "المقترحات", value: "suggested" },
-          ].map((option, index, arr) => (
+          ].map((option) => (
             <TouchableOpacity
               key={option.value}
-              style={[
-                styles.radioRow,
-                index !== arr.length && styles.radioRowBorder, // Add border except last
-              ]}
+              style={styles.radioRow}
               onPress={() => setSelectedSortOption(option.value)}
             >
               <Text style={styles.radioLabel}>{option.label}</Text>
@@ -188,7 +211,7 @@ const SoftDrinks = () => {
   );
 };
 
-export default SoftDrinks;
+export default CategoryProductsPage;
 
 const styles = StyleSheet.create({
   container: {
@@ -309,7 +332,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 500,
     marginBottom: 5,
-    marginRight:10,
+    marginRight: 10,
     textAlign: "right",
   },
   radioCircle: {
@@ -330,7 +353,7 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     fontSize: 12,
-    fontWeight:500,
+    fontWeight: 500,
     color: "#424047",
     flexShrink: 1,
   },

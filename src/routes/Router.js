@@ -10,7 +10,8 @@ import ForgetPasswordPage from '../Pages/ForgetPasswordPage';
 import ResetPasswordForm from '../Components/ForgetPassword/ResetPassword';
 import { PATHS } from './Paths';
 import BottomTabs from './BottomTabs';
-
+import AllCategoriesScreen from "../Pages/categories/AllCategoriesScreen";
+import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
 
 
 export default function Router() {
@@ -19,23 +20,35 @@ export default function Router() {
 
 
   return (
-   <NavigationContainer>
-<Stack.Navigator
-screenOptions={
-  {
-    headerShown:false
-  }
-}
->
- 
-  <Stack.Screen name={PATHS.Intro} component={IntroPage}/>
-  <Stack.Screen name={PATHS.Login} component={LoginPage}/>
-  <Stack.Screen name={PATHS.Register} component={RegisterPage}/>
-  <Stack.Screen name={PATHS.Home} component={BottomTabs} />
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name={PATHS.Intro} component={IntroPage} />
+        <Stack.Screen name={PATHS.Login} component={LoginPage} />
+        <Stack.Screen name={PATHS.Register} component={RegisterPage} />
+        <Stack.Screen name={PATHS.Home} component={BottomTabs} />
 
-  <Stack.Screen name={PATHS.ForgetPassword} component={ForgetPasswordPage}/>
-  <Stack.Screen name={PATHS.ResetPasswordForm} component={ResetPasswordForm}/>
-</Stack.Navigator>
-   </NavigationContainer>
-  )
+        <Stack.Screen
+          name={PATHS.ForgetPassword}
+          component={ForgetPasswordPage}
+        />
+        <Stack.Screen
+          name={PATHS.ResetPasswordForm}
+          component={ResetPasswordForm}
+        />
+
+        <Stack.Screen
+          name={PATHS.AllCategories}
+          component={AllCategoriesScreen}
+        />
+        <Stack.Screen
+          name={PATHS.CategoryProducts}
+          component={CategoryProductsPage}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
