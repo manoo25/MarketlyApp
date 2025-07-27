@@ -10,11 +10,10 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { styles } from "../../styles";
 
-// بيانات تفاصيل الطلب
 const orderDetails = {
   id: "87475ac7-7c7d-4ddd-b356-d33cb44f044c",
   order_number: "12345687",
-  status: "done",
+  status: "pending",
   created_at: "2025-07-19T16:46:27.04369",
   total: 320,
   delivery_fee: 15,
@@ -33,7 +32,7 @@ const orderDetails = {
       quantity: 2,
       price: 75,
       total: 150,
-      image: "https://example.com/product1.jpg"
+      image: require("../../assets/products/chips.png"),
     },
     {
       id: 2,
@@ -41,7 +40,8 @@ const orderDetails = {
       quantity: 3,
       price: 25,
       total: 75,
-      image: "https://example.com/product2.jpg"
+      image:
+      require("../../assets/products/cute-cartoon-cola-drink-vector-Photoroom.png"),
     },
     {
       id: 3,
@@ -49,9 +49,10 @@ const orderDetails = {
       quantity: 1,
       price: 75,
       total: 75,
-      image: "https://example.com/product3.jpg"
-    }
-  ]
+      image:
+       require( "../../assets/products/fruit-cherry-cartoon-vector-illustration-design-fruits-premium-isolated_10526168.png"),
+    },
+  ],
 };
 
 const OrderDetails = ({ navigation, route }) => {
@@ -66,9 +67,7 @@ const OrderDetails = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
             </TouchableOpacity>
-            <Text style={[styles.h3, style.headerTitle]}>
-              تفاصيل الطلب
-            </Text>
+            <Text style={[styles.h3, style.headerTitle]}>تفاصيل الطلب</Text>
           </View>
         </View>
       </View>
@@ -80,17 +79,27 @@ const OrderDetails = ({ navigation, route }) => {
             <View style={style.statusContainer}>
               <View style={style.deliveryStatusRow}>
                 <Text style={style.deliveryTextRow}>
-                  {orderDetails.status === "done" ? "تم التوصيل" : "جارٍ التنفيذ"}
+                  {orderDetails.status === "done"
+                    ? "تم التوصيل"
+                    : "جارٍ التنفيذ"}
                 </Text>
               </View>
               <View style={style.orderInfo}>
-                <Text style={style.orderNumber}>طلب رقم: {orderDetails.order_number}</Text>
+                <Text style={style.orderNumber}>
+                  طلب رقم: {orderDetails.order_number}
+                </Text>
                 <Text style={style.orderDate}>
-                  {new Date(orderDetails.created_at).toLocaleDateString("ar-EG")} - {" "}
-                  {new Date(orderDetails.created_at).toLocaleTimeString("ar-EG", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  {new Date(orderDetails.created_at).toLocaleDateString(
+                    "ar-EG"
+                  )}{" "}
+                  -{" "}
+                  {new Date(orderDetails.created_at).toLocaleTimeString(
+                    "ar-EG",
+                    {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }
+                  )}
                 </Text>
               </View>
             </View>
@@ -111,7 +120,9 @@ const OrderDetails = ({ navigation, route }) => {
             </View>
             <View style={style.customerRow}>
               <MaterialIcons name="location-on" size={20} color="#666" />
-              <Text style={style.customerText}>{orderDetails.user.location}</Text>
+              <Text style={style.customerText}>
+                {orderDetails.user.location}
+              </Text>
             </View>
           </View>
         </View>
@@ -123,16 +134,17 @@ const OrderDetails = ({ navigation, route }) => {
             <View key={item.id} style={style.productItem}>
               <View style={style.productRow}>
                 <View style={style.imageContainer}>
-                  <Image
-                    source={require('../../assets/products/CHIPS_006-Photoroom.png')}
-                    style={style.productImage}
-                  />
+                  <Image source={item.image} style={style.productImage} />
                 </View>
                 <View style={style.productDetails}>
                   <Text style={style.productName}>{item.name}</Text>
                   <View style={style.productMeta}>
-                    <Text style={style.productQuantity}>الكمية: {item.quantity}</Text>
-                    <Text style={style.productPrice}>{item.price} جنيه للقطعة</Text>
+                    <Text style={style.productQuantity}>
+                      الكمية: {item.quantity}
+                    </Text>
+                    <Text style={style.productPrice}>
+                      {item.price} جنيه للقطعة
+                    </Text>
                   </View>
                 </View>
                 <View style={style.productTotal}>
@@ -153,7 +165,9 @@ const OrderDetails = ({ navigation, route }) => {
             </View>
             <View style={style.billRow}>
               <Text style={style.billLabel}>رسوم التوصيل</Text>
-              <Text style={style.billValue}>{orderDetails.delivery_fee} جنيه</Text>
+              <Text style={style.billValue}>
+                {orderDetails.delivery_fee} جنيه
+              </Text>
             </View>
             <View style={style.billRow}>
               <Text style={style.billLabel}>الضرائب</Text>
@@ -174,6 +188,21 @@ const OrderDetails = ({ navigation, route }) => {
             <MaterialIcons name="payment" size={20} color="#666" />
             <Text style={style.paymentText}>{orderDetails.payment_method}</Text>
           </View>
+        </View>
+
+        <View style={style.actionButtons}>
+          <TouchableOpacity
+            style={[style.button, style.secondaryButton]}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={style.secondaryButtonText}>رجوع</Text>
+          </TouchableOpacity>
+
+          {orderDetails.status !== "done" && (
+            <TouchableOpacity style={[style.button, style.primaryButton]}>
+              <Text style={style.primaryButtonText}>إلغاء الطلب</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -281,9 +310,9 @@ const style = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 12,
-    backgroundColor: '#EBF2FF',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#EBF2FF",
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 12,
   },
   productImage: {
@@ -399,7 +428,7 @@ const style = StyleSheet.create({
     fontWeight: "bold",
   },
   ratingFooter: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F5F5F5",
     marginHorizontal: 16,
     marginTop: 16,
     marginBottom: 32,
@@ -411,6 +440,36 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     color: "#888",
     textAlign: "center",
+  },
+
+  actionButtons: {
+    marginHorizontal: 16,
+    marginBottom: 20,
+    gap: 12,
+  },
+  button: {
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  primaryButton: {
+    backgroundColor: "#FF3B30", // لون أحمر للزر الأساسي
+  },
+  primaryButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  secondaryButton: {
+    backgroundColor: "#F5F5F5",
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+  },
+  secondaryButtonText: {
+    color: "#333",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
