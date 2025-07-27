@@ -47,7 +47,7 @@ export const createCartItem = createAsyncThunk(
         .select(`*, product:product_id (name, image, endPrice, trader_id)`);
 
       if (error) throw error;
-console.log('newItem',data[0]);
+// console.log('newItem',data[0]);
 
       return data[0];
     } catch (error) {
@@ -105,7 +105,7 @@ export const addOrUpdateCartItem = createAsyncThunk(
     // try {
       const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const existingItems = getState().CartItems.cartItems;
-console.log('existingItems'+existingItems);
+// console.log('existingItems'+existingItems);
 
       const existingItem = existingItems.find(
         (item) => item.product_id === product_id && item.user_id === userData.id

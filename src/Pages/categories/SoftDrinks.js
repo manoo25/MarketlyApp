@@ -29,7 +29,7 @@ const SoftDrinks = () => {
 
   const handleSelect = (id) => {
     setSelectedCompanyId(id);
-    console.log("Selected company:", id);
+    // console.log("Selected company:", id);
   };
 
   
@@ -44,12 +44,12 @@ const SoftDrinks = () => {
     const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
 
     const handleFilterPress = () => {
-        console.log("Filter icon pressed");
+        // console.log("Filter icon pressed");
         setFilterVisible(true);
     };
 
     const handleApplySort = () => {
-        console.log("Sorting by:", selectedSortOption);
+        // console.log("Sorting by:", selectedSortOption);
         setFilterVisible(false);
     };
 
@@ -58,7 +58,7 @@ const SoftDrinks = () => {
       <CustomAppBar
         title="المشروبات الغازية"
         // onBack={() => navigation.goBack()}
-        onBack={() => console.log("Back Arrow Clciked")}
+        // onBack={() => console.log("Back Arrow Clciked")}
         showSearch={true}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}

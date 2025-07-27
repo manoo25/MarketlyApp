@@ -27,8 +27,8 @@ const{replace}=useNavigation();
         .unwrap()
         .then((userId) => {
           SetUserId(userId);
-          console.log("User ID:", userId);
-          console.log("Email:", email);
+          // console.log("User ID:", userId);
+          // console.log("Email:", email);
         })
         .catch((err) => {
           console.log("Error:", err);

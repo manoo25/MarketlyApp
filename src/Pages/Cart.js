@@ -108,7 +108,7 @@ const[CartItemsArr,setCartItemsArr]=useState([]);
   const Total = CartItemsArr.reduce((acc, item) => {
     return acc + item.product.endPrice * item.quantity;
   }, 0); // قيمة ابتدائية 0
-console.log('Total'+Total);
+// console.log('Total'+Total);
 
   SetTotalPrice(Total);
 }, [CartItemsArr]);
@@ -146,9 +146,7 @@ function CompleteOrder() {
     note:savedNotes,
   };
 
-  // 4. الإرسال أو الطباعة
-  console.log('✅ Order Created:', order);
-  console.log('🛒 Order Items:', orderItems);
+
 
   Alert.alert('تم إرسال الطلب بنجاح');
 }

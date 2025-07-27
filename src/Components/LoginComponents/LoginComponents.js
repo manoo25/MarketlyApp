@@ -30,7 +30,7 @@ export default function LoginForm() {
   }, []);
   useEffect(() => {
     if (currentUser) {
-      console.log("currentUser", currentUser);
+      
       AsyncStorage.setItem("userData", JSON.stringify(currentUser));
       replace(PATHS.Home);
     }

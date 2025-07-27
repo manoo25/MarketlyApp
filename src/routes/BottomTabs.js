@@ -7,11 +7,29 @@ import UserOptions from '../Pages/UserOptions';
 import { Platform, View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { styles } from '../../styles';
+import AllCategoriesScreen from '../Pages/categories/AllCategoriesScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
+import SoftDrinks from '../Pages/categories/SoftDrinks';
+
+const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
   const { cartItems } = useSelector((state) => state.CartItems);
+
+function HomeStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeMain" component={Home} />
+      <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
+      <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
+      <Stack.Screen name="SoftDrinks" component={SoftDrinks} />
+    </Stack.Navigator>
+  );
+}
+
 
   return (
     <Tab.Navigator
@@ -76,7 +94,7 @@ export default function BottomTabs() {
       <Tab.Screen name="Orders" component={Cart} options={{ title: 'الطلبات' }} />
       <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
       <Tab.Screen name="Sales" component={Home} options={{ title: 'العروض' }} />
-      <Tab.Screen name="Home" component={Home} options={{ title: 'الرئيسية' }} />
+      <Tab.Screen name="Home" component={HomeStack} options={{ title: 'الرئيسية' }} />
     </Tab.Navigator>
   );
 }

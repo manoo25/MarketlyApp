@@ -2,7 +2,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react
 import { colors, styles } from '../../../styles';
 import { ArrowLeft2 } from 'iconsax-react-nativejs';
 import { LogoutCurve } from 'iconsax-react-nativejs';
-import { UserLogin } from "../../Redux/Slices/users";
+import { logoutUser, UserLogin } from "../../Redux/Slices/users";
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -37,10 +37,10 @@ function OptionsList() {
 
 
 
-    const handleLogout = async () => {
+    const handleLogout = async () => {     
         await AsyncStorage.removeItem('userData');
-        dispatch(UserLogin(null));
-        replace(PATHS.Login);
+         dispatch(logoutUser());
+         replace(PATHS.Login);
     };
 
 
