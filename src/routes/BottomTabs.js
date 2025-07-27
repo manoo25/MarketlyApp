@@ -4,6 +4,8 @@ import { Bag, DiscountShape, Home2, ProfileCircle, Receipt1 } from 'iconsax-reac
 import Home from '../Pages/Home';
 import { styles } from '../../styles';
 import Cart from '../Pages/Cart';
+import Orders from '../Pages/orders';
+import OrderDetails from '../Pages/OrderDetails';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +49,7 @@ export default function BottomTabs() {
     >
     
  <Tab.Screen name="Profile" component={Cart} options={{title: 'الحساب'}}/>
- <Tab.Screen name="Orders" component={Cart} options={{title: 'الطلبات'}}/>
+ <Tab.Screen name="Orders" component={Orders} options={{title: 'الطلبات'}}/>
     <Tab.Screen name="Cart" component={Cart} options={{title: 'عربة التسوق'}}/>
     <Tab.Screen name="Sales" component={Home} options={{title: 'العروض'}}/>
  <Tab.Screen  name="Home" component={Home} options={{title: 'الرئيسية'}}/>

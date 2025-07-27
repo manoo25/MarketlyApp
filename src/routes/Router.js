@@ -10,6 +10,8 @@ import ForgetPasswordPage from '../Pages/ForgetPasswordPage';
 import ResetPasswordForm from '../Components/ForgetPassword/ResetPassword';
 import { PATHS } from './Paths';
 import BottomTabs from './BottomTabs';
+import OrderDetails from '../Pages/OrderDetails';
+import Orders from '../Pages/orders';
 
 
 
@@ -32,9 +34,9 @@ screenOptions={
   <Stack.Screen name={PATHS.Login} component={LoginPage}/>
   <Stack.Screen name={PATHS.Register} component={RegisterPage}/>
   <Stack.Screen name={PATHS.Home} component={BottomTabs} />
-
   <Stack.Screen name={PATHS.ForgetPassword} component={ForgetPasswordPage}/>
   <Stack.Screen name={PATHS.ResetPasswordForm} component={ResetPasswordForm}/>
+  
 </Stack.Navigator>
    </NavigationContainer>
   )
