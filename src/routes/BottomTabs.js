@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Bag, DiscountShape, Home2, ProfileCircle, Receipt1 } from 'iconsax-react-nativejs';
 import Home from '../Pages/Home';
 import Cart from '../Pages/Cart';
+import UserOptions from '../Pages/UserOptions';
 import { Platform, View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { styles } from '../../styles';
@@ -71,7 +72,7 @@ export default function BottomTabs() {
         },
       })}
     >
-      <Tab.Screen name="Profile" component={Cart} options={{ title: 'الحساب' }} />
+      <Tab.Screen name="Profile" component={UserOptions} options={{ title: 'الحساب' }} />
       <Tab.Screen name="Orders" component={Cart} options={{ title: 'الطلبات' }} />
       <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
       <Tab.Screen name="Sales" component={Home} options={{ title: 'العروض' }} />

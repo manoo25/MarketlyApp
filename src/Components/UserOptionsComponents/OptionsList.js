@@ -1,0 +1,102 @@
+import React from 'react'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { colors, styles } from '../../../styles';
+import { ArrowLeft2 } from 'iconsax-react-nativejs';
+import { LogoutCurve } from 'iconsax-react-nativejs';
+
+
+
+
+
+
+const settings = [
+    { id: '1', title: 'بيانات الحساب' },
+    { id: '2', title: 'العناوين المحفوظة' },
+    { id: '3', title: 'تغيير الحساب' },
+    { id: '4', title: 'تغيير كلمة المرور' },
+    { id: '5', title: 'الإشعارات', value: 'فعالة' },
+    { id: '6', title: 'اللغة', value: 'العربية' },
+];
+
+
+
+function OptionsList() {
+
+    const renderItem = ({ item }) => (
+        <TouchableOpacity style={style.item}>
+            <View style={style.textContainer}>
+                <View>
+                    <Text style={[style.title, styles.h4]}>{item.title}</Text>
+                </View>
+
+                <View>
+                    {item.value && <Text style={[style.value, styles.h5]}>{item.value}</Text>}
+                </View>
+            </View>
+            <ArrowLeft2 size="24" color="#424047" />
+        </TouchableOpacity>
+    );
+
+
+    return (
+        <View style={style.container}>
+            <FlatList
+                data={settings}
+                keyExtractor={item => item.id}
+                renderItem={renderItem}
+                ItemSeparatorComponent={() => <View style={style.separator} />}
+            />
+            <View style={style.separator} />
+            <TouchableOpacity style={[style.logout, { alignSelf: 'flex-end' }]}>
+                <LogoutCurve size="20" color="#ee3030" />
+                <Text style={[styles.h3, style.logoutText]}>تسجيل خروج</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
+
+const style = StyleSheet.create({
+    container: {
+        padding: 16,
+    },
+    item: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 14,
+        marginTop: 4,
+    },
+    textContainer: {
+        width: '90%',
+        flexDirection: 'row-reverse',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    title: {
+        fontSize: 16,
+        color: '#333',
+    },
+    value: {
+        fontSize: 14,
+        color: '#999',
+
+    },
+    separator: {
+        height: 1,
+        backgroundColor: '#eee',
+    },
+    logout: {
+        flexDirection: 'row-reverse',
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        marginTop: 16,
+        gap: 6,
+    },
+    logoutText: {
+        color: '#ee3030',
+        fontSize: 16,
+    },
+});
+
+export default OptionsList
