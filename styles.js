@@ -13,6 +13,7 @@ export const useAppFonts = () =>
   });
 
 
+
 export const colors = {
   primary: "#46B8F0",
   BtnsColor: "#327AFF",

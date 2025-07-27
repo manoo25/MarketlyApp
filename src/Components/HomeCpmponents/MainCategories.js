@@ -6,68 +6,109 @@ import SectionHeader from "../GlobalComponents/SectionHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchcategories } from "../../Redux/Slices/Categories";
 import { useEffect, useState } from "react";
-
+import { useNavigation } from "@react-navigation/native";
+import { PATHS } from "../../routes/Paths";
 
 const MoreObj = 
     { id: '6', name: 'المزيد',  img: require("../../../assets/HomeSlide/more.png") }
 
 
 
-const CategoryCard = ({ item }) => (
-    <View style={componentStyles.cardContainer}>
-        <TouchableOpacity>
-            <View style={componentStyles.imageContainer}>
-          {
-             item.id=='6'?
-            <Image  source={item.img} style={componentStyles.image} 
-            resizeMode="contain"
-            />
-            :
-             <Image  source={{ uri: item.img }} style={componentStyles.image} 
-            resizeMode="contain"
-            />
-          }
-        </View>
-        <View >
-            <Text style={[componentStyles.titleText, styles.h2,{fontSize:11}]}>{item.name}</Text>
+// const CategoryCard = ({ item }) => (
+//     <View style={componentStyles.cardContainer}>
+//         <TouchableOpacity>
+//             <View style={componentStyles.imageContainer}>
+//           {
+//              item.id=='6'?
+//             <Image  source={item.img} style={componentStyles.image} 
+//             resizeMode="contain"
+//             />
+//             :
+//              <Image  source={{ uri: item.img }} style={componentStyles.image} 
+//             resizeMode="contain"
+//             />
+//           }
+//         </View>
+//         <View >
+//             <Text style={[componentStyles.titleText, styles.h2,{fontSize:11}]}>{item.name}</Text>
            
-        </View>
-        </TouchableOpacity>
-    </View>
+//         </View>
+//         </TouchableOpacity>
+//     </View>
+// );
+
+const CategoryCard = ({ item, onPress }) => (
+  <View style={componentStyles.cardContainer}>
+    <TouchableOpacity onPress={onPress}>
+      <View style={componentStyles.imageContainer}>
+        {item.id == "6" ? (
+          <Image
+            source={item.img}
+            style={componentStyles.image}
+            resizeMode="contain"
+          />
+        ) : (
+          <Image
+            source={{ uri: item.img }}
+            style={componentStyles.image}
+            resizeMode="contain"
+          />
+        )}
+      </View>
+      <View>
+        <Text style={[componentStyles.titleText, styles.h2, { fontSize: 11 }]}>
+          {item.name}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  </View>
 );
 
 function MainCategories() {
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.Categories);
+  const [MoreCat, SetMoreCat] = useState([]);
+  const navigation = useNavigation(); // ✅
 
-const dispatch=useDispatch();
-      const{categories}=useSelector((state)=>state.Categories)
-const[MoreCat,SetMoreCat]=useState([])
   useEffect(() => {
-   dispatch(fetchcategories());
+    dispatch(fetchcategories());
   }, []);
 
   useEffect(() => {
-  if(categories.length > 0){
-    const TargetData=categories.slice(0,5)
-SetMoreCat([...TargetData,MoreObj])
-  }
+    if (categories.length > 0) {
+      const TargetData = categories.slice(0, 5);
+      SetMoreCat([...TargetData, MoreObj]);
+    }
   }, [categories]);
-    return (
-        <View style={{ height:'auto' }}>
-             <SectionHeader text=" الأقسام" />
-                             
-            <FlatList
-                horizontal
-                inverted
-                 scrollEnabled={false}
-                showsHorizontalScrollIndicator={false}
-                data={MoreCat}
-                renderItem={({ item }) => <CategoryCard item={item} />}
-                keyExtractor={item => item.id}
-                contentContainerStyle={componentStyles.listContentContainer}
-            />
-        </View>
-    );
+
+  const handleCategoryPress = (item) => {
+    if (item.id === "6") {
+      navigation.navigate(PATHS.AllCategories); // ✅ روح لصفحة المزيد
+    } else {
+      navigation.navigate(PATHS.CategoryProducts, { category: item });// هنكملها بعدين
+    }
+  };
+
+  return (
+    <View style={{ height: "auto" }}>
+      <SectionHeader text=" الأقسام" />
+
+      <FlatList
+        horizontal
+        inverted
+        scrollEnabled={false}
+        showsHorizontalScrollIndicator={false}
+        data={MoreCat}
+        renderItem={({ item }) => (
+          <CategoryCard item={item} onPress={() => handleCategoryPress(item)} />
+        )}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={componentStyles.listContentContainer}
+      />
+    </View>
+  );
 }
+
 
 const componentStyles = StyleSheet.create({
     listContentContainer: {
