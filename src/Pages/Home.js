@@ -45,6 +45,7 @@ export default function Home() {
 
         <MainSlider />
         <MainCategories />
+      
         <ProductSlider sectionName="عروض و خصومات 🔥" />
         <CompaniesSlide sectionName="تسوق الشركات" />
       </ScrollView>

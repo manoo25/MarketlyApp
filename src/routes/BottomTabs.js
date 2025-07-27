@@ -7,6 +7,8 @@ import UserOptions from '../Pages/UserOptions';
 import { Platform, View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { styles } from '../../styles';
+import Orders from '../Pages/orders';
+import OrderDetails from '../Pages/OrderDetails';
 import AllCategoriesScreen from '../Pages/categories/AllCategoriesScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
@@ -26,6 +28,7 @@ function HomeStack() {
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
       <Stack.Screen name="SoftDrinks" component={SoftDrinks} />
+      <Stack.Screen name="OrderDetails" component={OrderDetails} />
     </Stack.Navigator>
   );
 }
@@ -91,10 +94,16 @@ function HomeStack() {
       })}
     >
       <Tab.Screen name="Profile" component={UserOptions} options={{ title: 'الحساب' }} />
-      <Tab.Screen name="Orders" component={Cart} options={{ title: 'الطلبات' }} />
+      <Tab.Screen name="Orders" component={Orders} options={{ title: 'الطلبات' }} />
       <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
       <Tab.Screen name="Sales" component={Home} options={{ title: 'العروض' }} />
       <Tab.Screen name="Home" component={HomeStack} options={{ title: 'الرئيسية' }} />
+    
+ 
+    
+  
+
+
     </Tab.Navigator>
   );
 }

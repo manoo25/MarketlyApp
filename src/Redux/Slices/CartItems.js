@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { supabase } from "../Supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserId } from "./GetUserData";
 
 
 // ✅ Fetch cart items
@@ -33,15 +34,13 @@ export const createCartItem = createAsyncThunk(
   "cart_items/createCartItem",
   async ({ product_id, quantity }, { rejectWithValue }) => {
     try {
-      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
-
       const { data, error } = await supabase
         .from("cart_items")
         .insert([
           {
             product_id,
             quantity,
-            user_id: userData.id,
+            user_id: UserId
           },
         ])
         .select(`*, product:product_id (name, image, endPrice, trader_id)`);
@@ -103,12 +102,11 @@ export const addOrUpdateCartItem = createAsyncThunk(
   "cart_items/addOrUpdateCartItem",
   async ({ product_id, quantity }, { dispatch, getState, rejectWithValue }) => {
     // try {
-      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const existingItems = getState().CartItems.cartItems;
 // console.log('existingItems'+existingItems);
 
       const existingItem = existingItems.find(
-        (item) => item.product_id === product_id && item.user_id === userData.id
+        (item) => item.product_id === product_id && item.user_id ===UserId
       );
 
       if (existingItem) {
