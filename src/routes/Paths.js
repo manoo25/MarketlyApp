@@ -7,4 +7,6 @@ export  const PATHS = {
   ResetPasswordForm: "ResetPasswordForm",
   AllCategories: "AllCategories",
   CategoryProducts: "CategoryProducts",
+  AllCompaniesScreen:"AllCompaniesScreen",
+  CompanyProductsScreen: "CompanyProductsScreen",
 };

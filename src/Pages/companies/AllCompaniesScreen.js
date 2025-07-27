@@ -8,25 +8,21 @@ import {
   StyleSheet,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchcategories } from "../../Redux/Slices/Categories";
+import { fetchCompanies } from "../../Redux/Slices/companiesSlice";
 import CustomAppBar from "../../Components/Categories/CustomAppBar";
 import { useNavigation } from "@react-navigation/native";
 
-// ✅ استيراد الاستايلات العامة
+// استايلات عامة
 import { styles as globalStyles, colors } from "../../../styles";
 
-const AllCategoriesScreen = () => {
+const AllCompaniesScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { categories } = useSelector((state) => state.Categories);
+  const { companies } = useSelector((state) => state.companies);
 
   useEffect(() => {
-    dispatch(fetchcategories());
+    dispatch(fetchCompanies());
   }, []);
-
-  const handlePress = (item) => {
-    navigation.navigate("CategoryProducts", { category: item });
-  };
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -34,9 +30,13 @@ const AllCategoriesScreen = () => {
     setSearchQuery(text);
   };
 
-  const filteredCategories = categories.filter((cat) =>
-    cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredCompanies = companies.filter((company) =>
+    company.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handlePress = (item) => {
+    navigation.navigate("CompanyProductsScreen", { company: item });
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -45,13 +45,11 @@ const AllCategoriesScreen = () => {
     >
       <View style={localStyles.imageContainer}>
         <Image
-          source={{ uri: item.img }}
+          source={{ uri: item.image }}
           style={localStyles.image}
           resizeMode="contain"
         />
       </View>
-
-      {/* ✅ استخدام الخط الموحد */}
       <Text style={globalStyles.titleNavegator}>{item.name}</Text>
     </TouchableOpacity>
   );
@@ -59,7 +57,7 @@ const AllCategoriesScreen = () => {
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       <CustomAppBar
-        title="كل الأقسام"
+        title="كل الشركات"
         onBack={() => navigation.goBack()}
         showSearch={true}
         searchQuery={searchQuery}
@@ -68,7 +66,7 @@ const AllCategoriesScreen = () => {
       />
 
       <FlatList
-        data={filteredCategories}
+        data={filteredCompanies}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         numColumns={3}
@@ -82,9 +80,9 @@ const AllCategoriesScreen = () => {
   );
 };
 
-export default AllCategoriesScreen;
+export default AllCompaniesScreen;
 
-// ✅ استايلات محلية خاصة بالصفحة دي فقط
+// استايلات خاصة بالصفحة دي فقط
 const localStyles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 12,

@@ -92,9 +92,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 22,
+    // fontWeight: "bold",
     marginRight: 5,
+    fontFamily: "Tajawal-Medium",
   },
   searchContainer: {
     flexDirection: "row-reverse",
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     color: "#000", // لون النص اللي بيكتبه المستخدم
     outlineColor: "transparent",
-    fontSize:18,
+    fontSize: 18,
+    fontFamily: "Tajawal-Regular",
   },
 });
