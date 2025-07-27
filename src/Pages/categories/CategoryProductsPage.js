@@ -78,7 +78,7 @@ if (selectedSortOption === "highToLow") {
 
     // const filteredProducts = allProducts || [];
 
-    console.log("allProducts =>", allProducts);
+   
 
 
   return (

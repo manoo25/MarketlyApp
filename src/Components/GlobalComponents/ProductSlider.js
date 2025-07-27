@@ -45,7 +45,7 @@ SetSalePro(TargetData)
 
 
   function AddToCart(ProId) {
-    console.log('Product ID:', ProId);
+    // console.log('Product ID:', ProId);
     
     dispatch(addOrUpdateCartItem({ product_id: ProId, quantity: 1 }));
   }
