@@ -1,8 +1,13 @@
-import React from 'react'
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { colors, styles } from '../../../styles';
 import { ArrowLeft2 } from 'iconsax-react-nativejs';
 import { LogoutCurve } from 'iconsax-react-nativejs';
+import { UserLogin } from "../../Redux/Slices/users";
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PATHS } from '../../routes/Paths';
+
 
 
 
@@ -20,7 +25,25 @@ const settings = [
 
 
 
+
+
 function OptionsList() {
+
+
+
+    const dispatch = useDispatch();
+    const { replace } = useNavigation();
+
+
+
+
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem('userData');
+        dispatch(UserLogin(null));
+        replace(PATHS.Login);
+    };
+
+
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={style.item}>
@@ -47,7 +70,9 @@ function OptionsList() {
                 ItemSeparatorComponent={() => <View style={style.separator} />}
             />
             <View style={style.separator} />
-            <TouchableOpacity style={[style.logout, { alignSelf: 'flex-end' }]}>
+            <TouchableOpacity style={[style.logout, { alignSelf: 'flex-end' }]} onPress={() => Alert.alert('تأكيد', 'هل تريد تسجيل الخروج؟', [
+                { text: 'إلغاء', style: 'cancel' },
+                { text: 'تأكيد', onPress: handleLogout }])}>
                 <LogoutCurve size="20" color="#ee3030" />
                 <Text style={[styles.h3, style.logoutText]}>تسجيل خروج</Text>
             </TouchableOpacity>
