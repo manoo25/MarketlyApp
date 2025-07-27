@@ -1,0 +1,76 @@
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Bag, DiscountShape, Home2, ProfileCircle, Receipt1 } from 'iconsax-react-nativejs';
+import Home from '../Pages/Home';
+import Cart from '../Pages/Cart';
+import UserOptions from '../Pages/UserOptions';
+import { Platform, View, Text } from 'react-native';
+import { styles } from '../../styles';
+import AllCategoriesScreen from '../Pages/categories/AllCategoriesScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
+import SoftDrinks from '../Pages/categories/SoftDrinks';
+import CartIcon from '../Components/GlobalComponents/CartIcon';
+import Orders from '../Pages/orders';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function HomeStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeMain" component={Home} />
+      <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
+      <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
+      <Stack.Screen name="SoftDrinks" component={SoftDrinks} />
+    </Stack.Navigator>
+  );
+}
+
+export default function BottomTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+          const variant = focused ? 'Bold' : 'Outline';
+          const iconColor = focused ? '#327AFF' : '#292D32';
+
+          let icon;
+
+          if (route.name === 'Home') {
+            icon = <Home2 size={35} color={iconColor} variant={variant} />;
+          } else if (route.name === 'Sales') {
+            icon = <DiscountShape size={35} color={iconColor} variant={variant} />;
+          } else if (route.name === 'Cart') {
+            icon = <CartIcon focused={focused} />; 
+          } else if (route.name === 'Orders') {
+            icon = <Receipt1 size={35} color={iconColor} variant={variant} />;
+          } else if (route.name === 'Profile') {
+            icon = <ProfileCircle size={35} color={iconColor} variant={variant} />;
+          }
+
+          return icon;
+        },
+        tabBarActiveTintColor: '#327AFF',
+        tabBarInactiveTintColor: '#292D32',
+        tabBarLabelStyle: styles.titleNavegator,
+        tabBarStyle: {
+          height: Platform.OS === 'android' ? 75 : 70,
+          alignItems: 'center',
+          backgroundColor: '#FFFFFF',
+          justifyContent: 'space-between',
+          marginBottom: Platform.OS === 'android' ? 35 : 0,
+          paddingTop: 5,
+        },
+      })}
+    >
+      <Tab.Screen name="Profile" component={UserOptions} options={{ title: 'الحساب' }} />
+      <Tab.Screen name="Orders" component={Orders} options={{ title: 'الطلبات' }} />
+      <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
+      <Tab.Screen name="Sales" component={Home} options={{ title: 'العروض' }} />
+      <Tab.Screen name="Home" component={HomeStack} options={{ title: 'الرئيسية' }} />
+    </Tab.Navigator>
+  );
+}
