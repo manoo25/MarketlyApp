@@ -5,17 +5,18 @@ import { colors, styles } from "../../../styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../../Redux/Slices/productsSlice";
+import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
 
 
 
 
-const ProductCard = ({ item }) => (
+const ProductCard = ({ item,AddToCart }) => (
     <View style={componentStyles.cardContainer}>
        <TouchableOpacity onPress={() => console.log('Card pressed')}>
          <View style={componentStyles.imageContainer}>
             <Image  source={{uri: item.image}} style={componentStyles.image} />
             <TouchableOpacity
-            onPress={() => console.log('Add button pressed')}
+           onPress={() => AddToCart(item.id)}
             style={componentStyles.addButton}>
                 <AntDesign name="plus" size={24} color="blue" />
             </TouchableOpacity>
@@ -41,6 +42,13 @@ dispatch(fetchProducts());
 SetSalePro(TargetData)
   }
   }, [products]);
+
+
+  function AddToCart(ProId) {
+    console.log('Product ID:', ProId);
+    
+    dispatch(addOrUpdateCartItem({ product_id: ProId, quantity: 1 }));
+  }
     return (
         <View style={{marginTop:15}}>
             
@@ -76,7 +84,7 @@ SetSalePro(TargetData)
                 inverted
                 showsHorizontalScrollIndicator={false}
                 data={SalePro}
-                renderItem={({ item }) => <ProductCard item={item} />}
+                renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item} />}
                 keyExtractor={item => item.id}
                 contentContainerStyle={componentStyles.listContentContainer}
             />

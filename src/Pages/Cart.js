@@ -1,86 +1,56 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, ScrollView, View, FlatList, Modal, TextInput, Alert } from "react-native";
 import { useState } from 'react';
 import CartList from '../Components/CartComponents/CartList';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { colors, styles } from '../../styles';
-import RecommendedProducts from '../Components/ProductDeatailsComponents/RecommendedProducts';
 import { MessageText1 } from 'iconsax-react-nativejs';
 import { CloseCircle } from 'iconsax-react-nativejs';
 import { BagCross } from 'iconsax-react-nativejs';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCartItems } from '../Redux/Slices/CartItems';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+import { UserId } from '../Redux/Slices/GetUserData';
 
 
 
 
 
-const sampleCartItems = [
-    {
-        id: 1,
-        name: "شعيرية سريعة التحضير",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/noodle.png"),
-    },
-    {
-        id: 2,
-        name: "مشروب غازى",
-        price: '15.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/cute-cartoon-cola-drink-vector-Photoroom.png"),
-    },
-    {
-        id: 3,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 4,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 5,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 6,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 7,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 8,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-];
 
 
 
 
 function Cart() {
 
-    const [cartItems, setCartItems] = useState(sampleCartItems);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [notes, setNotes] = useState('');
     const [savedNotes, setSavedNotes] = useState('');
+    const [TotalPrice, SetTotalPrice] = useState(0);
+    const dispatch=useDispatch();
+    const{cartItems}=useSelector((state)=>state.CartItems);
+const[CartItemsArr,setCartItemsArr]=useState([]);
+
+
+    useEffect(()=>{
+        dispatch(fetchCartItems());
+        },[dispatch]);
+    useEffect(()=>{
+       if (cartItems.length > 0) {
+        setCartItemsArr(cartItems);
+       } 
+        },[cartItems]);
+
+    useEffect(() => {
+  const Total = CartItemsArr.reduce((acc, item) => {
+    return acc + item.product.endPrice * item.quantity;
+  }, 0); // قيمة ابتدائية 0
+console.log('Total'+Total);
+
+  SetTotalPrice(Total);
+}, [CartItemsArr]);
+
+
 
     const handleSaveNotes = () => {
         // هنا يمكنك فعل أي شيء بالملاحظات (مثل إرسالها إلى API، تخزينها في Redux، إلخ)
@@ -88,6 +58,40 @@ function Cart() {
         setIsModalVisible(false); // إخفاء الـ Modal
         Alert.alert('تم حفظ الملاحظات', `ملاحظاتك: ${notes}`); // تأكيد للمستخدم
     };
+
+
+function CompleteOrder() {
+  const orderId = uuidv4();
+
+  // 1. بناء orderItems
+  const orderItems = CartItemsArr.map((item) => ({
+    order_id: orderId,
+    product_id: item.product_id,
+    quantity: item.quantity,
+    price: item.product.endPrice,
+  }));
+
+
+  // 3. كائن الطلب
+  const order = {
+    id: orderId,
+    trader_id:CartItemsArr[0].product.trader_id,
+    userId: UserId,
+    status:'pending',
+    imageCover: CartItemsArr[0].product.image,
+    totalPrice: TotalPrice,
+    note:savedNotes,
+  };
+
+  // 4. الإرسال أو الطباعة
+  console.log('✅ Order Created:', order);
+  console.log('🛒 Order Items:', orderItems);
+
+  Alert.alert('تم إرسال الطلب بنجاح');
+}
+
+
+
 
 
 
@@ -112,18 +116,15 @@ function Cart() {
             </View>
             {/* محتوى السلة */}
             <View style={{ flex: 1 }}>
-                {cartItems.length === 0 ? (
+                {CartItemsArr.length === 0 ? (
                     <EmptyCart />
                 ) : (
                     <>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                            <CartItem items={cartItems} />
-                            <Text style={[{ marginTop: 24, textAlign: 'right' }, styles.h4]}>
-                                مرشح لك أيضاّ
-                            </Text>
-                            <RecommendedProducts />
+                             <CartList CartItemsArr={CartItemsArr} setCartItemsArr={setCartItemsArr} />
+                           
                             <View>
-                                <Text style={[{ textAlign: 'right' }, styles.h3]}>ملاحظات إضافية</Text>
+                                <Text style={[{ textAlign: 'right',marginTop:15 }, styles.h3]}>ملاحظات إضافية</Text>
                                 <TouchableOpacity onPress={() => setIsModalVisible(true)}>
                                     <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 16 }}>
                                         <View style={{ width: '10%', alignItems: 'center', justifyContent: 'center' }}>
@@ -144,7 +145,7 @@ function Cart() {
                                     <Text style={{ textAlign: 'right' }}>اجمالى الطلب</Text>
                                 </View>
                                 <View>
-                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>10.0EGP</Text>
+                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>{TotalPrice} ج.م </Text>
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
@@ -152,15 +153,15 @@ function Cart() {
                                     <Text style={{ textAlign: 'right' }}>مصاريف التوصيل</Text>
                                 </View>
                                 <View>
-                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>5.0EGP</Text>
+                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 ,color:'green'}]}>مجانا</Text>
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
                                 <View>
-                                    <Text style={[styles.h3, { textAlign: 'right' }]}>الكل</Text>
+                                    <Text style={[styles.h3, { textAlign: 'right' }]}>الإجمالى</Text>
                                 </View>
                                 <View>
-                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>15.0EGP</Text>
+                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>{TotalPrice} ج.م </Text>
                                 </View>
                             </View>
                         </ScrollView>
@@ -204,7 +205,9 @@ function Cart() {
                                     justifyContent: "center",
                                 }}
                             >
-                                <TouchableOpacity style={{
+                                <TouchableOpacity
+                              onPress={CompleteOrder}
+                                style={{
                                     backgroundColor: colors.BtnsColor,
                                     flexDirection: 'row',
                                     alignItems: 'center',
@@ -224,7 +227,7 @@ function Cart() {
                                             },
                                         ]}
                                     >
-                                        مواصلة الشراء
+                                        ارسال الطلب
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -317,13 +320,7 @@ const EmptyCart = () => (
     </View>
 );
 
-const CartItem = ({ items }) => {
-    return (
-        <View >
-            <CartList items={items} />
-        </View>
-    );
-};
+
 
 
 
