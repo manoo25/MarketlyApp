@@ -9,11 +9,12 @@ import { styles } from '../../styles';
 import AllCategoriesScreen from '../Pages/categories/AllCategoriesScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
-import SoftDrinks from '../Pages/categories/SoftDrinks';
 import CartIcon from '../Components/GlobalComponents/CartIcon';
 import Orders from '../Pages/orders';
 import OrderDetails from '../Pages/OrderDetails';
 import OffersPage from '../Pages/OffersPage';
+import AllCompaniesScreen from '../Pages/companies/AllCompaniesScreen';
+import CompanyProductsScreen from '../Pages/companies/CompanyProductsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,7 +25,11 @@ function HomeStack() {
       <Stack.Screen name="HomeMain" component={Home} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
-      <Stack.Screen name="SoftDrinks" component={SoftDrinks} />
+      <Stack.Screen name="AllCompaniesScreen" component={AllCompaniesScreen} />
+      <Stack.Screen
+        name="CompanyProductsScreen"
+        component={CompanyProductsScreen}
+      />
     </Stack.Navigator>
   );
 }

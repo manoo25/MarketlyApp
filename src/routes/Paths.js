@@ -14,4 +14,6 @@ export  const PATHS = {
   AccountDetails: "AccountDetails",
   SavedAdresses: "SavedAdresses",
   ChangePassword: "ChangePassword",
+  AllCompaniesScreen:"AllCompaniesScreen",
+  CompanyProductsScreen: "CompanyProductsScreen",
 };

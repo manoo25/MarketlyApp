@@ -41,7 +41,13 @@ function ListProducts({ products }) {
   if (!products || products.length === 0) {
     return (
       <View style={{ padding: 20 }}>
-        <Text style={{ textAlign: "center", color: "#666" }}>
+        <Text
+          style={{
+            textAlign: "center",
+            color: "#666",
+            fontFamily: "Tajawal-Medium",
+          }}
+        >
           لا توجد منتجات لعرضها
         </Text>
       </View>

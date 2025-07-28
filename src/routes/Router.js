@@ -11,7 +11,9 @@ import ResetPasswordForm from "../Components/ForgetPassword/ResetPassword";
 import { PATHS } from "./Paths";
 import BottomTabs from "./BottomTabs";
 import AllCategoriesScreen from "../Pages/categories/AllCategoriesScreen";
-import CategoryProductsPage from "../Pages/categories/CategoryProductsPage";
+import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
+import AllCompaniesScreen from "../Pages/companies/AllCompaniesScreen";
+import CompanyProductsScreen from "../Pages/companies/CompanyProductsScreen";
 import OffersPage from "../Pages/OffersPage";
 import OrderDetails from '../Pages/OrderDetails';
 import AccountDetails from '../Pages/AccountDetails';
@@ -62,6 +64,15 @@ export default function Router() {
         <Stack.Screen name={PATHS.AccountDetails} component={AccountDetails} />
         <Stack.Screen name={PATHS.SavedAdresses} component={SavedAdresses} />
         <Stack.Screen name={PATHS.ChangePassword} component={ChangePassword} />
+
+        <Stack.Screen
+          name={PATHS.AllCompaniesScreen}
+          component={AllCompaniesScreen}
+        />
+        <Stack.Screen
+          name={PATHS.CompanyProductsScreen}
+          component={CompanyProductsScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
