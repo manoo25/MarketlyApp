@@ -127,6 +127,21 @@ export const addOrUpdateCartItem = createAsyncThunk(
   }
 );
 
+export const deleteCartItemsByUserId = createAsyncThunk(
+  "cart/deleteByUserId",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const { error } = await supabase
+        .from("cart_items")
+        .delete()
+        .eq("user_id", userId);
+      if (error) throw error;
+      return userId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 // ✅ Slice
 const cartItemsSlice = createSlice({
@@ -196,6 +211,10 @@ const cartItemsSlice = createSlice({
       .addCase(deleteCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      
+       .addCase(deleteCartItemsByUserId.fulfilled, (state, action) => {
+        state.cartItems = [];
       });
   },
 });

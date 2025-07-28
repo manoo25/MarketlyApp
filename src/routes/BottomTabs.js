@@ -12,6 +12,7 @@ import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
 import SoftDrinks from '../Pages/categories/SoftDrinks';
 import CartIcon from '../Components/GlobalComponents/CartIcon';
 import Orders from '../Pages/orders';
+import OrderDetails from '../Pages/OrderDetails';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,6 +27,15 @@ function HomeStack() {
     </Stack.Navigator>
   );
 }
+function OrdersStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="OrdersMain" component={Orders} />
+      <Stack.Screen name="OrderDetails" component={OrderDetails} />
+    </Stack.Navigator>
+  );
+}
+
 
 export default function BottomTabs() {
   return (
@@ -41,7 +51,7 @@ export default function BottomTabs() {
 
           if (route.name === 'Home') {
             icon = <Home2 size={35} color={iconColor} variant={variant} />;
-          } else if (route.name === 'Sales') {
+          } else if (route.name === 'AllCategoriesScreen') {
             icon = <DiscountShape size={35} color={iconColor} variant={variant} />;
           } else if (route.name === 'Cart') {
             icon = <CartIcon focused={focused} />; 
@@ -67,9 +77,9 @@ export default function BottomTabs() {
       })}
     >
       <Tab.Screen name="Profile" component={UserOptions} options={{ title: 'الحساب' }} />
-      <Tab.Screen name="Orders" component={Orders} options={{ title: 'الطلبات' }} />
+      <Tab.Screen name="Orders" component={OrdersStack} options={{ title: 'الطلبات' }} />
       <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
-      <Tab.Screen name="Sales" component={Home} options={{ title: 'العروض' }} />
+      <Tab.Screen name="AllCategoriesScreen" component={AllCategoriesScreen} options={{ title: 'العروض' }} />
       <Tab.Screen name="Home" component={HomeStack} options={{ title: 'الرئيسية' }} />
     </Tab.Navigator>
   );

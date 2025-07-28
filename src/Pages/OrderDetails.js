@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Wallet3 } from 'iconsax-react-nativejs';
 import {
   View,
   Text,
@@ -6,56 +7,53 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  FlatList,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { styles } from "../../styles";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOrderItems } from "../Redux/Slices/OrderItems";
 
-// بيانات تفاصيل الطلب
-const orderDetails = {
-  id: "87475ac7-7c7d-4ddd-b356-d33cb44f044c",
-  order_number: "12345687",
-  status: "done",
-  created_at: "2025-07-19T16:46:27.04369",
-  total: 320,
-  delivery_fee: 15,
-  tax: 5,
-  subtotal: 300,
-  user: {
-    name: "ahmed gaafer",
-    phone: "+20 123 456 7890",
-    location: "شبين الكوم, المنوفية, 32732, مصر",
-  },
-  payment_method: "نقدي عند الاستلام",
-  items: [
-    {
-      id: 1,
-      name: "شعرية سرعة التوصيل",
-      quantity: 2,
-      price: 75,
-      total: 150,
-      image: "https://example.com/product1.jpg"
-    },
-    {
-      id: 2,
-      name: "شيبس الذرة الأصفر",
-      quantity: 3,
-      price: 25,
-      total: 75,
-      image: "https://example.com/product2.jpg"
-    },
-    {
-      id: 3,
-      name: "عصير برتقال طبيعي",
-      quantity: 1,
-      price: 75,
-      total: 75,
-      image: "https://example.com/product3.jpg"
-    }
-  ]
-};
+const RenderItem = ({ item }) => (
+  <View style={style.productItem}>
+    <View style={style.productRow}>
+      <View style={style.imageContainer}>
+        <Image
+          source={{ uri: item.product_id?.image }}
+          style={style.productImage}
+          resizeMode="cover"
+        />
+      </View>
+      <View style={style.productDetails}>
+        <Text style={[styles.h2,style.productName]}>{item.product_id?.name ?? 'اسم المنتج غير متوفر'}</Text>
+        <View style={style.productMeta}>
+          <Text style={[styles.h3,style.productQuantity]}>الكمية: {item.quantity}</Text>
+          <Text style={[styles.h3,style.productPrice]}>
+            {item.product_id?.endPrice} 
+            جنيه
+             / 
+             {item.product_id?.unit}
+          </Text>
+        </View>
+      </View>
+      <View style={style.productTotal}>
+        <Text style={style.totalPrice}>{item.price} جنيه</Text>
+      </View>
+    </View>
+  </View>
+);
 
-const OrderDetails = ({ navigation, route }) => {
-  const { orderId } = route.params || {};
+const OrderDetails = () => {
+  const dispatch = useDispatch();
+  const { orderItems } = useSelector((state) => state.OrderItems);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { OrderData } = route.params;
+  useEffect(() => {
+    dispatch(fetchOrderItems(OrderData.id));
+    
+  }, [dispatch, OrderData.id]);
 
   return (
     <View style={style.container}>
@@ -66,28 +64,64 @@ const OrderDetails = ({ navigation, route }) => {
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
             </TouchableOpacity>
-            <Text style={[styles.h3, style.headerTitle]}>
-              تفاصيل الطلب
-            </Text>
+            <Text style={[styles.h3, style.headerTitle]}>تفاصيل الطلب</Text>
           </View>
         </View>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        {/* معلومات الطلب الأساسية */}
+        {/* معلومات الطلب */}
         <View style={style.section}>
           <View style={style.orderHeader}>
             <View style={style.statusContainer}>
-              <View style={style.deliveryStatusRow}>
-                <Text style={style.deliveryTextRow}>
-                  {orderDetails.status === "done" ? "تم التوصيل" : "جارٍ التنفيذ"}
+              <View
+                style={[
+                  style.deliveryStatusRow,
+                  {
+                    backgroundColor:
+                      OrderData.status === "done"
+                        ? "#D4EDDA"
+                        : OrderData.status === "inprogress"
+                        ? "#E3F0FF"
+                        : OrderData.status === "pending"
+                        ? "#FFF4E5"
+                        : OrderData.status === "returns"
+                        ? "#F8D7DA"
+                        : "#F0F0F0",
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.h2,
+                    style.deliveryTextRow,
+                    {
+                      color:
+                        OrderData.status === "done"
+                          ? "green"
+                          : OrderData.status === "inprogress"
+                          ? "#327AFF"
+                          : OrderData.status === "pending"
+                          ? "#e2980eff"
+                          : OrderData.status === "returns"
+                          ? "red"
+                          : "#327AFF",
+                    },
+                  ]}
+                >
+                  {OrderData.status === "done" && "تم التوصيل"}
+                  {OrderData.status === "inprogress" && "قيد التنفيذ"}
+                  {OrderData.status === "pending" && "معلق"}
+                  {OrderData.status === "returns" && "ملغى"}
                 </Text>
               </View>
               <View style={style.orderInfo}>
-                <Text style={style.orderNumber}>طلب رقم: {orderDetails.order_number}</Text>
-                <Text style={style.orderDate}>
-                  {new Date(orderDetails.created_at).toLocaleDateString("ar-EG")} - {" "}
-                  {new Date(orderDetails.created_at).toLocaleTimeString("ar-EG", {
+                <Text style={[styles.h2, style.orderNumber]}>
+                  طلب رقم: {OrderData.id}
+                </Text>
+                <Text style={[styles.h2, style.orderDate]}>
+                  {new Date(OrderData.created_at).toLocaleDateString("ar-EG")} -{" "}
+                  {new Date(OrderData.created_at).toLocaleTimeString("ar-EG", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
@@ -97,88 +131,73 @@ const OrderDetails = ({ navigation, route }) => {
           </View>
         </View>
 
-        {/* تفاصيل العميل */}
+        {/* بيانات العميل */}
         <View style={style.section}>
           <Text style={style.sectionTitle}>معلومات العميل</Text>
           <View style={style.customerInfo}>
             <View style={style.customerRow}>
               <MaterialIcons name="person" size={20} color="#666" />
-              <Text style={style.customerText}>{orderDetails.user.name}</Text>
+              <Text style={style.customerText}>{OrderData.user_id.name}</Text>
             </View>
             <View style={style.customerRow}>
               <MaterialIcons name="phone" size={20} color="#666" />
-              <Text style={style.customerText}>{orderDetails.user.phone}</Text>
+              <Text style={style.customerText}>{OrderData.user_id.phone}</Text>
             </View>
             <View style={style.customerRow}>
               <MaterialIcons name="location-on" size={20} color="#666" />
-              <Text style={style.customerText}>{orderDetails.user.location}</Text>
+              <Text style={style.customerText}>{OrderData.user_id.location}</Text>
             </View>
           </View>
         </View>
 
         {/* المنتجات المطلوبة */}
         <View style={style.section}>
-          <Text style={style.sectionTitle}>المنتجات المطلوبة</Text>
-          {orderDetails.items.map((item) => (
-            <View key={item.id} style={style.productItem}>
-              <View style={style.productRow}>
-                <View style={style.imageContainer}>
-                  <Image
-                    source={require('../../assets/products/CHIPS_006-Photoroom.png')}
-                    style={style.productImage}
-                  />
-                </View>
-                <View style={style.productDetails}>
-                  <Text style={style.productName}>{item.name}</Text>
-                  <View style={style.productMeta}>
-                    <Text style={style.productQuantity}>الكمية: {item.quantity}</Text>
-                    <Text style={style.productPrice}>{item.price} جنيه للقطعة</Text>
-                  </View>
-                </View>
-                <View style={style.productTotal}>
-                  <Text style={style.totalPrice}>{item.total} جنيه</Text>
-                </View>
-              </View>
-            </View>
-          ))}
+          <Text style={[styles.h2,style.sectionTitle]}>المنتجات المطلوبة</Text>
+          <FlatList
+            data={orderItems}
+             keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
+            renderItem={RenderItem}
+            scrollEnabled={false}
+          />
         </View>
 
         {/* ملخص الفاتورة */}
         <View style={style.section}>
-          <Text style={style.sectionTitle}>ملخص الفاتورة</Text>
+          <Text style={[styles.h2,style.sectionTitle]}>ملخص الفاتورة</Text>
           <View style={style.billSummary}>
             <View style={style.billRow}>
-              <Text style={style.billLabel}>المجموع الفرعي</Text>
-              <Text style={style.billValue}>{orderDetails.subtotal} جنيه</Text>
+              <Text style={[styles.h3,style.billLabel]}>المجموع الفرعي</Text>
+              <Text style={[styles.h2,style.billValue]}>{OrderData.total} جنيه</Text>
             </View>
             <View style={style.billRow}>
-              <Text style={style.billLabel}>رسوم التوصيل</Text>
-              <Text style={style.billValue}>{orderDetails.delivery_fee} جنيه</Text>
+              <Text style={[styles.h3,style.billLabel]}>رسوم التوصيل</Text>
+              <Text style={[styles.h2,style.billValue]}>{0} جنيه</Text>
             </View>
             <View style={style.billRow}>
-              <Text style={style.billLabel}>الضرائب</Text>
-              <Text style={style.billValue}>{orderDetails.tax} جنيه</Text>
+              <Text style={[styles.h3,style.billLabel]}>الضرائب</Text>
+              <Text style={[styles.h2,style.billValue]}>{0} جنيه</Text>
             </View>
             <View style={style.divider} />
             <View style={[style.billRow, style.totalRow]}>
-              <Text style={style.totalLabel}>المجموع الكلي</Text>
-              <Text style={style.totalValue}>{orderDetails.total} جنيه</Text>
+              <Text style={[styles.h2,style.totalLabel]}>المجموع الكلي</Text>
+              <Text style={[styles.h2,style.totalValue]}>{OrderData.total} جنيه</Text>
             </View>
           </View>
         </View>
 
         {/* طريقة الدفع */}
         <View style={style.section}>
-          <Text style={style.sectionTitle}>طريقة الدفع</Text>
+          <Text style={[styles.h2,style.sectionTitle]}>طريقة الدفع</Text>
           <View style={style.paymentMethod}>
-            <MaterialIcons name="payment" size={20} color="#666" />
-            <Text style={style.paymentText}>{orderDetails.payment_method}</Text>
+           <Wallet3 size={24} color="#000" variant="regular" />
+            <Text style={[styles.h3,style.paymentText]}>عند الإستلام</Text>
           </View>
         </View>
       </ScrollView>
     </View>
   );
 };
+
 
 const style = StyleSheet.create({
   container: {
@@ -247,12 +266,13 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     textAlign: "right",
+     marginTop: 10,
   },
   orderDate: {
     fontSize: 14,
     color: "#666",
     textAlign: "right",
-    marginTop: 4,
+    marginTop: 10,
   },
   customerInfo: {
     gap: 12,
@@ -287,8 +307,8 @@ const style = StyleSheet.create({
     marginLeft: 12,
   },
   productImage: {
-    width: 60,
-    height: 60,
+    width: '100%',
+    height: '100%',
     borderRadius: 8,
   },
   productDetails: {
@@ -309,11 +329,14 @@ const style = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     textAlign: "right",
+     marginTop:5
+     
   },
   productPrice: {
     fontSize: 14,
     color: "#666",
     textAlign: "right",
+    marginTop:8
   },
   productTotal: {
     alignItems: "center",
@@ -413,5 +436,4 @@ const style = StyleSheet.create({
     textAlign: "center",
   },
 });
-
 export default OrderDetails;

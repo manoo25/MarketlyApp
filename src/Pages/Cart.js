@@ -1,80 +1,22 @@
 import React, { useEffect } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, ScrollView, View, FlatList, Modal, TextInput, Alert } from "react-native";
+import {  StyleSheet, Text, TouchableOpacity, ScrollView, View, Modal, TextInput, Alert } from "react-native";
 import { useState } from 'react';
 import CartList from '../Components/CartComponents/CartList';
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { colors, styles } from '../../styles';
 import { MessageText1 } from 'iconsax-react-nativejs';
 import { CloseCircle } from 'iconsax-react-nativejs';
 import { BagCross } from 'iconsax-react-nativejs';
 import { ArrowRight2 } from 'iconsax-react-nativejs';
-
-
-
-
-const sampleCartItems = [
-    {
-        id: 1,
-        name: "شعيرية سريعة التحضير",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/noodle.png"),
-    },
-    {
-        id: 2,
-        name: "مشروب غازى",
-        price: '15.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/cute-cartoon-cola-drink-vector-Photoroom.png"),
-    },
-    {
-        id: 3,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 4,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 5,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 6,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 7,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-    {
-        id: 8,
-        name: "شيبسى",
-        price: '10.0 EGP',
-        quantity: 1,
-        image: require("../../assets/products/CHIPS_006-Photoroom.png"),
-    },
-];
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCartItems } from '../Redux/Slices/CartItems';
+import { deleteCartItemsByUserId, fetchCartItems } from '../Redux/Slices/CartItems';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { UserId } from '../Redux/Slices/GetUserData';
+import {  addOrderItems } from '../Redux/Slices/OrderItems';
+import { addOrder } from '../Redux/Slices/Orders';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useNavigation } from '@react-navigation/native';
+import { PATHS } from '../routes/Paths';
 
 
 
@@ -94,7 +36,7 @@ function Cart() {
     const{cartItems}=useSelector((state)=>state.CartItems);
 const[CartItemsArr,setCartItemsArr]=useState([]);
 
-
+  const {navigate}=useNavigation();
     useEffect(()=>{
         dispatch(fetchCartItems());
         },[dispatch]);
@@ -123,35 +65,45 @@ console.log('Total'+Total);
     };
 
 
-function CompleteOrder() {
+
+async function CompleteOrder() {
   const orderId = uuidv4();
 
-  // 1. بناء orderItems
+  // تجهيز عناصر الطلب
   const orderItems = CartItemsArr.map((item) => ({
     order_id: orderId,
     product_id: item.product_id,
     quantity: item.quantity,
-    price: item.product.endPrice,
+    price: item.product.endPrice * item.quantity,
   }));
 
-
-  // 3. كائن الطلب
+  // تجهيز كائن الطلب
   const order = {
     id: orderId,
-    trader_id:CartItemsArr[0].product.trader_id,
-    userId: UserId,
-    status:'pending',
+    trader_id: CartItemsArr[0].product.trader_id,
+    user_id: UserId,
+    status: 'pending',
     imageCover: CartItemsArr[0].product.image,
-    totalPrice: TotalPrice,
-    note:savedNotes,
+    total: TotalPrice,
+    note: savedNotes,
   };
 
-  // 4. الإرسال أو الطباعة
-  console.log('✅ Order Created:', order);
-  console.log('🛒 Order Items:', orderItems);
+  try {
+    const resultOrder = await dispatch(addOrder(order));
+    unwrapResult(resultOrder);
+    const resultItems = await dispatch(addOrderItems(orderItems));
+    unwrapResult(resultItems);
+    const resultDelete = await dispatch(deleteCartItemsByUserId(UserId));
+    unwrapResult(resultDelete);
+navigate(PATHS.Orders);
+    Alert.alert(' تم إرسال الطلب بنجاح');
 
-  Alert.alert('تم إرسال الطلب بنجاح');
+  } catch (error) {
+    console.error(' Failed to complete order:', error);
+    Alert.alert(' حدث خطأ أثناء إرسال الطلب');
+  }
 }
+
 
 
 

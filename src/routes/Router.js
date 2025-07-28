@@ -12,6 +12,7 @@ import { PATHS } from './Paths';
 import BottomTabs from './BottomTabs';
 import AllCategoriesScreen from "../Pages/categories/AllCategoriesScreen";
 import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
+import OrderDetails from '../Pages/OrderDetails';
 
 
 export default function Router() {
@@ -47,6 +48,10 @@ export default function Router() {
         <Stack.Screen
           name={PATHS.CategoryProducts}
           component={CategoryProductsPage}
+        />
+        <Stack.Screen
+          name={PATHS.OrderDetails}
+          component={OrderDetails}
         />
       </Stack.Navigator>
     </NavigationContainer>
