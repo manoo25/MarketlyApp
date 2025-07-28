@@ -5,7 +5,6 @@ import { ArrowRight2 } from 'iconsax-react-nativejs';
 import { User } from 'iconsax-react-nativejs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserLogin } from '../Redux/Slices/users';
 import OptionsList from '../Components/UserOptionsComponents/OptionsList';
 
 

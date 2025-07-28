@@ -12,6 +12,12 @@ import { PATHS } from './Paths';
 import BottomTabs from './BottomTabs';
 import AllCategoriesScreen from "../Pages/categories/AllCategoriesScreen";
 import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
+import AccountDetails from '../Pages/AccountDetails';
+import SavedAdresses from '../Pages/SavedAdresses';
+import ChangePassword from '../Pages/ChangePassword';
+
+
+
 
 
 export default function Router() {
@@ -48,6 +54,9 @@ export default function Router() {
           name={PATHS.CategoryProducts}
           component={CategoryProductsPage}
         />
+        <Stack.Screen name={PATHS.AccountDetails} component={AccountDetails} />
+        <Stack.Screen name={PATHS.SavedAdresses} component={SavedAdresses} />
+        <Stack.Screen name={PATHS.ChangePassword} component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );

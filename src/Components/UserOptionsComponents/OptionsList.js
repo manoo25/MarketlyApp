@@ -33,6 +33,8 @@ function OptionsList() {
 
     const dispatch = useDispatch();
     const { replace } = useNavigation();
+    const navigation = useNavigation();
+
 
 
 
@@ -43,10 +45,19 @@ function OptionsList() {
         replace(PATHS.Login);
     };
 
+    const handleOptionPress = (item) => {
+        if (item.id === "1") {
+            navigation.navigate(PATHS.AccountDetails);
+        } else if (item.id === "2") {
+            navigation.navigate(PATHS.SavedAdresses);
+        } else if (item.id === "4") {
+            navigation.navigate(PATHS.ChangePassword);
+        }
+    };
 
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity style={style.item}>
+    const RenderItem = ({ item, onPress }) => (
+        <TouchableOpacity style={style.item} onPress={onPress}>
             <View style={style.textContainer}>
                 <View>
                     <Text style={[style.title, styles.h4]}>{item.title}</Text>
@@ -66,7 +77,9 @@ function OptionsList() {
             <FlatList
                 data={settings}
                 keyExtractor={item => item.id}
-                renderItem={renderItem}
+                renderItem={({ item }) => (
+                    <RenderItem item={item} onPress={() => handleOptionPress(item)} />
+                )}
                 ItemSeparatorComponent={() => <View style={style.separator} />}
             />
             <View style={style.separator} />
