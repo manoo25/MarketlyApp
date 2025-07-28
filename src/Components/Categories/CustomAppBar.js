@@ -6,8 +6,10 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { ArrowRight2 } from "iconsax-react-nativejs";
 
 const CustomAppBar = ({
   title,
@@ -20,52 +22,60 @@ const CustomAppBar = ({
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSearchPress = () => {
-    setIsSearching(true);
+      if (isSearching) {
+        setIsSearching(false);
+        onSearchClose?.();
+      } else {
+        setIsSearching(true);
+      }
   };
 
   const handleCloseSearch = () => {
     setIsSearching(false);
-    onSearchClose?.(); // رجّع البحث فاضي لو حبيت
+    onSearchClose?.();
   };
 
   return (
-    <View style={styles.appBarContainer}>
-      {isSearching ? (
-        <View style={styles.searchContainer}>
+    <View style={styles.container}>
+      {/* الهيدر الرئيسي */}
+      <View style={styles.header}>
+        <View style={styles.titleContainer}>
+          {onBack && (
+            <TouchableOpacity onPress={onBack}>
+              <ArrowRight2 size="32" color="#424047" />
+            </TouchableOpacity>
+          )}
+          <Text style={styles.title}>{title}</Text>
+        </View>
+
+        {showSearch && (
           <TouchableOpacity
-            onPress={handleCloseSearch}
-            style={{ marginRight: 8 }}
+            style={styles.searchIconContainer}
+            onPress={handleSearchPress}
           >
-            <Feather name="x" size={24} color="gray" />
+            <Ionicons name="search" size={24} color="#424047" />
           </TouchableOpacity>
+        )}
+      </View>
+
+      {/* حقل البحث المنفصل */}
+      {isSearching && (
+        <View style={styles.searchBox}>
+          <Ionicons name="search" size={20} color="#666" />
           <TextInput
             autoFocus
+            style={styles.searchInput}
+            placeholder={`ابحث في ${title}...`}
+            placeholderTextColor="#999"
             value={searchQuery}
             onChangeText={onSearchChange}
-            placeholder={`ابحث في ${title}`}
-            placeholderTextColor="#999" // <-- لون البليس هولدر
-            style={styles.searchInput}
-            underlineColorAndroid="transparent"
-            selectionColor="gray"
+            selectionColor="#999"
           />
-        </View>
-      ) : (
-        <View style={styles.appBar}>
-          {showSearch ? (
-            <TouchableOpacity onPress={handleSearchPress}>
-              <Feather name="search" size={24} color="gray" />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={handleCloseSearch}>
+              <Ionicons name="close" size={20} color="#666" />
             </TouchableOpacity>
-          ) : (
-            <View style={{ width: 24 }} />
           )}
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>
-            {onBack && (
-              <TouchableOpacity onPress={onBack}>
-                <Feather name="chevron-right" size={30} color="gray" />
-              </TouchableOpacity>
-            )}
-          </View>
         </View>
       )}
     </View>
@@ -75,47 +85,53 @@ const CustomAppBar = ({
 export default CustomAppBar;
 
 const styles = StyleSheet.create({
-  appBarContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    paddingBottom: 6,
+  container: {
     backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    paddingTop: Platform.OS === "ios" ? 48 : 24,
+    paddingBottom: 8,
+    writingDirection: "rtl",
   },
-  appBar: {
-    height: 60,
+  header: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
   title: {
-    fontSize: 22,
-    // fontWeight: "bold",
-    marginRight: 5,
-    fontFamily: "Tajawal-Medium",
+    fontFamily: "Tajawal-Bold",
+    fontSize: 28,
+    color: "#333333",
   },
-  searchContainer: {
-    flexDirection: "row-reverse",
-    alignItems: "center",
+  searchIconContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: "#FAFAFA",
+    borderRadius: 105,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#EFECF3",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  searchBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F0F0F0",
+    paddingHorizontal: 12,
     borderRadius: 8,
-    paddingHorizontal: 8,
-    height: 60,
+    marginTop: 10,
+    height: 44,
   },
   searchInput: {
     flex: 1,
-    paddingVertical: 6,
-    paddingHorizontal: 8,
+    marginLeft: 8,
+    paddingVertical: 8,
+    fontSize: 16,
     textAlign: "right",
-    borderWidth: 0, // <-- نشيل البوردر هنا
-    backgroundColor: "#fff",
-    color: "#000", // لون النص اللي بيكتبه المستخدم
-    outlineColor: "transparent",
-    fontSize: 18,
+    color: "#000",
     fontFamily: "Tajawal-Regular",
   },
 });
