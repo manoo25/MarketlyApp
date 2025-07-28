@@ -1,23 +1,21 @@
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react'
-import { View } from 'react-native'
-import LoginPage from '../Pages/LoginPage';
-import IntroPage from '../Pages/intro';
-import RegisterPage from '../Pages/RegisterPage';
-import Home from '../Pages/Home';
-import ForgetPasswordPage from '../Pages/ForgetPasswordPage';
-import ResetPasswordForm from '../Components/ForgetPassword/ResetPassword';
-import { PATHS } from './Paths';
-import BottomTabs from './BottomTabs';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
+import { View } from "react-native";
+import LoginPage from "../Pages/LoginPage";
+import IntroPage from "../Pages/intro";
+import RegisterPage from "../Pages/RegisterPage";
+import Home from "../Pages/Home";
+import ForgetPasswordPage from "../Pages/ForgetPasswordPage";
+import ResetPasswordForm from "../Components/ForgetPassword/ResetPassword";
+import { PATHS } from "./Paths";
+import BottomTabs from "./BottomTabs";
 import AllCategoriesScreen from "../Pages/categories/AllCategoriesScreen";
-import CategoryProductsPage from '../Pages/categories/CategoryProductsPage';
-
+import CategoryProductsPage from "../Pages/categories/CategoryProductsPage";
+import OffersPage from "../Pages/OffersPage";
 
 export default function Router() {
-
   const Stack = createNativeStackNavigator();
-
 
   return (
     <NavigationContainer>
@@ -48,6 +46,7 @@ export default function Router() {
           name={PATHS.CategoryProducts}
           component={CategoryProductsPage}
         />
+        <Stack.Screen name={PATHS.OffersPage} component={OffersPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

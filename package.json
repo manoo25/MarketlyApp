@@ -42,7 +42,8 @@
     "react-native-web": "^0.20.0",
     "react-redux": "^9.2.0",
     "uuid": "^11.1.0",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "@expo/vector-icons": "^14.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
