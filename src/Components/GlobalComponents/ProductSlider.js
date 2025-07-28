@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../../Redux/Slices/productsSlice";
 import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
+import { useNavigation } from "@react-navigation/native";
+import { PATHS } from "../../routes/Paths";
 
 
 
@@ -29,7 +31,8 @@ const ProductCard = ({ item,AddToCart }) => (
     </View>
 );
 
-function ProductSlider({sectionName,navigate,data}) {
+function ProductSlider({sectionName,data}) {
+     const {navigate} = useNavigation();
 const dispatch=useDispatch();
     const {products}=useSelector((state)=>state.products);
     const[SalePro,SetSalePro]=useState([])
@@ -65,7 +68,7 @@ SetSalePro(TargetData)
               
               
                }}>
-                 <TouchableOpacity>
+                 <TouchableOpacity onPress={()=>navigate(PATHS.OffersPage)}>
                      <Text style={[styles.h3,{fontSize:15,
                      color:colors.primary,
                      padding:8,

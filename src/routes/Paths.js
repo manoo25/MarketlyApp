@@ -9,4 +9,5 @@ export  const PATHS = {
   CategoryProducts: "CategoryProducts",
   Orders: "Orders",
   OrderDetails: "OrderDetails",
+   OffersPage: 'OffersPage',
 };

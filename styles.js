@@ -28,7 +28,11 @@ export const colors = {
 };
 
 export const styles = StyleSheet.create({
- 
+  container: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#fff',
+    },
   dividerLine: {
     height: 1,
     width: "100%",
