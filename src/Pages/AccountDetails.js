@@ -1,19 +1,37 @@
-import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput } from "react-native";
-import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput, ActivityIndicator } from "react-native";
+import { useState, useEffect } from 'react';
 import { colors, styles } from '../../styles';
 import { ArrowRight2 } from 'iconsax-react-nativejs';
 import { Edit } from 'iconsax-react-nativejs';
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import LabelInpts from "../Components/GlobalComponents/LabelInpts";
+import { updateUser } from "../Redux/Slices/users";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
 
 function AccountDetails() {
 
-    const { currentUser, error, loading } = useSelector((state) => state.Users);
+    const dispatch = useDispatch();
+    const userId = 'user123'; // هاته من الـ Auth
+    const [user, setUser] = useState('');
+
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const storedUser = await AsyncStorage.getItem("userData");
+            if (storedUser) {
+                setUser(JSON.parse(storedUser));
+            }
+        };
+        fetchUser();
+    }, []);
+
 
     const validationSchema = Yup.object().shape({
         email: Yup.string()
@@ -76,12 +94,22 @@ function AccountDetails() {
             <ScrollView style={{ flex: 1, paddingHorizontal: 16 }}>
 
                 <Formik
-                    initialValues={{ email: "" }}
+                    initialValues={{
+                        email: user?.email || '',
+                        name: user?.name || '',
+                        phone: user?.phone || '',
+                    }}
                     validationSchema={validationSchema}
+                    enableReinitialize
+                    onSubmit={(values) => {
+                        dispatch(updateUserData({ id: userId, updatedData: values }));
+                        setIsEditing(false);
+                    }}
                 >
                     {({
                         handleChange,
                         handleBlur,
+                        handleSubmit,
                         values,
                         errors,
                         touched,
@@ -95,12 +123,12 @@ function AccountDetails() {
                                         placeholder="البريد الإلكتروني"
                                         placeholderTextColor="#7B7686"
                                         style={[styles.input, styles.h4]}
+                                        editable={isEditing}
                                         onChangeText={handleChange("email")}
                                         onBlur={handleBlur("email")}
                                         value={values.email}
                                         keyboardType="email-address"
                                         autoCapitalize="none"
-                                        textAlign="right"
                                     />
                                 </View>
                                 {touched.email && errors.email && (
@@ -113,6 +141,7 @@ function AccountDetails() {
                                         placeholder="ادخل اسمك ثلاثى"
                                         placeholderTextColor="#7B7686"
                                         style={[styles.input, styles.h4]}
+                                        editable={isEditing}
                                         onChangeText={handleChange("name")}
                                         onBlur={handleBlur("name")}
                                         value={values.name}
@@ -129,6 +158,7 @@ function AccountDetails() {
                                         placeholder="+20 "
                                         placeholderTextColor="#7B7686"
                                         style={[styles.input, styles.h4, { textAlign: "left" }]}
+                                        editable={isEditing}
                                         onChangeText={handleChange("phone")}
                                         onBlur={handleBlur("phone")}
                                         value={values.phone}

@@ -10,4 +10,8 @@ export  const PATHS = {
   Orders: "Orders",
   OrderDetails: "OrderDetails",
    OffersPage: 'OffersPage',
+  UserOptions: "UserOptions",
+  AccountDetails: "AccountDetails",
+  SavedAdresses: "SavedAdresses",
+  ChangePassword: "ChangePassword",
 };
