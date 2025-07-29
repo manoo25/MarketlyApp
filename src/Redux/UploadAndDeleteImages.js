@@ -61,3 +61,35 @@ export const uploadUserImage = async (imageUri) => {
     return null;
   }
 };
+
+// export const deleteUserImage = async (imageUri) => {
+//   try {
+//     const { error } = await supabase.storage.from('users').remove([imageUri]);
+//     if (error) {
+//       console.warn('❌ حذف الصورة فشل:', error.message);
+//       return false;
+//     }
+//     return true;
+//   } catch (error) {
+//     console.warn('❌ خطأ أثناء حذف الصورة:', error.message);
+//     return false;
+//   }
+// }
+
+
+export const deleteUserImage = async (imageUri) => {
+  try {
+    // 👇 استخرج اسم الصورة فقط من الـ URL
+    const path = imageUri.split('/').pop(); // fileName فقط
+
+    const { error } = await supabase.storage.from('users').remove([path]);
+    if (error) {
+      console.warn('❌ حذف الصورة فشل:', error.message);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.warn('❌ خطأ أثناء حذف الصورة:', error.message);
+    return false;
+  }
+};
