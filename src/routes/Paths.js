@@ -9,11 +9,12 @@ export  const PATHS = {
   CategoryProducts: "CategoryProducts",
   Orders: "Orders",
   OrderDetails: "OrderDetails",
-   OffersPage: 'OffersPage',
+  OffersPage: 'OffersPage',
   UserOptions: "UserOptions",
   AccountDetails: "AccountDetails",
   SavedAdresses: "SavedAdresses",
   ChangePassword: "ChangePassword",
   AllCompaniesScreen:"AllCompaniesScreen",
   CompanyProductsScreen: "CompanyProductsScreen",
+  ProductDetails: "ProductDetails",
 };

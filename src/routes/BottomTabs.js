@@ -15,6 +15,7 @@ import OrderDetails from '../Pages/OrderDetails';
 import OffersPage from '../Pages/OffersPage';
 import AllCompaniesScreen from '../Pages/companies/AllCompaniesScreen';
 import CompanyProductsScreen from '../Pages/companies/CompanyProductsScreen';
+import Search from '../Pages/search';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,7 +23,7 @@ const Tab = createBottomTabNavigator();
 function HomeStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="HomeMain" component={Home} />
+      <Stack.Screen name="HomeMain" component={Search} />
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
       <Stack.Screen name="AllCompaniesScreen" component={AllCompaniesScreen} />
