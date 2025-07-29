@@ -4,8 +4,9 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { styles } from '../../styles';
 import { User } from 'iconsax-react-nativejs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import OptionsList from '../Components/UserOptionsComponents/OptionsList';
+import ImageModal from '../Components/UserOptionsComponents/ImageModal';
 
 
 
@@ -13,6 +14,7 @@ import OptionsList from '../Components/UserOptionsComponents/OptionsList';
 
 function UserOptions({ navigation }) {
     const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.Users.currentUser);
     const [user, setUser] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -20,24 +22,37 @@ function UserOptions({ navigation }) {
     useFocusEffect(
         React.useCallback(() => {
             const fetchUser = async () => {
-                const userData = await AsyncStorage.getItem('userData');
-                if (userData) {
-                    setUser(JSON.parse(userData));
+                // استخدم currentUser من Redux أولاً، ثم AsyncStorage كـ fallback
+                if (currentUser) {
+                    setUser(currentUser);
+                } else {
+                    const userData = await AsyncStorage.getItem('userData');
+                    if (userData) {
+                        setUser(JSON.parse(userData));
+                    }
                 }
             };
             fetchUser();
-        }, [])
+        }, [currentUser]) // أضف currentUser كـ dependency
     );
 
-    // دوال حذف وتغيير الصورة
-    const handleDeleteImage = () => {
-        // هنا منطق حذف الصورة من الحساب
+    // تحديث user state عند تغيير currentUser
+    useEffect(() => {
+        if (currentUser) {
+            setUser(currentUser);
+        }
+    }, [currentUser]);
+
+    // دالة إغلاق المودال مع تحديث البيانات
+    const handleCloseModal = () => {
         setModalVisible(false);
+        // تحديث البيانات من Redux state
+        if (currentUser) {
+            setUser(currentUser);
+        }
     };
-    const handleChangeImage = () => {
-        // هنا منطق تغيير الصورة (مثلاً فتح ImagePicker)
-        setModalVisible(false);
-    };
+
+
 
 
 
@@ -71,7 +86,8 @@ function UserOptions({ navigation }) {
                             <Image source={{ uri: user.image }} style={{ width: 55, height: 55, borderRadius: 50 }} />
                         </TouchableOpacity>
                     ) : (
-                        <TouchableOpacity style={{ width: 55, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EBF2FF', borderRadius: 50, height: 55 }}>
+                        <TouchableOpacity style={{ width: 55, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EBF2FF', borderRadius: 50, height: 55 }}
+                        onPress={() => setModalVisible(true)} >
                             <User size="32" color="#327AFF" />
                         </TouchableOpacity>
                     )}
@@ -90,10 +106,8 @@ function UserOptions({ navigation }) {
             <ImageModal
                 visible={modalVisible}
                 source={user?.image}
-                onClose={() => setModalVisible(false)}
-                setSource={(newImage) => setUser(prev => ({ ...prev, image: newImage }))}
+                onClose={handleCloseModal}
                 userId={user?.id}
-                setUser={setUser}
             />
 
         </View>
@@ -110,5 +124,4 @@ const style = StyleSheet.create({
 
 });
 
-import ImageModal from '../Components/UserOptionsComponents/ImageModal';
 export default UserOptions

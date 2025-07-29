@@ -2,170 +2,114 @@ import { Modal, View, Image, TouchableOpacity, Text, StyleSheet, Alert } from 'r
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { uploadUserImage, deleteUserImage, compressImage } from '../../Redux/UploadAndDeleteImages';
-import { updateUser } from '../../Redux/Slices/users';
+import { updateUser, updateCurrentUser } from '../../Redux/Slices/users';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-
-const ImageModal = ({ visible, onClose, source, setSource, userId, setUser }) => {
-
-    // const [imageUri, setImage] = useState(source);
-    const [imageUri, setImageUri] = useState(null);
-
+const ImageModal = ({ visible, onClose, userId: propUserId, source }) => {
+    const [imageUri, setImageUri] = useState(source);
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.Users.currentUser);
+    // استخدم userId من props أو من currentUser
+    const userId = propUserId || (currentUser && currentUser.id);
 
     useEffect(() => {
-        if (visible) {
-            setImageUri(source); // بس لما المودال يفتح
-        }
-    }, [visible]);
+        setImageUri(source);
+        // لوج للتأكد من userId
+        console.log('ImageModal opened with userId:', userId);
+    }, [source, visible, userId]);
 
-
-    
-
-    const removeImage = () => {
-        setImageUri(null);
-        if (setSource) {
-            setSource(null);
-        }
-    };
     const handleDeleteImage = async () => {
+        if (!imageUri) return;
+        setLoading(true);
         try {
-            const success = await deleteUserImage(image);
-
-            if (!success) {
-                Alert.alert('خطأ', 'لم يتم حذف الصورة');
-                return;
+            // استخراج اسم الملف فقط من الرابط (لأن Supabase يحتاج اسم الملف)
+            const fileName = imageUri.split('/').pop();
+            const success = await deleteUserImage(fileName);
+            if (success) {
+                setImageUri(null);
+                // تحديث قاعدة البيانات بحذف الصورة
+                if (userId) {
+                    dispatch(updateUser({ id: userId, updatedData: { image: "" } }))
+                        .then((res) => {
+                            if (res && res.error) {
+                                Alert.alert('خطأ', 'لم يتم حذف الصورة من قاعدة البيانات!');
+                            } else {
+                                // تحديث فوري للواجهة
+                                if (currentUser) {
+                                    const updatedUser = { ...currentUser, image: "" };
+                                    // تحديث AsyncStorage
+                                    AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
+                                    // تحديث Redux state مباشرة
+                                    dispatch(updateCurrentUser(updatedUser));
+                                }
+                            }
+                        });
+                }
+                Alert.alert('تم الحذف', 'تم حذف الصورة بنجاح');
+            } else {
+                Alert.alert('خطأ', 'فشل حذف الصورة');
             }
-
-            if (userId) {
-                await updateUser({ id: userId, updatedData: { image: null } });
-            }
-
-            setImageUri(null);
-            if (setSource) setSource(null);
-            onClose();
-
-            Alert.alert('تم الحذف', 'تم حذف الصورة بنجاح');
-
         } catch (error) {
             Alert.alert('خطأ', 'حدث خطأ أثناء حذف الصورة');
-            console.error('❌ خطأ أثناء الحذف:', error);
         }
+        setLoading(false);
     };
-    // const handleChangeImage = async () => {
-    //     try {
-    //         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    //         if (status !== 'granted') {
-    //             Alert.alert('خطأ', 'يجب منح صلاحية الوصول إلى المعرض');
-    //             return;
-    //         }
-    //         let result = await ImagePicker.launchImageLibraryAsync({
-    //             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //             allowsEditing: true,
-    //             aspect: [4, 3],
-    //             quality: 1,
-    //         });
-    //         if (!result.canceled) {
-    //             const selectedImage = result.assets[0].uri;
-    //             // ضغط الصورة
-    //             const compressedUri = await compressImage(selectedImage);
-
-    //             // رفع الصورة
-    //             const publicUrl = await uploadUserImage(compressedUri);
-
-    //             if (!publicUrl) {
-    //                 Alert.alert('خطأ', 'لم يتم رفع الصورة بنجاح');
-    //                 return;
-    //             }
-
-    //             const updatedUser = {
-    //                 ...user,
-    //                 image: publicUrl
-    //             };
-
-    //             // خزنها في AsyncStorage
-    //             await AsyncStorage.setItem('userData', JSON.stringify(updatedUser));
-
-    //             // حدث الـ state
-    //             setUser(updatedUser);
-
-    //             // تحديث البيانات في supabase
-    //             if (userId) {
-    //                 await updateUser({ id: userId, updatedData: { image: publicUrl } });
-    //             }
-
-    //             // تحديث الـ state
-    //             setImageUri(publicUrl);
-    //             if (setSource) setSource(publicUrl);
-
-    //             Alert.alert('تم التحديث', 'تم تغيير الصورة بنجاح');
-    //         }
-
-    //         onClose();
-
-    //     } catch (error) {
-    //         Alert.alert('خطأ', 'حدث خطأ أثناء تغيير الصورة');
-    //         console.error('❌ خطأ في تغيير الصورة:', error);
-    //     }
-    // };
-
 
     const handleChangeImage = async () => {
         try {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== 'granted') {
-                Alert.alert('خطأ', 'يجب منح صلاحية الوصول إلى المعرض');
-                return;
-            }
-
             let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
+                aspect: [1, 1],
+                quality: 0.7,
             });
-
-            if (!result.canceled) {
-                const selectedImage = result.assets[0].uri;
-
-                // رفع الصورة
-                const publicUrl = await uploadUserImage(selectedImage);
-                if (!publicUrl) {
-                    Alert.alert('خطأ', 'فشل رفع الصورة');
-                    return;
+            if (!result.canceled && result.assets && result.assets.length > 0) {
+                setLoading(true);
+                if (imageUri) {
+                    const fileName = imageUri.split('/').pop();
+                    await deleteUserImage(fileName);
                 }
-
-                // تحديث المستخدم في Supabase
-                const success = await updateUser({
-                    id: userId,
-                    updatedData: { image: publicUrl },
-                });
-
-                if (!success) {
-                    Alert.alert('خطأ', 'فشل تحديث الصورة في الحساب');
-                    return;
+                const newImageUri = result.assets[0].uri;
+                const compressedUri = await compressImage(newImageUri);
+                const uploadedUrl = await uploadUserImage(compressedUri);
+                if (uploadedUrl) {
+                    setImageUri(uploadedUrl);
+                    // لوج للتأكد من القيم المرسلة
+                    console.log('🖼️ ImageModal: Dispatching updateUser with:', { id: userId, updatedData: { image: uploadedUrl } });
+                    if (userId) {
+                        dispatch(updateUser({ id: userId, updatedData: { image: uploadedUrl } }))
+                            .then((res) => {
+                                console.log('🖼️ ImageModal: updateUser result:', res);
+                                if (res && res.error) {
+                                    Alert.alert('خطأ', 'لم يتم تحديث الصورة في قاعدة البيانات!');
+                                } else {
+                                    // تحديث فوري للواجهة
+                                    if (currentUser) {
+                                        const updatedUser = { ...currentUser, image: uploadedUrl };
+                                        // تحديث AsyncStorage
+                                        AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
+                                        // تحديث Redux state مباشرة
+                                        dispatch(updateCurrentUser(updatedUser));
+                                    }
+                                }
+                            });
+                    } else {
+                        Alert.alert('خطأ', 'لم يتم العثور على معرف المستخدم (userId)!');
+                    }
+                    Alert.alert('تم التغيير', 'تم تغيير الصورة بنجاح');
+                } else {
+                    Alert.alert('خطأ', 'فشل رفع الصورة الجديدة');
                 }
-
-                // تحديث الواجهة + AsyncStorage
-                const updatedUser = { id: userId, image: publicUrl };
-                await AsyncStorage.setItem('userData', JSON.stringify(updatedUser));
-                setUser(updatedUser);
-
-                if (setSource) setSource(publicUrl);
-                setImageUri(publicUrl);
-                onClose();
-                Alert.alert('تم', 'تم تحديث الصورة بنجاح');
+                setLoading(false);
             }
-
         } catch (error) {
-            console.error('❌ خطأ:', error);
+            setLoading(false);
             Alert.alert('خطأ', 'حدث خطأ أثناء تغيير الصورة');
         }
     };
-
-
-
-
 
 
     return (
@@ -184,7 +128,11 @@ const ImageModal = ({ visible, onClose, source, setSource, userId, setUser }) =>
                         <Text style={{ color: 'gray', marginBottom: 16 }}>لا توجد صورة</Text>
                     )}
                     <View style={styles.buttonRow}>
-                        <TouchableOpacity style={styles.buttonDelete} onPress={handleDeleteImage}>
+                        <TouchableOpacity style={styles.buttonDelete}
+                            onPress={() => Alert.alert('تأكيد', 'هل تريد مسح الصوره؟', [
+                                { text: 'إلغاء', style: 'cancel' },
+                                { text: 'تأكيد', onPress: handleDeleteImage }])}
+                         >
                             <Text style={styles.buttonDel}>حذف</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.buttonChange} onPress={handleChangeImage}>
