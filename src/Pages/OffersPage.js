@@ -230,7 +230,7 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#fff",
-    direction: "rtl",
+    writingDirection: "rtl",
   },
   header: {
     flexDirection: "row",
@@ -258,7 +258,7 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-     alignItems: "flex-end",
+    alignItems: "flex-end",
   },
   modalTitle: {
     fontSize: 16,

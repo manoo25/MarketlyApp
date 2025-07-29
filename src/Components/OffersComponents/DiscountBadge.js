@@ -7,7 +7,7 @@ const DiscountBadge = ({ discount }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>خصم %{discount.toFixed(1)}</Text>
+      <Text style={styles.text}>خصم %{Math.round(discount)}</Text>
     </View>
   );
 };
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "#327AFF",
     borderBottomLeftRadius: 10,
+    borderTopRightRadius: 10,
      paddingVertical: 3,  
     paddingHorizontal: 14, 
     zIndex: 10,

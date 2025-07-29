@@ -66,16 +66,21 @@ const AllCompaniesScreen = () => {
       />
 
       <FlatList
-        data={filteredCompanies}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={3}
-        columnWrapperStyle={{
-          justifyContent: "space-around",
-          paddingBottom: 12,
-        }}
-        contentContainerStyle={localStyles.listContent}
-      />
+  data={filteredCompanies}
+  renderItem={renderItem}
+  keyExtractor={(item) => item.id}
+  numColumns={4}
+  key={4} 
+  columnWrapperStyle={{
+
+    paddingBottom: 12,
+  }}
+  contentContainerStyle={[
+    localStyles.listContent,
+    { direction: "rtl" }, 
+  ]}
+/>
+
     </View>
   );
 };

@@ -9,33 +9,126 @@ import {
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors, styles } from "../../../styles";
+import DiscountBadge from "../../Components/OffersComponents/DiscountBadge";
 
-const ProductCard = ({ item }) => (
-  <View style={componentStyles.cardContainer}>
-    <TouchableOpacity onPress={() => console.log("Card pressed")}>
-      <View style={componentStyles.imageContainer}>
-        <Image
-          source={
-            typeof item.image === "string" ? { uri: item.image } : item.image // fallback لو صورة محلية
-          }
-          style={componentStyles.image}
-        />
-        <TouchableOpacity
-          onPress={() => console.log("Add button pressed")}
-          style={componentStyles.addButton}
-        >
-          <AntDesign name="plus" size={24} color="blue" />
-        </TouchableOpacity>
-      </View>
-      <View style={componentStyles.infoContainer}>
-        <Text style={[styles.h3, componentStyles.titleText]}>{item.name}</Text>
-        <Text style={[styles.h3, componentStyles.priceText]}>
-          {item.endPrice ?? item.traderprice} EGP
-        </Text>
-      </View>
-    </TouchableOpacity>
-  </View>
-);
+// const ProductCard = ({ item }) => (
+//   <View style={componentStyles.cardContainer}>
+//     <TouchableOpacity onPress={() => console.log("Card pressed")}>
+//       <View style={componentStyles.imageContainer}>
+//         <Image
+//           source={
+//             typeof item.image === "string" ? { uri: item.image } : item.image // fallback لو صورة محلية
+//           }
+//           style={componentStyles.image}
+//         />
+//         <TouchableOpacity
+//           onPress={() => console.log("Add button pressed")}
+//           style={componentStyles.addButton}
+//         >
+//           <AntDesign name="plus" size={24} color="blue" />
+//         </TouchableOpacity>
+//       </View>
+//       <View style={componentStyles.infoContainer}>
+//         <Text style={[styles.h3, componentStyles.titleText]}>{item.name}</Text>
+//         <Text style={[styles.h3, componentStyles.priceText]}>
+//           {item.endPrice ?? item.traderprice} EGP
+//         </Text>
+//       </View>
+//     </TouchableOpacity>
+//   </View>
+// );
+
+
+const ProductCard = ({ item }) => {
+  const hasDiscount = item.traderprice > item.endPrice;
+  const discountPercent = hasDiscount
+    ? ((item.traderprice - item.endPrice) / item.traderprice) * 100
+    : 0;
+
+  return (
+    <View style={componentStyles.cardContainer}>
+      <TouchableOpacity onPress={() => console.log("Card pressed")}>
+        <View  style={componentStyles.imageContainer}>
+          {hasDiscount && <DiscountBadge discount={discountPercent} />}
+
+          <Image
+            source={
+              typeof item.image === "string" ? { uri: item.image } : item.image
+            }
+            style={componentStyles.image}
+          />
+
+          <TouchableOpacity
+            onPress={() => console.log("Add button pressed")}
+            style={componentStyles.addButton}
+          >
+            <AntDesign name="plus" size={24} color="blue" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={componentStyles.infoContainer}>
+          <Text
+            style={[styles.h3, componentStyles.titleText]}
+            numberOfLines={2}
+          >
+            {item.name}
+          </Text>
+
+          <View
+            style={{
+              flexDirection: "row-reverse",
+              alignItems: "flex-end",
+              marginTop: 6,
+              flexWrap: "wrap",
+              gap: 4,
+            }}
+          >
+            {/* السعر بعد الخصم أو العادي */}
+            <Text
+              style={[
+                styles.h3,
+                {
+                  fontSize: 14,
+                  color: "#327AFF",
+                  fontWeight: "600",
+                },
+              ]}
+            >
+              {item.endPrice ?? item.traderprice} جنيه
+            </Text>
+
+            {/* السعر قبل الخصم */}
+            {hasDiscount && (
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "#7B7686",
+                  textDecorationLine: "line-through",
+                  paddingBottom: "2px",
+                }}
+              >
+                {item.traderprice} جنيه
+              </Text>
+            )}
+
+            {/* وحدة البيع */}
+            {item.unit && (
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: "#888",
+                  fontFamily: "Tajawal-Medium",
+                }}
+              >
+                /{item.unit}
+              </Text>
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 function ListProducts({ products }) {
   if (!products || products.length === 0) {
@@ -56,14 +149,22 @@ function ListProducts({ products }) {
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }}>
-      <FlatList
-        data={products}
-        renderItem={({ item }) => <ProductCard item={item} />}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
-        showsVerticalScrollIndicator={false}
-      />
+   <FlatList
+  data={products}
+  renderItem={({ item }) => <ProductCard item={item} />}
+  keyExtractor={(item) => item.id.toString()}
+  numColumns={2}
+  key={2}   
+  columnWrapperStyle={{
+     flexDirection: "row-reverse",
+    justifyContent: "space-between",
+    paddingHorizontal:8
+  }}
+
+  showsVerticalScrollIndicator={false}
+/>
+
+
     </View>
   );
 }
@@ -72,10 +173,19 @@ const cardWidth = (Dimensions.get("window").width - 16 * 2 - 12) / 2;
 
 const componentStyles = StyleSheet.create({
   cardContainer: {
-    height: 188,
-    width: 155,
+    // height: 188,
+    width: 175,
     marginTop: 12,
     paddingRight: 15,
+    overflow: "hidden",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
   },
   imageContainer: {
     height: 130,

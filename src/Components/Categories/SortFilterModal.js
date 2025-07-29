@@ -93,7 +93,7 @@ export default SortFilterModal;
 const styles = StyleSheet.create({
   filterRow: {
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
-    alignItems: "center",
+    // alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 10,
     justifyContent: "flex-start",
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     color: "#424047",
-    paddingBottom: 8,
+    // paddingBottom: 5,
     fontFamily: "Tajawal-Medium",
   },
   iconButton: {
