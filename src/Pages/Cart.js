@@ -185,7 +185,12 @@ navigate(PATHS.Orders);
                                     width: 175,
                                     height: 60,
                                     borderRadius: 16
-                                }} >
+                                }}
+                                
+                                onPress={()=>navigate(PATHS.TraderProducts
+                                ,{TraderID:CartItemsArr[0].product.trader_id})
+                             }
+                                >
                                     <Text
                                         style={[
                                             styles.h3,

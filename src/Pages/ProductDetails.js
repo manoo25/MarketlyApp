@@ -23,6 +23,8 @@ import { ArrowRight2 } from "iconsax-react-nativejs";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
+import SectionHeader from "../Components/GlobalComponents/SectionHeader";
+import GoBack from "../Components/GlobalComponents/GoBack";
 
 function ProductDetails() {
   const navigation = useNavigation();
@@ -92,7 +94,7 @@ function ProductDetails() {
     dispatch(fetchSpecificCartItems(ProductId));
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, backgroundColor: "#FFFF" }}>
           <View style={{ alignItems: "center" }}>
@@ -110,9 +112,7 @@ function ProductDetails() {
                 zIndex: 1,
               }}
             >
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <ArrowRight2 size="32" color="#424047" />
-              </TouchableOpacity>
+             <GoBack/>
             </View>
 
             <View
@@ -166,7 +166,7 @@ function ProductDetails() {
           </View>
 
           <View style={[style.top, styles.paddingView, { marginTop: 5 }]}>
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={{ paddingHorizontal: 10 }}>
               <Text style={[styles.h3, { textAlign: "right", marginTop: 10 }]}>
                 {specificProduct[0]?.name}
               </Text>
@@ -233,15 +233,16 @@ function ProductDetails() {
             </View>
 
             <View style={styles.dividerLine} />
-            <Text style={[{ marginTop: 5, marginBottom: 4 }, styles.h3]}>
+            {/* <Text style={[{ marginTop: 5, marginBottom: 4 }, styles.h3]}>
               منتجات هذا التاجر
-            </Text>
-            <RecommendedProducts />
+            </Text> */}
+           
+            <RecommendedProducts  TraderID={specificProduct[0]?.trader_id}/>
             <View style={styles.dividerLine} />
 
             <View
               style={{
-                flex: 1, // 🔹 ياخد باقي المساحة
+                flex: 1,
                 alignSelf: "stretch",
                 paddingBottom: 15,
                 justifyContent: "space-between",

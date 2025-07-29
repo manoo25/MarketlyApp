@@ -8,8 +8,11 @@ import ProductSlider from '../Components/GlobalComponents/ProductSlider';
 import Statusbar from '../Components/GlobalComponents/Statusbar';
 import CompaniesSlide from '../Components/HomeCpmponents/CompaniesSlide';
 import { UserData } from '../Redux/Slices/GetUserData';
+import { fetchCartItems } from '../Redux/Slices/CartItems';
+import { useDispatch } from 'react-redux';
 
 export default function Home() {
+  const dispatch=useDispatch();
   const scrollY = useRef(new Animated.Value(0)).current;
   const [userData, setUserData] = useState({});
 
@@ -23,6 +26,9 @@ export default function Home() {
       }
     };
     fetchUser();
+  }, []);
+  useEffect(() => {  
+         dispatch(fetchCartItems());
   }, []);
 
   return (

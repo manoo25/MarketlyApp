@@ -39,6 +39,38 @@ const filterPro = data.filter(
   }
 );
 // ✅ Fetch all products (with role check)
+export const fetchTraderProducts = createAsyncThunk(
+  "products/fetchTraderProducts",
+  async (TraderID, { rejectWithValue }) => {
+    try {
+      
+      // You need to actually execute the query with .select()
+      const { data, error } = await supabase
+        .from("products")
+        .select(`
+          *,
+          category:category_id (name),
+          trader:trader_id (routes),
+          company:company_id (name)
+        `)
+        .eq("trader_id", TraderID);
+
+      if (error) throw error;
+const filterPro = data.filter(
+  x =>
+    
+    x.publish === true &&
+    x.state === true 
+);
+
+
+      return filterPro;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+// ✅ Fetch all products (with role check)
 export const fetchSpecificProducts = createAsyncThunk(
   "products/fetchSpecificProducts",
   async (ProductId, { rejectWithValue }) => {
@@ -66,9 +98,6 @@ const filterPro = data.filter(
       .map(r => r.trim())
       .includes(UserData.governorate)
 );
-
-console.log('filterPro'+filterPro);
-
       return filterPro;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -81,6 +110,7 @@ const productsSlice = createSlice({
   name: "products",
   initialState: {
     products: [],
+    traderProducts: [],
     specificProduct: [],
     loading: false,
     error: null,
@@ -102,6 +132,14 @@ const productsSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchTraderProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTraderProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.traderProducts = action.payload;
       })
        .addCase(fetchSpecificProducts.fulfilled, (state, action) => {
         state.loading = false;

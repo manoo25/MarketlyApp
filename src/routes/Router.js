@@ -21,6 +21,7 @@ import SavedAdresses from '../Pages/SavedAdresses';
 import ChangePassword from '../Pages/ChangePassword';
 import ProductDetails from "../Pages/ProductDetails";
 import UserOptions from "../Pages/UserOptions";
+import TraderProducts from "../Pages/TraderProducts/TraderProducts";
 
 
 
@@ -57,6 +58,10 @@ export default function Router() {
         <Stack.Screen
           name={PATHS.CategoryProducts}
           component={CategoryProductsPage}
+        />
+        <Stack.Screen
+          name={PATHS.TraderProducts}
+          component={TraderProducts}
         />
         <Stack.Screen name={PATHS.OffersPage} component={OffersPage} />
         <Stack.Screen

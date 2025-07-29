@@ -52,7 +52,7 @@ function CompaniesSlide({ sectionName }) {
           flex: 1,
           flexDirection: "row",
           justifyContent: "space-between",
-          paddingLeft: 25,
+          paddingLeft: 15,
           marginBottom: 5,
           alignItems: "center",
         }}

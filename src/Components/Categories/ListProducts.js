@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { colors, styles } from "../../../styles";
+import { colors, componentStyles, styles } from "../../../styles";
 import DiscountBadge from "../../Components/OffersComponents/DiscountBadge";
 
 // const ProductCard = ({ item }) => (
@@ -46,7 +46,7 @@ const ProductCard = ({ item }) => {
     : 0;
 
   return (
-    <View style={componentStyles.cardContainer}>
+    <View style={[componentStyles.cardContainer,{paddingRight:0}]}>
       <TouchableOpacity onPress={() => console.log("Card pressed")}>
         <View  style={componentStyles.imageContainer}>
           {hasDiscount && <DiscountBadge discount={discountPercent} />}
@@ -85,40 +85,28 @@ const ProductCard = ({ item }) => {
           >
             {/* السعر بعد الخصم أو العادي */}
             <Text
-              style={[
-                styles.h3,
-                {
-                  fontSize: 14,
-                  color: "#327AFF",
-                  fontWeight: "600",
-                },
-              ]}
+               style={[styles.h3,{fontSize:14,color:colors.primary}]}
             >
-              {item.endPrice ?? item.traderprice} جنيه
+              {item.endPrice ?? item.traderprice} ج
             </Text>
 
             {/* السعر قبل الخصم */}
             {hasDiscount && (
               <Text
-                style={{
-                  fontSize: 12,
+                style={[styles.h3,{fontSize:14,
                   color: "#7B7686",
                   textDecorationLine: "line-through",
-                  paddingBottom: "2px",
-                }}
+                 
+                }]}
               >
-                {item.traderprice} جنيه
+                {item.traderprice} ج
               </Text>
             )}
 
             {/* وحدة البيع */}
             {item.unit && (
               <Text
-                style={{
-                  fontSize: 13,
-                  color: "#888",
-                  fontFamily: "Tajawal-Medium",
-                }}
+                 style={[styles.h3,{fontSize:14}]}
               >
                 /{item.unit}
               </Text>
@@ -148,7 +136,7 @@ function ListProducts({ products }) {
   }
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }}>
+    <View style={{ flex: 1,  marginTop: 16 }}>
    <FlatList
   data={products}
   renderItem={({ item }) => <ProductCard item={item} />}
@@ -158,9 +146,11 @@ function ListProducts({ products }) {
   columnWrapperStyle={{
      flexDirection: "row-reverse",
     justifyContent: "space-between",
-    paddingHorizontal:8
+  //  backgroundColor:'gray',
+   width:'100%',
+   paddingHorizontal:20
   }}
-
+ ItemSeparatorComponent={() => <View style={{ width: 25 }} />}
   showsVerticalScrollIndicator={false}
 />
 
@@ -169,62 +159,62 @@ function ListProducts({ products }) {
   );
 }
 
-const cardWidth = (Dimensions.get("window").width - 16 * 2 - 12) / 2;
+// const cardWidth = (Dimensions.get("window").width - 16 * 2 - 12) / 2;
 
-const componentStyles = StyleSheet.create({
-  cardContainer: {
-    // height: 188,
-    width: 175,
-    marginTop: 12,
-    paddingRight: 15,
-    overflow: "hidden",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    padding: 12,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
-  },
-  imageContainer: {
-    height: 130,
-    width: "100%",
-    borderRadius: 20,
-    backgroundColor: "#EBF2FF",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 20,
-  },
-  addButton: {
-    position: "absolute",
-    left: 10,
-    bottom: 10,
-    backgroundColor: "#EBF2FF",
-    borderRadius: 25,
-    width: 35,
-    height: 35,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 5,
-  },
-  infoContainer: {
-    paddingRight: 10,
-  },
-  titleText: {
-    textAlign: "right",
-    fontSize: 13,
-    marginTop: 8,
-    color: "#424047",
-  },
-  priceText: {
-    textAlign: "right",
-    fontSize: 13,
-    marginTop: 8,
-    color: "#424047",
-  },
-});
+// const componentStyles = StyleSheet.create({
+//   cardContainer: {
+//     // height: 188,
+//     width: 175,
+//     marginTop: 12,
+//     paddingRight: 15,
+//     overflow: "hidden",
+//     backgroundColor: "#FFFFFF",
+//     borderRadius: 16,
+//     padding: 12,
+//     // shadowColor: "#000",
+//     // shadowOpacity: 0.05,
+//     // shadowRadius: 6,
+//     // shadowOffset: { width: 0, height: 2 },
+//     // elevation: 3,
+//   },
+//   imageContainer: {
+//     height: 130,
+//     width: "100%",
+//     borderRadius: 20,
+//     backgroundColor: "#EBF2FF",
+//   },
+//   image: {
+//     width: "100%",
+//     height: "100%",
+//     borderRadius: 20,
+//   },
+//   addButton: {
+//     position: "absolute",
+//     left: 10,
+//     bottom: 10,
+//     backgroundColor: "#EBF2FF",
+//     borderRadius: 25,
+//     width: 35,
+//     height: 35,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     elevation: 5,
+//   },
+//   infoContainer: {
+//     paddingRight: 10,
+//   },
+//   titleText: {
+//     textAlign: "right",
+//     fontSize: 13,
+//     marginTop: 8,
+//     color: "#424047",
+//   },
+//   priceText: {
+//     textAlign: "right",
+//     fontSize: 13,
+//     marginTop: 8,
+//     color: "#424047",
+//   },
+// });
 
 export default ListProducts;

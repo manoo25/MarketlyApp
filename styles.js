@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   dividerLine: {
     height: 1,
     width: "100%",
-    backgroundColor: "#aeaeae",
+    backgroundColor: "#aeaeae4b",
     marginVertical: 15,
   }
   ,h1: {
@@ -210,5 +210,56 @@ borderRadius:15,
         color: '#333',
         textAlign: 'center',
         minWidth: 24,
+    },
+});
+
+export const componentStyles = StyleSheet.create({
+  
+    cardContainer: {
+        height: 188,
+        width: 165,
+        marginTop: 12,
+       paddingRight:15,
+    //    backgroundColor:'green'
+       
+    },
+    imageContainer: {
+        height: 130,
+        width: '100%',
+        borderRadius: 20,
+        backgroundColor: '#EBF2FF',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 20,
+    },
+    addButton: {
+        position: 'absolute',
+        left: 10,
+        bottom: 10,
+        backgroundColor: '#EBF2FF',
+        borderRadius: 25,
+        width: 35,
+        height: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
+    },
+    infoContainer: {
+    
+      paddingRight:10,
+    },
+    titleText: {
+        textAlign: 'right',
+       fontSize:13,
+        marginTop: 8,
+       color:'#424047'
+    },
+    priceText: {
+        textAlign: 'right',
+         fontSize:13,
+        marginTop: 8,
+        color:'#424047'
     },
 });

@@ -17,5 +17,6 @@ export  const PATHS = {
   AllCompaniesScreen:"AllCompaniesScreen",
   CompanyProductsScreen: "CompanyProductsScreen",
   ProductDetails: "ProductDetails",
-  UserOptions: "UserOptions"
+  UserOptions: "UserOptions",
+  TraderProducts:'TraderProducts'
 };
