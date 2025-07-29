@@ -19,6 +19,7 @@ import OrderDetails from '../Pages/OrderDetails';
 import AccountDetails from '../Pages/AccountDetails';
 import SavedAdresses from '../Pages/SavedAdresses';
 import ChangePassword from '../Pages/ChangePassword';
+import ProductDetails from "../Pages/ProductDetails";
 
 
 
@@ -72,6 +73,10 @@ export default function Router() {
         <Stack.Screen
           name={PATHS.CompanyProductsScreen}
           component={CompanyProductsScreen}
+        />
+        <Stack.Screen
+          name={PATHS.ProductDetails}
+          component={ProductDetails}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -26,6 +26,29 @@ export const fetchCartItems = createAsyncThunk(
     }
   }
 );
+export const fetchSpecificCartItems = createAsyncThunk(
+  "cart_items/fetchSpecificCartItems",
+  async (id, { rejectWithValue }) => {
+    try {
+      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+
+      const { data, error } = await supabase
+        .from("cart_items")
+        .select(`
+          *,
+          product:product_id (name, image, endPrice, trader_id)
+        `)
+        .eq("user_id", userData.id)
+        .eq("product_id", id);
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 
 // ✅ Create new cart item
@@ -148,6 +171,7 @@ const cartItemsSlice = createSlice({
   name: "cartItems",
   initialState: {
     cartItems: [],
+    specificCartItem: [],
     loading: false,
     error: null,
   },
@@ -166,6 +190,10 @@ const cartItemsSlice = createSlice({
       .addCase(fetchCartItems.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+        .addCase(fetchSpecificCartItems.fulfilled, (state, action) => {
+        state.specificCartItem = action.payload;
       })
 
       // Create

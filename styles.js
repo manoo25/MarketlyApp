@@ -156,4 +156,59 @@ borderRadius:15,
     zIndex:2000,
     top:0
   },
+   priceContainer: {
+        flexDirection: 'row-reverse',
+        alignItems: 'center',  
+        gap:5
+    },
+     headerContent: {
+    width: "100%",
+    alignItems: "flex-end",
+  },
+  headerRow: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+ position: 'relative',
+  },
+  headerTitle: {
+    textAlign: "right",
+    marginRight: 8,
+  marginTop:10
+  },
+   header: {
+    alignItems: "center",
+    marginTop: 60,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
+    quantityContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#F7F9FB',
+        borderRadius: 5,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        minWidth: 90,
+        justifyContent: 'space-between',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 2,
+        marginLeft: 10,
+    },
+    quantityButton: {
+        borderRadius: 8,
+        width: 25,
+        height: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 2,
+    },
+    quantityText: {
+        fontSize: 16,
+        color: '#333',
+        textAlign: 'center',
+        minWidth: 24,
+    },
 });

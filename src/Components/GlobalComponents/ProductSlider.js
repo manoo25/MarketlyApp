@@ -12,9 +12,9 @@ import { PATHS } from "../../routes/Paths";
 
 
 
-const ProductCard = ({ item,AddToCart }) => (
+const ProductCard = ({ item,AddToCart,navigate }) => (
     <View style={componentStyles.cardContainer}>
-       <TouchableOpacity onPress={() => console.log('Card pressed')}>
+       <TouchableOpacity onPress={()=>navigate(PATHS.ProductDetails,{ProductId:item.id})}>
          <View style={componentStyles.imageContainer}>
             <Image  source={{uri: item.image}} style={componentStyles.image} />
             <TouchableOpacity
@@ -25,7 +25,11 @@ const ProductCard = ({ item,AddToCart }) => (
         </View>
         <View style={componentStyles.infoContainer}>
             <Text style={[styles.h3,componentStyles.titleText]}>{item.name}</Text>
-            <Text style={[styles.h3,componentStyles.priceText]}>{item.endPrice}</Text>
+             <View style={styles.priceContainer}>
+                            <Text style={[styles.h3,componentStyles.priceText]}>{item.endPrice}</Text>
+                            <Text style={[styles.h3,componentStyles.priceText]}>ج.م /</Text>
+                            <Text style={[styles.h3,componentStyles.priceText]}>{item.unit}</Text>
+                        </View>
         </View>
        </TouchableOpacity>
     </View>
@@ -48,8 +52,7 @@ SetSalePro(TargetData)
 
 
   function AddToCart(ProId) {
-    // console.log('Product ID:', ProId);
-    
+ 
     dispatch(addOrUpdateCartItem({ product_id: ProId, quantity: 1 }));
   }
     return (
@@ -87,7 +90,7 @@ SetSalePro(TargetData)
                 inverted
                 showsHorizontalScrollIndicator={false}
                 data={SalePro}
-                renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item} />}
+                renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item} navigate={navigate} />}
                 keyExtractor={item => item.id}
                 contentContainerStyle={componentStyles.listContentContainer}
             />

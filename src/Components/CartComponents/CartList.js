@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, ScrollView, View, FlatList }
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useDispatch } from 'react-redux';
 import { deleteCartItem, fetchCartItems, updateCartItem } from '../../Redux/Slices/CartItems';
+import { styles } from '../../../styles';
 
 
 
@@ -87,16 +88,16 @@ marginTop:15,
 
 
                     {/* أزرار التحكم في الكمية */}
-                    <View style={style.quantityContainer}>
+                    <View style={styles.quantityContainer}>
                         <TouchableOpacity
                         onPress={()=>IncreseQuantity(item.id)}
-                        style={style.quantityButton}>
+                        style={styles.quantityButton}>
                             <AntDesign name="plus" size={16} color="#327AFF" />
                         </TouchableOpacity>
-                        <Text style={style.quantityText}>{item.quantity}</Text>
+                        <Text style={styles.quantityText}>{item.quantity}</Text>
                         <TouchableOpacity
                          onPress={()=>DecreseQuantity(item.id)}
-                        style={style.quantityButton}>
+                        style={styles.quantityButton}>
                             <AntDesign name="minus" size={16} color="#327AFF" />
                         </TouchableOpacity>
                     </View>
@@ -142,36 +143,7 @@ const style = StyleSheet.create({
         textAlign: 'right',
         marginTop:8
     },
-    quantityContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#F7F9FB',
-        borderRadius: 5,
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        minWidth: 90,
-        justifyContent: 'space-between',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-        elevation: 2,
-        marginLeft: 10,
-    },
-    quantityButton: {
-        borderRadius: 8,
-        width: 25,
-        height: 25,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 2,
-    },
-    quantityText: {
-        fontSize: 16,
-        color: '#333',
-        textAlign: 'center',
-        minWidth: 24,
-    },
+  
 });
 
 

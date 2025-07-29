@@ -16,4 +16,5 @@ export  const PATHS = {
   ChangePassword: "ChangePassword",
   AllCompaniesScreen:"AllCompaniesScreen",
   CompanyProductsScreen: "CompanyProductsScreen",
+  ProductDetails: "ProductDetails"
 };

@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../Redux/Slices/Orders";
 import { useNavigation } from "@react-navigation/native";
 import { PATHS } from "../routes/Paths";
+import GoBack from "../Components/GlobalComponents/GoBack";
+import HeaderPages from "../Components/GlobalComponents/HeaderPages";
 
 const Orders = () => {
   const {navigate}=useNavigation();
@@ -25,18 +27,7 @@ const Orders = () => {
 
   return (
     <View style={style.container}>
-      <View style={{ alignItems: "center", marginTop: 60, marginBottom: 16 }}>
-        <View style={{ width: "100%", alignItems: "flex-end" }}>
-          <View style={{ flexDirection: "row-reverse", alignItems: "center" }}>
-            <TouchableOpacity onPress={() => navigate(PATHS.Home)}>
-              <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={[styles.h3, { textAlign: "right", marginRight: 8, paddingBottom: 7 }]}>
-              الطلبات
-            </Text>
-          </View>
-        </View>
-      </View>
+    <HeaderPages title={'الطلبات'} navigate={() => navigate(PATHS.Home)}/>
 
       {orders?.length > 0 && (
         <FlatList

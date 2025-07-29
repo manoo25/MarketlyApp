@@ -9,11 +9,14 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+
 import { styles } from "../../styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrderItems } from "../Redux/Slices/OrderItems";
+import { MaterialIcons } from "@expo/vector-icons";
+import GoBack from "../Components/GlobalComponents/GoBack";
+import HeaderPages from "../Components/GlobalComponents/HeaderPages";
 
 const RenderItem = ({ item }) => (
   <View style={style.productItem}>
@@ -57,17 +60,8 @@ const OrderDetails = () => {
 
   return (
     <View style={style.container}>
-      {/* الهيدر */}
-      <View style={style.header}>
-        <View style={style.headerContent}>
-          <View style={style.headerRow}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={[styles.h3, style.headerTitle]}>تفاصيل الطلب</Text>
-          </View>
-        </View>
-      </View>
+     <HeaderPages title={'تفاصيل الطلب'} />
+    
 
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         {/* معلومات الطلب */}
@@ -210,18 +204,11 @@ const style = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 16,
   },
-  headerContent: {
-    width: "100%",
-    alignItems: "flex-end",
-  },
-  headerRow: {
-    flexDirection: "row-reverse",
-    alignItems: "center",
-  },
+
   headerTitle: {
     textAlign: "right",
     marginRight: 8,
-    paddingBottom: 7,
+  marginTop:10
   },
   section: {
     marginHorizontal: 16,
