@@ -1,3 +1,5 @@
+import ProductDetails from "../Pages/ProductDetails";
+
 export  const PATHS = {
   Intro: "Intro",
   Login: "Login",
