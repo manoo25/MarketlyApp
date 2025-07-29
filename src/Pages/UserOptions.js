@@ -1,26 +1,51 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, ScrollView, View, FlatList, Modal, TextInput, Alert } from "react-native";
-import { colors, styles } from '../../styles';
-import { ArrowRight2 } from 'iconsax-react-nativejs';
+import { useFocusEffect } from '@react-navigation/native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { styles } from '../../styles';
 import { User } from 'iconsax-react-nativejs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import OptionsList from '../Components/UserOptionsComponents/OptionsList';
 
 
 
-function UserOptions() {
-    const [user, setUser]=useState('');
-    
-  useEffect(() => {
-  const fetchUser = async () => {
-    const storedUser = await AsyncStorage.getItem("userData");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); 
-    }
-  };
-  fetchUser();
-}, []);
+
+
+function UserOptions({ navigation }) {
+    const dispatch = useDispatch();
+    const [user, setUser] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+
+    // إعادة جلب بيانات المستخدم عند التركيز على الصفحة
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchUser = async () => {
+                const userData = await AsyncStorage.getItem('userData');
+                if (userData) {
+                    setUser(JSON.parse(userData));
+                }
+            };
+            fetchUser();
+        }, [])
+    );
+
+    // دوال حذف وتغيير الصورة
+    const handleDeleteImage = () => {
+        // هنا منطق حذف الصورة من الحساب
+        setModalVisible(false);
+    };
+    const handleChangeImage = () => {
+        // هنا منطق تغيير الصورة (مثلاً فتح ImagePicker)
+        setModalVisible(false);
+    };
+
+
+
+
+
+
+
+
 
     return (
         <View style={style.container}>
@@ -28,19 +53,21 @@ function UserOptions() {
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
                 <View style={{ width: '100%', alignItems: 'flex-end' }}>
                     <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
                             <ArrowRight2 size="32" color="#424047" />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <Text style={[styles.h3, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>الحساب</Text>
                     </View>
                 </View>
             </View>
             {/* محتوى الصفحة */}
             <View style={style.container}>
-
                 <View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
                     {user?.image ? (
-                        <TouchableOpacity style={{ width: 55, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EBF2FF', borderRadius: 50, height: 55 }}>
+                        <TouchableOpacity
+                            style={{ width: 55, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EBF2FF', borderRadius: 50, height: 55 }}
+                            onPress={() => setModalVisible(true)}
+                        >
                             <Image source={{ uri: user.image }} style={{ width: 55, height: 55, borderRadius: 50 }} />
                         </TouchableOpacity>
                     ) : (
@@ -59,6 +86,16 @@ function UserOptions() {
                 </View>
                 <OptionsList />
             </View>
+            {/* مودال الصورة */}
+            <ImageModal
+                visible={modalVisible}
+                source={user?.image}
+                onClose={() => setModalVisible(false)}
+                setSource={(newImage) => setUser(prev => ({ ...prev, image: newImage }))}
+                userId={user?.id}
+                setUser={setUser}
+            />
+
         </View>
     )
 }
@@ -73,4 +110,5 @@ const style = StyleSheet.create({
 
 });
 
+import ImageModal from '../Components/UserOptionsComponents/ImageModal';
 export default UserOptions

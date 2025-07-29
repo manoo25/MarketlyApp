@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { colors, styles } from '../../../styles';
+import { styles } from '../../../styles';
 import { ArrowLeft2 } from 'iconsax-react-nativejs';
 import { LogoutCurve } from 'iconsax-react-nativejs';
 import { logoutUser } from "../../Redux/Slices/users";

@@ -1,23 +1,25 @@
-import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput } from "react-native";
 import { useState, useEffect } from 'react';
 import { colors, styles } from '../../styles';
 import { ArrowRight2 } from 'iconsax-react-nativejs';
 import { Edit } from 'iconsax-react-nativejs';
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import LabelInpts from "../Components/GlobalComponents/LabelInpts";
 import { updateUser } from "../Redux/Slices/users";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PATHS } from '../routes/Paths';
 
 
 
 
 
-function AccountDetails() {
+
+
+function AccountDetails({ navigation }) {
 
     const dispatch = useDispatch();
-    const userId = 'user123'; // هاته من الـ Auth
     const [user, setUser] = useState('');
 
     const [isEditing, setIsEditing] = useState(false);
@@ -31,6 +33,9 @@ function AccountDetails() {
         };
         fetchUser();
     }, []);
+
+    const userId = user?.id;
+
 
 
     const validationSchema = Yup.object().shape({
@@ -48,7 +53,7 @@ function AccountDetails() {
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
                     <View>
                         <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'flex-end' }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate(PATHS.UserOptions)}>
                                 <ArrowRight2 size="32" color="#424047" />
                             </TouchableOpacity>
                             <Text style={[styles.h2, { textAlign: 'right', }]}>بيانات الحساب</Text>
@@ -59,6 +64,7 @@ function AccountDetails() {
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "center",
+                            display: isEditing ? 'none' : 'flex',
                         }}
                     >
                         <TouchableOpacity style={{
@@ -70,7 +76,9 @@ function AccountDetails() {
                             height: 60,
                             borderRadius: 16,
                             gap: 10,
-                        }} >
+                        }}
+                            onPress={() => setIsEditing(!isEditing)}
+                        >
                             <Text
                                 style={[
                                     styles.h2,
@@ -101,9 +109,36 @@ function AccountDetails() {
                     }}
                     validationSchema={validationSchema}
                     enableReinitialize
-                    onSubmit={(values) => {
-                        dispatch(updateUserData({ id: userId, updatedData: values }));
-                        setIsEditing(false);
+                    // onSubmit={async  (values) => {
+                    //     dispatch(updateUser({ id: userId, updatedData: values }));
+                    //     setIsEditing(false);
+                    // }}
+                    onSubmit={async (values) => {
+                        try {
+                            // 1. Update في Supabase
+                            await dispatch(updateUser({ id: userId, updatedData: values }));
+
+                            // 2. هات اليوزر القديم من AsyncStorage
+                            const storedUser = await AsyncStorage.getItem('userData');
+                            if (storedUser) {
+                                const parsedUser = JSON.parse(storedUser);
+
+                                // 3. اعمل نسخة محدثة منه بالبيانات الجديدة
+                                const updatedUser = {
+                                    ...parsedUser,
+                                    ...values,
+                                };
+
+                                // 4. احفظها في AsyncStorage
+                                await AsyncStorage.setItem('userData', JSON.stringify(updatedUser));
+                            }
+
+                            // 5. اقفل وضع التعديل
+                            setIsEditing(false);
+
+                        } catch (error) {
+                            console.log('Update Error:', error);
+                        }
                     }}
                 >
                     {({
@@ -122,8 +157,8 @@ function AccountDetails() {
                                     <TextInput
                                         placeholder="البريد الإلكتروني"
                                         placeholderTextColor="#7B7686"
-                                        style={[styles.input, styles.h4]}
-                                        editable={isEditing}
+                                        style={[[styles.input, styles.h4], { color: '#7B7686' }]}
+                                        editable={false}
                                         onChangeText={handleChange("email")}
                                         onBlur={handleBlur("email")}
                                         value={values.email}
@@ -140,7 +175,7 @@ function AccountDetails() {
                                     <TextInput
                                         placeholder="ادخل اسمك ثلاثى"
                                         placeholderTextColor="#7B7686"
-                                        style={[styles.input, styles.h4]}
+                                        style={[[styles.input, styles.h4], { color: isEditing ? colors.text : '#7B7686'  }]}
                                         editable={isEditing}
                                         onChangeText={handleChange("name")}
                                         onBlur={handleBlur("name")}
@@ -157,7 +192,7 @@ function AccountDetails() {
                                     <TextInput
                                         placeholder="+20 "
                                         placeholderTextColor="#7B7686"
-                                        style={[styles.input, styles.h4, { textAlign: "left" }]}
+                                        style={[styles.input, styles.h4, { color: isEditing ? colors.text : '#7B7686' }]}
                                         editable={isEditing}
                                         onChangeText={handleChange("phone")}
                                         onBlur={handleBlur("phone")}
@@ -175,11 +210,15 @@ function AccountDetails() {
                                     flexDirection: "row",
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    marginTop: 22,
+                                    marginTop: 24,
+                                    display: isEditing ? 'flex' : 'none',
                                 }}
                             >
                                 <TouchableOpacity
-                                    style={style.Btn}
+                                    style={styles.Btn}
+                                    onPress={() => {
+                                        handleSubmit();
+                                    }}
                                 >
                                     <Text
                                         style={[
@@ -187,11 +226,11 @@ function AccountDetails() {
                                             {
                                                 textAlign: "right",
                                                 fontSize: 20,
-                                                color: '#7B7686',
+                                                color: colors.white,
                                             },
                                         ]}
                                     >
-                                        حذف الحساب
+                                        حفظ
 
                                     </Text>
 

@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, ScrollView, View, FlatList, Modal, TextInput, Alert, Dimensions } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useState } from 'react';
 import { colors, styles } from '../../styles';
 import { ArrowRight2 } from 'iconsax-react-nativejs';
@@ -10,10 +10,8 @@ import LoadingSpinner from "../Components/GlobalComponents/LoadingSpinner";
 
 
 
-function ChangePassword() {
+function ChangePassword({navigation}) {
 
-    const screenHeight = Dimensions.get("window").height;
-    const buttonMarginTop = screenHeight * 0.12; // 12% من ارتفاع الشاشة
 
     return (
         <View style={style.container}>
@@ -21,7 +19,7 @@ function ChangePassword() {
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
                     <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
                             <ArrowRight2 size="32" color="#424047" />
                         </TouchableOpacity>
                         <Text style={[styles.h2, { textAlign: 'right' }]}>تغيير كلمة السر</Text>
@@ -55,7 +53,7 @@ function ChangePassword() {
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginTop: buttonMarginTop,
+                    marginTop: 24,
                 }}
             >
                 <TouchableOpacity
