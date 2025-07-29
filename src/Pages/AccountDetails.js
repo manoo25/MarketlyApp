@@ -53,7 +53,7 @@ function AccountDetails({ navigation }) {
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
                     <View>
                         <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'flex-end' }}>
-                            <TouchableOpacity onPress={() => navigation.navigate(PATHS.UserOptions)}>
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <ArrowRight2 size="32" color="#424047" />
                             </TouchableOpacity>
                             <Text style={[styles.h2, { textAlign: 'right', }]}>بيانات الحساب</Text>

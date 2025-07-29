@@ -132,6 +132,37 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+// ✅ تغيير كلمة المرور
+export const changePassword = createAsyncThunk(
+  "users/changePassword",
+  async ({ userId, currentPassword, newPassword }, { rejectWithValue }) => {
+    try {
+      // التحقق من كلمة المرور الحالية
+      const { data: user, error: checkError } = await supabase
+        .from("users")
+        .select("password")
+        .eq("id", userId)
+        .single();
+
+      if (checkError) throw new Error("خطأ في جلب بيانات المستخدم");
+      if (!user) throw new Error("المستخدم غير موجود");
+      if (user.password !== currentPassword) throw new Error("كلمة المرور الحالية غير صحيحة");
+
+      // تحديث كلمة المرور الجديدة
+      const { data, error } = await supabase
+        .from("users")
+        .update({ password: newPassword })
+        .eq("id", userId)
+        .select();
+
+      if (error) throw error;
+      return data[0];
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // ✅ Slice
 const usersSlice = createSlice({
   name: "users",
@@ -144,6 +175,9 @@ const usersSlice = createSlice({
   reducers: {
     logoutUser(state) {
       state.currentUser = null;
+    },
+    updateCurrentUser(state, action) {
+      state.currentUser = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -210,9 +244,23 @@ const usersSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.error = action.payload;
+      })
+
+      // 🔐 تغيير كلمة المرور
+      .addCase(changePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentUser = action.payload;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { logoutUser } = usersSlice.actions;
+export const { logoutUser, updateCurrentUser } = usersSlice.actions;
 export default usersSlice;
