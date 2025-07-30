@@ -19,7 +19,7 @@ export const fetchProducts = createAsyncThunk(
           company:company_id (name)
         `);
       
-
+console.log("Fetched products:", data); 
       if (error) throw error;
 const filterPro = data.filter(
   x =>

@@ -6,12 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  FlatList
+  FlatList,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../Redux/Slices/productsSlice";
 import SearchResults from "./SearchResults";
+import { PATHS } from "../routes/Paths";
 
 const Search = () => {
   const [searchText, setSearchText] = useState("");
@@ -44,20 +45,31 @@ const Search = () => {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 20 }}
+    >
       <View style={styles.searchHeader}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.navigate(PATHS.Home)}
+        >
           <Ionicons name="arrow-forward" size={24} color="#333" />
         </TouchableOpacity>
 
         <View style={styles.searchContainer}>
-          <AntDesign name="search1" size={20} color="#888" style={styles.searchIcon} />
+          <AntDesign
+            name="search1"
+            size={20}
+            color="#888"
+            style={styles.searchIcon}
+          />
           <TextInput
             value={searchText}
             onChangeText={handleSearchChange}
             placeholder="ابحث عن منتج"
             placeholderTextColor="#7B7686"
-            style={styles.searchInput}
+            style={[styles.searchInput, { fontFamily: "Tajawal-Regular" }]}
             keyboardType="default"
             autoCapitalize="none"
             textAlign="right"
@@ -76,7 +88,7 @@ const Search = () => {
         </View>
       </View>
 
-      <SearchResults 
+      <SearchResults
         searchText={searchText}
         filteredProducts={filteredProducts}
         products={products}

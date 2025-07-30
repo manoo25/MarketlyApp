@@ -1,4 +1,5 @@
 import ProductDetails from "../Pages/ProductDetails";
+import Search from "../Pages/search";
 
 export  const PATHS = {
   Intro: "Intro",
@@ -19,4 +20,5 @@ export  const PATHS = {
   AllCompaniesScreen:"AllCompaniesScreen",
   CompanyProductsScreen: "CompanyProductsScreen",
   ProductDetails: "ProductDetails",
+  Search: "Search",  
 };
