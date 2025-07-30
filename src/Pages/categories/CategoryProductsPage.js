@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import {
   View,
-  Text,
-  ScrollView,
+  Text,FlatList,
   TouchableOpacity,
   Image,
-  StyleSheet,
-  I18nManager,
+  StyleSheet
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
@@ -14,6 +12,37 @@ import CustomAppBar from "../../Components/Categories/CustomAppBar";
 import useFetchCompanies from "../../Components/Categories/useFetchCompanies";
 import ListProducts from "../../Components/Categories/ListProducts";
 import SortFilterModal from "../../Components/Categories/SortFilterModal";
+import { Building } from "iconsax-react-nativejs";
+
+
+const CompanyCard = ({ company, isSelected, onPress }) => (
+  <View style={styles.companyItem}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.imageWrapper, isSelected && styles.selected]}
+    >
+      <Image
+        source={{ uri: company.image }}
+        style={styles.image}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
+    <Text style={styles.name}>{company.name}</Text>
+  </View>
+);
+
+const AllCompaniesCard = ({ isSelected, onPress }) => (
+  <View style={styles.companyItem}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.imageWrapper, isSelected && styles.selected]}
+    >
+      <Building size="25" color="#424047"/>
+    </TouchableOpacity>
+    <Text style={styles.name}>جميع{"\n"}الشركات</Text>
+  </View>
+);
+
 
 const CategoryProductsPage = ({ route, navigation }) => {
   const { category } = route.params;
@@ -80,57 +109,36 @@ const CategoryProductsPage = ({ route, navigation }) => {
       />
 
       {/* ✅ الشركات */}
-      <View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ direction: "rtl" }}
-          contentContainerStyle={{
-            flexDirection: "row-reverse",
-            paddingHorizontal: 12,
-            paddingVertical: 10,
-          }}
-        >
-          {filteredCompanies
-            .slice()
-            .reverse()
-            .map((company) => (
-              <View key={company.id} style={styles.companyItem}>
-                <TouchableOpacity
-                  onPress={() => handleSelectCompany(company.id)}
-                  style={[
-                    styles.imageWrapper,
-                    selectedCompanyId === company.id && styles.selected,
-                  ]}
-                >
-                  <Image
-                    source={{ uri: company.image }}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-                <Text style={styles.name}>{company.name}</Text>
-              </View>
-            ))}
-
-          {/* زر "جميع الشركات" */}
-          <View style={styles.companyItem}>
-            <TouchableOpacity
-              onPress={() => handleSelectCompany(null)}
-              style={[
-                styles.imageWrapper,
-                selectedCompanyId === null && styles.selected,
-              ]}
-            >
-              <Image
-                source={require("../../../assets/imgs/company-icon.png")}
-                style={styles.image}
-              />
-            </TouchableOpacity>
-            <Text style={styles.name}>جميع{"\n"}الشركات</Text>
-          </View>
-        </ScrollView>
-      </View>
+      {/* <View> */}
+        <View style={{ marginTop: 10 }}>
+          <FlatList
+            data={[...filteredCompanies.slice().reverse(), { id: "all" }]}
+            horizontal
+            inverted
+            keyExtractor={(item) => item.id?.toString()}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              flexDirection: "row-reverse",
+              paddingHorizontal: 12,
+              paddingVertical: 2,
+            }}
+            renderItem={({ item }) =>
+              item.id === "all" ? (
+                <AllCompaniesCard
+                  isSelected={selectedCompanyId === null}
+                  onPress={() => handleSelectCompany(null)}
+                />
+              ) : (
+                <CompanyCard
+                  company={item}
+                  isSelected={selectedCompanyId === item.id}
+                  onPress={() => handleSelectCompany(item.id)}
+                />
+              )
+            }
+          />
+        </View>
+      {/* </View> */}
 
       {/* ✅ مودال الفلترة */}
       <SortFilterModal
@@ -153,7 +161,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   companyItem: {
-    marginTop: 10,
+    // marginTop: 10,
     alignItems: "center",
     marginHorizontal: 6,
   },

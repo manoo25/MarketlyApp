@@ -26,6 +26,7 @@ import { colors, styles } from "../../styles";
 import { ArrowRight2 } from "iconsax-react-nativejs";
 import CategoryTabs from "../Components/OffersComponents/CategoryTabs";
 import SortFilter from "../Components/OffersComponents/useSortedProducts";
+import HeaderPages from "../Components/GlobalComponents/HeaderPages";
 
 export default function OffersPage() {
   const dispatch = useDispatch();
@@ -136,15 +137,12 @@ export default function OffersPage() {
       <View style={{ flex: 1 }}>
         <View style={style.container}>
           {/* Header */}
-          <View style={style.header}>
+          <View style={[style.header]}>
           
-
-            <View style={style.titleContainer}>
-              <TouchableOpacity onPress={() => {  navigation.navigate("Home");}}>
-                <ArrowRight2 size="32" color="#424047" />
-              </TouchableOpacity>
-              <Text style={[styles.h2, { textAlign: "right" }]}>العروض</Text>
-            </View>
+<View style={{position:'relative',top:-20}}>
+   <HeaderPages title={'العروض'} navigate={() => navigation.navigate("Home")}/>
+</View>
+           
             
               <TouchableOpacity
               style={style.searchIconContainer}
@@ -230,14 +228,13 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#fff",
-    direction: "rtl",
+    writingDirection: "rtl",
   },
   header: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 48,
-    marginBottom: 16,
+height:90
   },
   titleContainer: {
     flexDirection: "row",
@@ -258,7 +255,7 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-     alignItems: "flex-end",
+    alignItems: "flex-end",
   },
   modalTitle: {
     fontSize: 16,

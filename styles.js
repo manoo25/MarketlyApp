@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   dividerLine: {
     height: 1,
     width: "100%",
-    backgroundColor: "#aeaeae",
+    backgroundColor: "#aeaeae4b",
     marginVertical: 15,
   }
   ,h1: {
@@ -155,5 +155,232 @@ borderRadius:15,
     backgroundColor:'lightgray',
     zIndex:2000,
     top:0
+  },
+   priceContainer: {
+        flexDirection: 'row-reverse',
+        alignItems: 'center',  
+        gap:5
+    },
+     headerContent: {
+    width: "100%",
+    alignItems: "flex-end",
+  },
+  headerRow: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+ position: 'relative',
+  },
+  headerTitle: {
+    textAlign: "right",
+    marginRight: 8,
+  marginTop:10
+  },
+   header: {
+    alignItems: "center",
+    marginTop: 60,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
+    quantityContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#F7F9FB',
+        borderRadius: 5,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        minWidth: 90,
+        justifyContent: 'space-between',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 2,
+        marginLeft: 10,
+    },
+    quantityButton: {
+        borderRadius: 8,
+        width: 25,
+        height: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 2,
+    },
+    quantityText: {
+        fontSize: 16,
+        color: '#333',
+        textAlign: 'center',
+        minWidth: 24,
+    },
+});
+
+export const componentStyles = StyleSheet.create({
+  
+    cardContainer: {
+        height: 188,
+        width: 165,
+        marginTop: 12,
+       paddingRight:15,
+    //    backgroundColor:'green'
+       
+    },
+      h2: {
+    fontFamily: "Tajawal-Bold",
+    fontSize: 28,
+    color: colors.text,
+  },
+      h3: {
+    fontFamily: "Tajawal-Medium",
+    fontWeight:500,
+    fontSize: 26,
+    color: colors.text,
+  },
+    imageContainer: {
+        height: 130,
+        width: '100%',
+        borderRadius: 20,
+        backgroundColor: '#EBF2FF',
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 20,
+    },
+    addButton: {
+        position: 'absolute',
+        left: 10,
+        bottom: 10,
+        backgroundColor: '#EBF2FF',
+        borderRadius: 25,
+        width: 35,
+        height: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
+    },
+    infoContainer: {
+    
+      paddingRight:10,
+    },
+    titleText: {
+        textAlign: 'right',
+       fontSize:13,
+        marginTop: 8,
+       color:'#424047'
+    },
+    priceText: {
+        textAlign: 'right',
+         fontSize:13,
+        marginTop: 8,
+        color:'#424047'
+    },
+});
+
+export const Sortstyles = StyleSheet.create({
+  filterRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    justifyContent: "flex-start",
+  },
+  filterText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#424047",
+    // paddingBottom: 5,
+    fontFamily: "Tajawal-Medium",
+  },
+  iconButton: {
+    padding: 2,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "#000",
+    marginHorizontal: 4,
+  },
+  modal: {
+    justifyContent: "flex-end",
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    paddingBottom: 40,
+  },
+  dragIndicator: {
+    width: 40,
+    height: 4,
+    backgroundColor: "#ccc",
+    borderRadius: 2,
+    alignSelf: "center",
+    marginBottom: 10,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  closeButton: {
+    width: 26,
+    height: 26,
+    borderWidth: 2,
+    borderColor: "#424047",
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalTitle: {
+    color: "#424047",
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 5,
+    marginRight: 0,
+    textAlign: "right",
+    fontFamily: "Tajawal-Bold",
+  },
+  radioRow: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+  },
+  radioCircle: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#666",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 10,
+  },
+  selectedDot: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    backgroundColor: "#000",
+  },
+  radioLabel: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#424047",
+    fontFamily: "Tajawal-Regular",
+    flexShrink: 1,
+  },
+  applyButton: {
+    backgroundColor: "#007bff",
+    borderRadius: 15,
+    paddingVertical: 12,
+    marginTop: 20,
+  },
+  applyButtonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "500",
+    fontFamily: "Tajawal-Regular",
   },
 });

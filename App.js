@@ -3,6 +3,7 @@ import { useAppFonts } from './styles';
 import Router from './src/routes/Router';
 import { Provider } from 'react-redux';
 import { store } from './src/Redux/Store';
+import { View } from 'react-native';
 
 
 export default function App() {
@@ -12,7 +13,9 @@ export default function App() {
 
   return (
     <Provider  store={store}>
-      <Router />
+     <View style={{ flex: 1}}>
+       <Router   />
+     </View>
     </Provider>
   );
 }

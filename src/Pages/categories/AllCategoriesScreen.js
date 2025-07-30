@@ -57,7 +57,7 @@ const AllCategoriesScreen = () => {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
+    <View style={{ flex: 1, backgroundColor: colors.white}}>
       <CustomAppBar
         title="كل الأقسام"
         onBack={() => navigation.goBack()}
@@ -67,17 +67,19 @@ const AllCategoriesScreen = () => {
         onSearchClose={() => setSearchQuery("")}
       />
 
-      <FlatList
-        data={filteredCategories}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={3}
-        columnWrapperStyle={{
-          justifyContent: "space-around",
-          paddingBottom: 12,
-        }}
-        contentContainerStyle={localStyles.listContent}
-      />
+    <FlatList
+  data={filteredCategories}
+  renderItem={renderItem}
+  keyExtractor={(item) => item.id}
+  numColumns={4}
+  key={4} 
+  columnWrapperStyle={{
+     flexDirection: 'row-reverse',
+    paddingBottom: 12,
+  }}
+  contentContainerStyle={localStyles.listContent}
+/>
+
     </View>
   );
 };
@@ -94,6 +96,7 @@ const localStyles = StyleSheet.create({
     width: 100,
     height: 110,
     alignItems: "center",
+
     marginBottom: 10,
   },
   imageContainer: {

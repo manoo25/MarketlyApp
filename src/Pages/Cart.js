@@ -17,6 +17,7 @@ import { addOrder } from '../Redux/Slices/Orders';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useNavigation } from '@react-navigation/native';
 import { PATHS } from '../routes/Paths';
+import HeaderPages from '../Components/GlobalComponents/HeaderPages';
 
 
 
@@ -50,7 +51,7 @@ const[CartItemsArr,setCartItemsArr]=useState([]);
   const Total = CartItemsArr.reduce((acc, item) => {
     return acc + item.product.endPrice * item.quantity;
   }, 0); // قيمة ابتدائية 0
-console.log('Total'+Total);
+
 
   SetTotalPrice(Total);
 }, [CartItemsArr]);
@@ -114,17 +115,8 @@ navigate(PATHS.Orders);
 
     return (
         <View style={style.container}>
-            {/* الهيدر */}
-            <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
-                <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
-                    <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <TouchableOpacity>
-                            <ArrowRight2 size="32" color="#424047" />
-                        </TouchableOpacity>
-                        <Text style={[styles.h2, { textAlign: 'right' }]}>سلة التسوق</Text>
-                    </View>
-                </View>
-            </View>
+           <HeaderPages title={'سلة التسوق'} navigate={() => navigate(PATHS.Home)} />
+
             {/* محتوى السلة */}
             <View style={{ flex: 1 }}>
                 {CartItemsArr.length === 0 ? (
@@ -193,7 +185,12 @@ navigate(PATHS.Orders);
                                     width: 175,
                                     height: 60,
                                     borderRadius: 16
-                                }} >
+                                }}
+                                
+                                onPress={()=>navigate(PATHS.TraderProducts
+                                ,{TraderID:CartItemsArr[0].product.trader_id})
+                             }
+                                >
                                     <Text
                                         style={[
                                             styles.h3,

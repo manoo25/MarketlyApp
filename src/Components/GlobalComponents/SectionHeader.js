@@ -8,7 +8,7 @@ export default function SectionHeader({text}) {
 
     
     <Text style={[styles.h3,{
-                    fontSize:28,
+                    fontSize:22,
                     paddingRight:18,
                    
                     textAlign:"right"

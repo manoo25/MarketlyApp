@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { supabase } from "../Supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { Alert } from "react-native";
 
 // ✅ Fetch cart items
 export const fetchCartItems = createAsyncThunk(
@@ -17,6 +18,29 @@ export const fetchCartItems = createAsyncThunk(
           product:product_id (name, image, endPrice, trader_id)
         `)
         .eq("user_id", userData.id);
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const fetchSpecificCartItems = createAsyncThunk(
+  "cart_items/fetchSpecificCartItems",
+  async (id, { rejectWithValue }) => {
+    try {
+      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+
+      const { data, error } = await supabase
+        .from("cart_items")
+        .select(`
+          *,
+          product:product_id (name, image, endPrice, trader_id)
+        `)
+        .eq("user_id", userData.id)
+        .eq("product_id", id);
 
       if (error) throw error;
 
@@ -98,34 +122,54 @@ export const deleteCartItem = createAsyncThunk(
 );
 
 
-// ✅ Add or Update logic
+
 export const addOrUpdateCartItem = createAsyncThunk(
   "cart_items/addOrUpdateCartItem",
-  async ({ product_id, quantity }, { dispatch, getState, rejectWithValue }) => {
-    // try {
-      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
-      const existingItems = getState().CartItems.cartItems;
-// console.log('existingItems'+existingItems);
+  async ({ product_id, traderID, quantity, navigate }, { dispatch, getState, rejectWithValue }) => {
+    const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+    const existingItems = getState().CartItems.cartItems;
+    const existingItem = existingItems.find(
+      (item) => item.product_id === product_id && item.user_id === userData.id
+    );
 
-      const existingItem = existingItems.find(
-        (item) => item.product_id === product_id && item.user_id === userData.id
+    if (existingItems.length > 0 && existingItems[0].product.trader_id !== traderID) {
+      Alert.alert(
+        "تنبيه",
+        "لا يمكنك إضافة منتجات من تاجر آخر في نفس السلة",
+        [
+          {
+            text: "تصفح منتجات التاجر",
+            onPress: () => {
+             navigate("TraderProducts", { TraderID: existingItems[0].product.trader_id });
+            },
+            style: "default",
+          },
+          {
+            text: "اكمال الطلب",
+            onPress: () => {
+             navigate("CartScreen");
+            },
+            style: "default",
+          },
+        ],
+        { cancelable: true }
       );
+      return;
+    }
 
-      if (existingItem) {
-        const newQuantity = existingItem.quantity + quantity;
-        return await dispatch(
-          updateCartItem({ id: existingItem.id, quantity: newQuantity })
-        ).unwrap();
-      } else {
-        return await dispatch(
-          createCartItem({ product_id, quantity })
-        ).unwrap();
-      }
-    // } catch (error) {
-    //   return rejectWithValue(error.message);
-    // }
+    if (existingItem) {
+      const newQuantity = existingItem.quantity + quantity;
+      return await dispatch(
+        updateCartItem({ id: existingItem.id, quantity: newQuantity })
+      ).unwrap();
+    } else {
+      return await dispatch(
+        createCartItem({ product_id, quantity })
+      ).unwrap();
+    }
   }
 );
+
 
 export const deleteCartItemsByUserId = createAsyncThunk(
   "cart/deleteByUserId",
@@ -148,6 +192,7 @@ const cartItemsSlice = createSlice({
   name: "cartItems",
   initialState: {
     cartItems: [],
+    specificCartItem: [],
     loading: false,
     error: null,
   },
@@ -166,6 +211,10 @@ const cartItemsSlice = createSlice({
       .addCase(fetchCartItems.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+        .addCase(fetchSpecificCartItems.fulfilled, (state, action) => {
+        state.specificCartItem = action.payload;
       })
 
       // Create

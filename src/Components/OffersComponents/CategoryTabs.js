@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { componentStyles } from "../../../styles";
 
 export default function CategoryTabs({ categories, onCategoryChange }) {
   const allCategories = [ ...categories , "الكل"];
@@ -19,7 +20,7 @@ export default function CategoryTabs({ categories, onCategoryChange }) {
           style={styles.tabItem}
         >
           <Text
-            style={[styles.tabText, selected === cat && styles.tabTextActive]}
+            style={[componentStyles.h2,styles.tabText, selected === cat && styles.tabTextActive]}
           >
             {cat}
           </Text>
@@ -33,7 +34,7 @@ export default function CategoryTabs({ categories, onCategoryChange }) {
 
 const styles = StyleSheet.create({
   tabsContainer: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingTop: 16,
@@ -54,13 +55,13 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   tabTextActive: {
-    color: "#1A1A1A",
+    color: "#46B8F0",
     fontWeight: "600",
   },
   activeLine: {
     marginTop: 12,
-    height: 0.8,
-    backgroundColor: "black",
+    height: 1,
+    backgroundColor: "#46B8F0",
     width: "100%",
     borderRadius: 1,
   },

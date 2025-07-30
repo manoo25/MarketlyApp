@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,38 +6,66 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { styles } from "../../styles";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrders } from "../Redux/Slices/Orders";
+import { editOrder, getOrders } from "../Redux/Slices/Orders";
 import { useNavigation } from "@react-navigation/native";
 import { PATHS } from "../routes/Paths";
+import GoBack from "../Components/GlobalComponents/GoBack";
+import HeaderPages from "../Components/GlobalComponents/HeaderPages";
+import NotesModal from "../Components/GlobalComponents/Modal";
 
 const Orders = () => {
+ const [isModalVisible, setIsModalVisible] = useState(false);
+  const [note, setNote] = useState('');
+  const [cancelOrderId, setcancelOrderId] = useState('');
   const {navigate}=useNavigation();
   const dispatch = useDispatch();
-  const { orders } = useSelector((state) => state.Orders);
+  const { orders,loading } = useSelector((state) => state.Orders);
 
   useEffect(() => {
     dispatch(getOrders());
   }, [dispatch]);
 
+
+
+async function handleSaveNotes() {
+  const resultAction = await dispatch(
+    editOrder({
+      id: cancelOrderId,
+      updatedData: {
+        status: "returns",
+        reason: note,
+      },
+    })
+  );
+
+  if (editOrder.fulfilled.match(resultAction)) {
+    Alert.alert("تم", "تم الغاءالطلب بنجاح.");
+  } 
+
+  setIsModalVisible(false);
+}
+
+
+
   return (
     <View style={style.container}>
-      <View style={{ alignItems: "center", marginTop: 60, marginBottom: 16 }}>
-        <View style={{ width: "100%", alignItems: "flex-end" }}>
-          <View style={{ flexDirection: "row-reverse", alignItems: "center" }}>
-            <TouchableOpacity onPress={() => navigate(PATHS.Home)}>
-              <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={[styles.h3, { textAlign: "right", marginRight: 8, paddingBottom: 7 }]}>
-              الطلبات
-            </Text>
-          </View>
-        </View>
-      </View>
-
+ <HeaderPages title={'الطلبات'} navigate={() => navigate(PATHS.Home)}/>   
+ <NotesModal
+        visible={isModalVisible}
+        onClose={() => {
+          setIsModalVisible(false);
+          setNote('');
+        }}
+        note={note}
+        setNote={setNote}
+        onSave={handleSaveNotes}
+        style={style}
+      />
       {orders?.length > 0 && (
         <FlatList
           data={orders}
@@ -127,11 +155,28 @@ const Orders = () => {
                  <TouchableOpacity  onPress={() =>navigate(PATHS.OrderDetails, { OrderData: item })}>
                    <Text style={[style.detailsLink]}>تفاصيل الطلب</Text>
                   </TouchableOpacity> 
-                 <TouchableOpacity>
+                {(item.status === "pending"||item.status === "inprogress")&&
+             <TouchableOpacity
+  onPress={() => {
+    setIsModalVisible(true);
+    setcancelOrderId(item.id);
+  }}
+>
                   <View style={style.deliveryStatusRow}>
-                  <Text style={[styles.h2,style.deliveryTextRow]}>الطلب مرة أخرى</Text>
+                  <Text style={[styles.h2,style.deliveryTextRow]}>الغاء الطلبية</Text>
                 </View>
-                  </TouchableOpacity> 
+                  </TouchableOpacity>  
+              } 
+              {
+item.status === "done"&&
+                
+                  <View style={[style.deliveryStatusRow,{backgroundColor:'#D4EDDA'}]}>
+                  <Text style={[[
+                    styles.h3,style.deliveryTextRow,{fontSize:12,color:'green'}]]}
+                    >تم التاكيد من قبل المندوب</Text>
+                </View>
+                 
+              }
                  
                
                 
@@ -142,6 +187,7 @@ const Orders = () => {
           )}
         />
       )}
+     
     </View>
   );
 };
@@ -172,14 +218,14 @@ const style = StyleSheet.create({
     marginVertical: 10,
   },
   deliveryStatusRow: {
-    backgroundColor: "#E3F0FF",
+    backgroundColor: "#F8D7DA",
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginLeft: 10,
   },
   deliveryTextRow: {
-    color: "#327AFF",
+    color: "red",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",

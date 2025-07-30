@@ -15,6 +15,8 @@ import OrderDetails from '../Pages/OrderDetails';
 import OffersPage from '../Pages/OffersPage';
 import AllCompaniesScreen from '../Pages/companies/AllCompaniesScreen';
 import CompanyProductsScreen from '../Pages/companies/CompanyProductsScreen';
+import ProductDetails from '../Pages/ProductDetails';
+// import Search from '../Pages/search';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,6 +28,7 @@ function HomeStack() {
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
       <Stack.Screen name="AllCompaniesScreen" component={AllCompaniesScreen} />
+      <Stack.Screen name="ProductDetails" component={ProductDetails} />
       <Stack.Screen
         name="CompanyProductsScreen"
         component={CompanyProductsScreen}

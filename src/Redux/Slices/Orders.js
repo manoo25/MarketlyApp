@@ -2,18 +2,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { UserId } from "./GetUserData";
 import { supabase } from "../Supabase";
 
-// ✅ Get All Orders for Current User
 export const getOrders = createAsyncThunk(
   "orders/getOrders",
   async (_, { rejectWithValue }) => {
     try {
       const { data, error } = await supabase
         .from("orders")
-        .select(`*,
+        .select(
+          `*,
            user_id (*),
-            trader_id (name)`)
-        .eq("user_id", UserId);
-
+           trader_id (name)`
+        )
+        .eq("user_id", UserId)
+        .order("created_at", { ascending: false }); 
       if (error) throw error;
       return data;
     } catch (error) {
@@ -21,6 +22,7 @@ export const getOrders = createAsyncThunk(
     }
   }
 );
+
 
 // ✅ Get Done Orders (Status = 'done')
 export const getDoneOrders = createAsyncThunk(
@@ -82,6 +84,7 @@ export const editOrder = createAsyncThunk(
         .single();
 
       if (error) throw error;
+  
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
