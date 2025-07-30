@@ -37,6 +37,7 @@ function ProductDetails() {
   const route = useRoute();
   const { ProductId } = route.params;
 
+
   useEffect(() => {
     dispatch(fetchSpecificProducts(ProductId));
     dispatch(fetchSpecificCartItems(ProductId));
@@ -89,8 +90,8 @@ function ProductDetails() {
     }
   }
 
-  async function AddToCart(ProId) {
-    await dispatch(addOrUpdateCartItem({ product_id: ProId, quantity: 1 }));
+  async function AddToCart(ProId,traderID) {
+    await dispatch(addOrUpdateCartItem({ product_id: ProId,traderID:traderID, quantity: 1, navigate:navigation.navigate }));
     dispatch(fetchSpecificCartItems(ProductId));
   }
   return (
@@ -333,7 +334,7 @@ function ProductDetails() {
 
               {specificCartItem?.length == 0 && (
                 <TouchableOpacity
-                  onPress={() => AddToCart(specificProduct[0]?.id)}
+                  onPress={() => AddToCart(specificProduct[0]?.id,specificProduct[0]?.trader_id)}
                   style={{
                     backgroundColor: colors.BtnsColor,
                     flexDirection: "row",

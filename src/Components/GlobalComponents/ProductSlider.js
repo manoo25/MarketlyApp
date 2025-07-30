@@ -31,7 +31,7 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
           />
 
          <TouchableOpacity
-           onPress={() => AddToCart(item.id)}
+           onPress={() => AddToCart(item.id,item.trader_id)}
             style={componentStyles.addButton}>
                 <AntDesign name="plus" size={24} color="blue" />
             </TouchableOpacity>
@@ -128,9 +128,9 @@ SetSalePro(TargetData)
   }, [products]);
 
 
-  function AddToCart(ProId) {
+  function AddToCart(ProId,traderID) {
  
-    dispatch(addOrUpdateCartItem({ product_id: ProId, quantity: 1 }));
+    dispatch(addOrUpdateCartItem({ product_id: ProId,traderID:traderID, quantity: 1, navigate: navigate }));
   }
     return (
         <View style={{marginTop:15}}>

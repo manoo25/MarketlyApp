@@ -23,6 +23,7 @@ import ProductDetails from "../Pages/ProductDetails";
 import UserOptions from "../Pages/UserOptions";
 import TraderProducts from "../Pages/TraderProducts/TraderProducts";
 import Search from "../Pages/search";
+import Cart from "../Pages/Cart";
 
 
 
@@ -69,6 +70,10 @@ export default function Router() {
         <Stack.Screen
           name={PATHS.OrderDetails}
           component={OrderDetails}
+        />
+        <Stack.Screen
+          name={PATHS.CartScreen}
+          component={Cart}
         />
         <Stack.Screen
           name={PATHS.ProductDetails}

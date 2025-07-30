@@ -223,6 +223,17 @@ export const componentStyles = StyleSheet.create({
     //    backgroundColor:'green'
        
     },
+      h2: {
+    fontFamily: "Tajawal-Bold",
+    fontSize: 28,
+    color: colors.text,
+  },
+      h3: {
+    fontFamily: "Tajawal-Medium",
+    fontWeight:500,
+    fontSize: 26,
+    color: colors.text,
+  },
     imageContainer: {
         height: 130,
         width: '100%',
@@ -306,9 +317,9 @@ export const Sortstyles = StyleSheet.create({
     marginBottom: 10,
   },
   modalHeader: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     marginBottom: 10,
     paddingHorizontal: 10,
   },
@@ -323,10 +334,10 @@ export const Sortstyles = StyleSheet.create({
   },
   modalTitle: {
     color: "#424047",
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: "500",
     marginBottom: 5,
-    marginRight: 10,
+    marginRight: 0,
     textAlign: "right",
     fontFamily: "Tajawal-Bold",
   },

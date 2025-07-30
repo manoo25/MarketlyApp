@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { styles } from '../../../styles';
 export default function OffersSearch({ query, onChange , onClose  }) {
   return (
    <View
       style={{
-        flexDirection: 'row',
+        flexDirection: 'row-reverse',
         alignItems: 'center',
         backgroundColor: '#F0F0F0',
         paddingHorizontal: 12,
@@ -15,11 +16,15 @@ export default function OffersSearch({ query, onChange , onClose  }) {
     >
       <Ionicons name="search" size={20} color="#666" />
       <TextInput
-        style={{
+        style={[styles.h3,{
           flex: 1,
           marginLeft: 8,
-          paddingVertical: 8,
-        }}
+          height:35,
+          fontSize: 16,
+          textAlign: 'right',
+          paddingRight: 15,
+          paddingTop:5
+        }]}
         placeholder="ابحث عن منتج..."
         value={query}
         onChangeText={onChange}

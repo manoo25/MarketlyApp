@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { Feather } from "@expo/vector-icons";
-import { Sortstyles } from "../../../styles";
+import { Sortstyles, styles } from "../../../styles";
 
 const options = [
   { label: "السعر من الأعلى", value: "highToLow" },
@@ -22,7 +22,7 @@ const SortFilter = ({ selectedOption, onSelect }) => {
   return (
     <>
       <View style={Sortstyles.filterRow}>
-        <Text style={Sortstyles.filterText}>رتب حسب</Text>
+        <Text style={[styles.h2,Sortstyles.filterText]}>رتب حسب</Text>
         <TouchableOpacity onPress={() => setVisible(true)} style={Sortstyles.iconButton}>
           <Feather name="filter" size={18} color="#333" />
         </TouchableOpacity>
@@ -41,9 +41,15 @@ const SortFilter = ({ selectedOption, onSelect }) => {
             padding: 20,
           }}
         >
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 12 }}>
-            رتب حسب
-          </Text>
+          <View style={Sortstyles.modalHeader}>
+                     <TouchableOpacity
+                       onPress={() => setVisible(false)}
+                       style={[Sortstyles.closeButton,{position:'relative',left:-12}]}
+                     >
+                       <Feather name="x" size={18} color="#424047" />
+                     </TouchableOpacity>
+                     <Text style={Sortstyles.modalTitle}>رتب حسب</Text>
+                   </View>
 
           {options.map((option) => (
             <TouchableOpacity
@@ -51,16 +57,16 @@ const SortFilter = ({ selectedOption, onSelect }) => {
               onPress={() => setTempOption(option.value)}
               style={{
                 paddingVertical: 12,
-                flexDirection: "row",
+                flexDirection: "row-reverse",
                 justifyContent: "space-between",
                 alignItems: "center",
               }}
             >
               <Text
-                style={{
+                style={[styles.h3,{
                   color: tempOption === option.value ? "#327AFF" : "#333",
                   fontSize: 15,
-                }}
+                }]}
               >
                 {option.label}
               </Text>
@@ -99,7 +105,7 @@ const SortFilter = ({ selectedOption, onSelect }) => {
             }}
             onPress={handleApply}
           >
-            <Text style={{ color: "#fff", textAlign: "center", fontSize: 16 }}>
+            <Text style={[styles.h2,{ color: "#fff", textAlign: "center", fontSize: 16 }]}>
               تطبيق
             </Text>
           </TouchableOpacity>

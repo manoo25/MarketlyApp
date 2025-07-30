@@ -20,5 +20,6 @@ export  const PATHS = {
   CompanyProductsScreen: "CompanyProductsScreen",
   ProductDetails: "ProductDetails",
   TraderProducts:'TraderProducts',
-  Search:'Search'
+  Search:'Search',
+  CartScreen: "CartScreen",
 };

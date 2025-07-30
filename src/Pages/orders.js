@@ -54,7 +54,7 @@ async function handleSaveNotes() {
 
   return (
     <View style={style.container}>
-    <HeaderPages title={'الطلبات'} navigate={() => navigate(PATHS.Home)}/>
+ <HeaderPages title={'الطلبات'} navigate={() => navigate(PATHS.Home)}/>   
  <NotesModal
         visible={isModalVisible}
         onClose={() => {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { componentStyles } from "../../../styles";
 
 export default function CategoryTabs({ categories, onCategoryChange }) {
   const allCategories = [ ...categories , "الكل"];
@@ -19,7 +20,7 @@ export default function CategoryTabs({ categories, onCategoryChange }) {
           style={styles.tabItem}
         >
           <Text
-            style={[styles.tabText, selected === cat && styles.tabTextActive]}
+            style={[componentStyles.h2,styles.tabText, selected === cat && styles.tabTextActive]}
           >
             {cat}
           </Text>

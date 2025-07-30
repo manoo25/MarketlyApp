@@ -12,6 +12,7 @@ import CustomAppBar from "../../Components/Categories/CustomAppBar";
 import useFetchCompanies from "../../Components/Categories/useFetchCompanies";
 import ListProducts from "../../Components/Categories/ListProducts";
 import SortFilterModal from "../../Components/Categories/SortFilterModal";
+import { Building } from "iconsax-react-nativejs";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
@@ -36,10 +37,7 @@ const AllCompaniesCard = ({ isSelected, onPress }) => (
       onPress={onPress}
       style={[styles.imageWrapper, isSelected && styles.selected]}
     >
-      <Image
-        source={require("../../../assets/imgs/company-icon.png")}
-        style={styles.image}
-      />
+      <Building size="25" color="#424047"/>
     </TouchableOpacity>
     <Text style={styles.name}>جميع{"\n"}الشركات</Text>
   </View>

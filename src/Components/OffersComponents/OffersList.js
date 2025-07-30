@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
 import { colors, componentStyles, styles } from "../../../styles";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const OffersList = ({
   data,
@@ -20,7 +21,12 @@ const OffersList = ({
   searchQuery,
   isDebouncing,
 }) => {
-  const dispatch = useDispatch();
+  const {navigate} = useNavigation();
+  const dispatch=useDispatch();
+     function AddToCart(ProId,traderID) {
+     
+     dispatch(addOrUpdateCartItem({ product_id: ProId,traderID:traderID, quantity: 1, navigate: navigate }));
+     }
 const renderItem = ({ item }) => {
   const hasDiscount = item.traderprice > item.endPrice;
   const discountPercent = hasDiscount
@@ -29,7 +35,7 @@ const renderItem = ({ item }) => {
 
   return (
     <View style={[componentStyles.cardContainer, { paddingRight: 0 }]}>
-      <TouchableOpacity onPress={() => console.log("Card pressed")}>
+      <TouchableOpacity onPress={()=>navigate(PATHS.ProductDetails,{ProductId:item.id})}>
         <View style={componentStyles.imageContainer}>
           {hasDiscount && <DiscountBadge discount={discountPercent} />}
           <Image
@@ -40,7 +46,7 @@ const renderItem = ({ item }) => {
           />
 
           <TouchableOpacity
-            onPress={() => dispatch(addOrUpdateCartItem(item))}
+             onPress={() => AddToCart(item.id,item.trader_id)}
             style={componentStyles.addButton}
           >
             <AntDesign name="plus" size={24} color="blue" />

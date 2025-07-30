@@ -10,6 +10,9 @@ import {
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors, componentStyles, styles } from "../../../styles";
 import DiscountBadge from "../../Components/OffersComponents/DiscountBadge";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
 
 // const ProductCard = ({ item }) => (
 //   <View style={componentStyles.cardContainer}>
@@ -39,7 +42,7 @@ import DiscountBadge from "../../Components/OffersComponents/DiscountBadge";
 // );
 
 
-const ProductCard = ({ item }) => {
+const ProductCard = ({ item,AddToCart,navigate }) => {
   const hasDiscount = item.traderprice > item.endPrice;
   const discountPercent = hasDiscount
     ? ((item.traderprice - item.endPrice) / item.traderprice) * 100
@@ -47,7 +50,7 @@ const ProductCard = ({ item }) => {
 
   return (
     <View style={[componentStyles.cardContainer,{paddingRight:0}]}>
-      <TouchableOpacity onPress={() => console.log("Card pressed")}>
+      <TouchableOpacity onPress={()=>navigate(PATHS.ProductDetails,{ProductId:item.id})}>
         <View  style={componentStyles.imageContainer}>
           {hasDiscount && <DiscountBadge discount={discountPercent} />}
 
@@ -59,7 +62,7 @@ const ProductCard = ({ item }) => {
           />
 
           <TouchableOpacity
-            onPress={() => console.log("Add button pressed")}
+           onPress={() => AddToCart(item.id,item.trader_id)}
             style={componentStyles.addButton}
           >
             <AntDesign name="plus" size={24} color="blue" />
@@ -119,6 +122,12 @@ const ProductCard = ({ item }) => {
 };
 
 function ListProducts({ products }) {
+ const {navigate} = useNavigation();
+ const dispatch=useDispatch();
+    function AddToCart(ProId,traderID) {
+    
+    dispatch(addOrUpdateCartItem({ product_id: ProId,traderID:traderID, quantity: 1, navigate: navigate }));
+    }
   if (!products || products.length === 0) {
     return (
       <View style={{ padding: 20 }}>
@@ -139,7 +148,7 @@ function ListProducts({ products }) {
     <View style={{ flex: 1,  marginTop: 16 }}>
    <FlatList
   data={products}
-  renderItem={({ item }) => <ProductCard item={item} />}
+  renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item} navigate={navigate} />}
   keyExtractor={(item) => item.id.toString()}
   numColumns={2}
   key={2}   
