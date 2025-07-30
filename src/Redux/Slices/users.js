@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { supabase } from "../Supabase";
-
+import { Alert, Linking } from "react-native";
 
 // ✅ تسجيل دخول يدوي من جدول users
 export const UserLogin = createAsyncThunk(
@@ -15,6 +15,27 @@ export const UserLogin = createAsyncThunk(
         .single();
 
       if (error || !data) throw new Error("البريد أو كلمة المرور غير صحيحة");
+
+if (data.role === 'trader' || data.role === 'admin') {
+  Alert.alert(
+    "غير مسموح",
+    "ليس لديك صلاحية للتسجيل هنا", 
+    [
+      {
+        text: "تسجيل للوحة التحكم",
+        onPress: () => {
+          Linking.openURL("https://trendify-umber.vercel.app/");
+        },
+      },
+      {
+        text: "إلغاء",
+        style: "cancel",
+      },
+    ],
+    { cancelable: true }
+  );
+  return;
+}
 
       return data;
     } catch (error) {

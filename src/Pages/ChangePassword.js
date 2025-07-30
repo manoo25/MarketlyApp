@@ -114,16 +114,6 @@ function ChangePassword() {
 
     }
 
-    // const validationSchema = Yup.object().shape({
-    //     password2: Yup.string()
-    //         .min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل")
-    //         .required("كلمة المرور الجديدة مطلوبة"),
-    //     password3: Yup.string()
-    //         .oneOf([Yup.ref('password2'), null], 'كلمة المرور غير متطابقة')
-    //         .required("تأكيد كلمة المرور مطلوب"),
-    // });
-
-
 
 
 

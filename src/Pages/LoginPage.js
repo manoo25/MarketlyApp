@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { colors, styles } from '../../styles';
-import Hand from "../../assets/imgs/Hand.png";
+
 import Logo from "../../assets/imgs/Logo2.png";
 import LoginComponents from '../Components/LoginComponents/LoginComponents';
 
@@ -17,7 +17,10 @@ export default function LoginPage() {
   padding: 8,
   marginTop:25
 }}>
-   <Image source={Hand} style={{ width: 28, height: 28, marginEnd: 10 }} />
+   
+  <Text style={[styles.h3, { color: colors.primary,marginRight:12 }]}>
+   👋
+  </Text>
   <Text style={[styles.h3, { color: colors.primary,marginTop:10 }]}>
     مرحبًا بعودتك!
   </Text>

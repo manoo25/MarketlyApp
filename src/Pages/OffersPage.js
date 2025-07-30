@@ -23,7 +23,6 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { colors, styles } from "../../styles";
-import { ArrowRight2 } from "iconsax-react-nativejs";
 import CategoryTabs from "../Components/OffersComponents/CategoryTabs";
 import SortFilter from "../Components/OffersComponents/useSortedProducts";
 import HeaderPages from "../Components/GlobalComponents/HeaderPages";

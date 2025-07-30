@@ -202,7 +202,7 @@ export default function LoginForm() {
           </View>
 
           {/* Google Login */}
-          <LoginByGoogle />
+          {/* <LoginByGoogle /> */}
         </View>
       )}
     </Formik>

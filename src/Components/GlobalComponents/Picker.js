@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import { View } from "react-native";
 
-import { egyptGovernorates } from "./governantment"; // مصفوفة المحافظات
+import { egyptGovernorates } from "./governantment";
 import { colors, styles } from "../../../styles";
 
 export default function TestPicker({ Governate, SetGovernate }) {
   const [open, setOpen] = useState(false);
-
   const [items, setItems] = useState(
     egyptGovernorates.map((gov) => ({
       label: gov,
@@ -16,7 +15,14 @@ export default function TestPicker({ Governate, SetGovernate }) {
   );
 
   return (
-    <View style={{ zIndex: 1000 }}>
+    <View
+      style={{
+        zIndex: open ? 1000 : 1,
+        elevation: open ? 10 : 0,
+        maxHeight:230,
+        position: "relative", 
+      }}
+    >
       <DropDownPicker
         placeholder="اختر المحافظة"
         open={open}
@@ -24,12 +30,29 @@ export default function TestPicker({ Governate, SetGovernate }) {
         items={items}
         setOpen={setOpen}
         setValue={(callback) => {
-          const selected = callback(Governate); // ✅ احصل على القيمة الجديدة
-          SetGovernate(selected); // ✅ مررها إلى Formik باستخدام setFieldValue
+          const selected = callback(Governate);
+          SetGovernate(selected);
         }}
         setItems={setItems}
-        style={styles.inputWrapper}
-        dropDownContainerStyle={[styles.inputWrapper, { height: 150 }]}
+        listMode="SCROLLVIEW"   
+        scrollViewProps={{
+          nestedScrollEnabled: true,
+        }}
+        style={[
+          styles.inputWrapper,
+          {
+            zIndex: 1000,
+          },
+        ]}
+        dropDownDirection="BOTTOM"
+        dropDownContainerStyle={{
+          ...styles.inputWrapper,
+          height: 250,
+          zIndex: 1000,
+          elevation: 10,
+          position: "relative",  
+          marginTop:-50,
+        }}
         textStyle={[styles.h4, { textAlign: "right" }]}
         placeholderStyle={{ textAlign: "right" }}
         listItemLabelStyle={{ textAlign: "right" }}

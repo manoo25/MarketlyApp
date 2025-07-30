@@ -14,32 +14,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
 
-// const ProductCard = ({ item }) => (
-//   <View style={componentStyles.cardContainer}>
-//     <TouchableOpacity onPress={() => console.log("Card pressed")}>
-//       <View style={componentStyles.imageContainer}>
-//         <Image
-//           source={
-//             typeof item.image === "string" ? { uri: item.image } : item.image // fallback لو صورة محلية
-//           }
-//           style={componentStyles.image}
-//         />
-//         <TouchableOpacity
-//           onPress={() => console.log("Add button pressed")}
-//           style={componentStyles.addButton}
-//         >
-//           <AntDesign name="plus" size={24} color="blue" />
-//         </TouchableOpacity>
-//       </View>
-//       <View style={componentStyles.infoContainer}>
-//         <Text style={[styles.h3, componentStyles.titleText]}>{item.name}</Text>
-//         <Text style={[styles.h3, componentStyles.priceText]}>
-//           {item.endPrice ?? item.traderprice} EGP
-//         </Text>
-//       </View>
-//     </TouchableOpacity>
-//   </View>
-// );
 
 
 const ProductCard = ({ item,AddToCart,navigate }) => {
