@@ -7,7 +7,6 @@ import cartItemsSlice from "./Slices/CartItems";
 import ordersSlice from "./Slices/Orders";
 import orderItemsSlice from "./Slices/OrderItems";
 
-
 export  const store = configureStore({
   reducer: {
     Users: usersSlice.reducer,

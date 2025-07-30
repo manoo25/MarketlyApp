@@ -16,6 +16,7 @@ import OffersPage from '../Pages/OffersPage';
 import AllCompaniesScreen from '../Pages/companies/AllCompaniesScreen';
 import CompanyProductsScreen from '../Pages/companies/CompanyProductsScreen';
 import ProductDetails from '../Pages/ProductDetails';
+// import Search from '../Pages/search';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

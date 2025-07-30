@@ -1,8 +1,8 @@
-
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { Sortstyles } from "../../../styles";
 
 const options = [
   { label: "السعر من الأعلى", value: "highToLow" },
@@ -12,16 +12,19 @@ const options = [
 
 const SortFilter = ({ selectedOption, onSelect }) => {
   const [visible, setVisible] = useState(false);
+  const [tempOption, setTempOption] = useState(selectedOption);
+
+  const handleApply = () => {
+    onSelect(tempOption);
+    setVisible(false);
+  };
 
   return (
     <>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end", marginVertical: 10 }}>
-        <TouchableOpacity
-          onPress={() => setVisible(true)}
-          style={{ flexDirection: "row", alignItems: "center" }}
-        >
-          <Text style={{ marginLeft: 6, color: "#424047" }}>رتب حسب</Text>
-          <Ionicons name="filter" size={18} color="#424047" />
+      <View style={Sortstyles.filterRow}>
+        <Text style={Sortstyles.filterText}>رتب حسب</Text>
+        <TouchableOpacity onPress={() => setVisible(true)} style={Sortstyles.iconButton}>
+          <Feather name="filter" size={18} color="#333" />
         </TouchableOpacity>
       </View>
 
@@ -30,22 +33,76 @@ const SortFilter = ({ selectedOption, onSelect }) => {
         onBackdropPress={() => setVisible(false)}
         style={{ justifyContent: "flex-end", margin: 0 }}
       >
-        <View style={{ backgroundColor: "#fff", borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 }}>
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 12 }}>رتب حسب</Text>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            padding: 20,
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 12 }}>
+            رتب حسب
+          </Text>
+
           {options.map((option) => (
             <TouchableOpacity
               key={option.value}
-              onPress={() => {
-                onSelect(option.value);
-                setVisible(false);
+              onPress={() => setTempOption(option.value)}
+              style={{
+                paddingVertical: 12,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
-              style={{ paddingVertical: 12 }}
             >
-              <Text style={{ color: selectedOption === option.value ? "#327AFF" : "#333" }}>
+              <Text
+                style={{
+                  color: tempOption === option.value ? "#327AFF" : "#333",
+                  fontSize: 15,
+                }}
+              >
                 {option.label}
               </Text>
+
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: tempOption === option.value ? "#327AFF" : "#ccc",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {tempOption === option.value && (
+                  <View
+                    style={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: 5,
+                      backgroundColor: "#327AFF",
+                    }}
+                  />
+                )}
+              </View>
             </TouchableOpacity>
           ))}
+
+          <TouchableOpacity
+            style={{
+              marginTop: 16,
+              backgroundColor: "#327AFF",
+              paddingVertical: 12,
+              borderRadius: 8,
+            }}
+            onPress={handleApply}
+          >
+            <Text style={{ color: "#fff", textAlign: "center", fontSize: 16 }}>
+              تطبيق
+            </Text>
+          </TouchableOpacity>
         </View>
       </Modal>
     </>

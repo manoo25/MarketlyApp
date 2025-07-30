@@ -4,8 +4,7 @@ import {
   Text,FlatList,
   TouchableOpacity,
   Image,
-  StyleSheet,
-  I18nManager,
+  StyleSheet
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";

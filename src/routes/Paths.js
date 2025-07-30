@@ -1,3 +1,5 @@
+import ProductDetails from "../Pages/ProductDetails";
+
 export  const PATHS = {
   Intro: "Intro",
   Login: "Login",
@@ -9,7 +11,7 @@ export  const PATHS = {
   CategoryProducts: "CategoryProducts",
   Orders: "Orders",
   OrderDetails: "OrderDetails",
-   OffersPage: 'OffersPage',
+  OffersPage: 'OffersPage',
   UserOptions: "UserOptions",
   AccountDetails: "AccountDetails",
   SavedAdresses: "SavedAdresses",
@@ -17,6 +19,6 @@ export  const PATHS = {
   AllCompaniesScreen:"AllCompaniesScreen",
   CompanyProductsScreen: "CompanyProductsScreen",
   ProductDetails: "ProductDetails",
-  UserOptions: "UserOptions",
-  TraderProducts:'TraderProducts'
+  TraderProducts:'TraderProducts',
+  Search:'Search'
 };

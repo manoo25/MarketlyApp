@@ -18,6 +18,7 @@ export const fetchProducts = createAsyncThunk(
           trader:trader_id (routes),
           company:company_id (name)
         `);
+      
 
       if (error) throw error;
 const filterPro = data.filter(

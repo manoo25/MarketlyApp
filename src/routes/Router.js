@@ -22,6 +22,7 @@ import ChangePassword from '../Pages/ChangePassword';
 import ProductDetails from "../Pages/ProductDetails";
 import UserOptions from "../Pages/UserOptions";
 import TraderProducts from "../Pages/TraderProducts/TraderProducts";
+import Search from "../Pages/search";
 
 
 
@@ -37,6 +38,7 @@ export default function Router() {
           headerShown: false,
         }}
       >
+        {/* <Stack.Screen name={PATHS.Search} component={Search} /> */}
         <Stack.Screen name={PATHS.Intro} component={IntroPage} />
         <Stack.Screen name={PATHS.Login} component={LoginPage} />
         <Stack.Screen name={PATHS.Register} component={RegisterPage} />
@@ -68,6 +70,10 @@ export default function Router() {
           name={PATHS.OrderDetails}
           component={OrderDetails}
         />
+        <Stack.Screen
+          name={PATHS.ProductDetails}
+          component={ProductDetails}
+        />
         <Stack.Screen name={PATHS.AccountDetails} component={AccountDetails} />
         <Stack.Screen name={PATHS.SavedAdresses} component={SavedAdresses} />
         <Stack.Screen name={PATHS.ChangePassword} component={ChangePassword} />
@@ -84,10 +90,7 @@ export default function Router() {
           name={PATHS.UserOptions}
           component={UserOptions}
         />
-        <Stack.Screen
-          name={PATHS.ProductDetails}
-          component={ProductDetails}
-        />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );

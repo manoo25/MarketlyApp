@@ -10,6 +10,8 @@ import {
 import DiscountBadge from "./DiscountBadge";
 import { useDispatch } from "react-redux";
 import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
+import { colors, componentStyles, styles } from "../../../styles";
+import { AntDesign } from "@expo/vector-icons";
 
 const OffersList = ({
   data,
@@ -19,115 +21,78 @@ const OffersList = ({
   isDebouncing,
 }) => {
   const dispatch = useDispatch();
-  const renderItem = ({ item }) => (
-    <View
-      style={{
-        width: "48%",
-        backgroundColor: "#FFFFFF",
-        borderRadius: 16,
-        padding: 12,
-        marginBottom: 24,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 3,
-      }}
-    >
-      <View
-        style={{
-          width: "100%",
-          height: 160,
-          borderRadius: 14,
-          overflow: "hidden",
-          marginBottom: 10,
-          position: "relative",
-          backgroundColor: "#EBF2FF",
-        }}
-      >
-        {item.traderprice > item.endPrice && (
-          <DiscountBadge
-            discount={
-              ((item.traderprice - item.endPrice) / item.traderprice) * 100
+const renderItem = ({ item }) => {
+  const hasDiscount = item.traderprice > item.endPrice;
+  const discountPercent = hasDiscount
+    ? ((item.traderprice - item.endPrice) / item.traderprice) * 100
+    : 0;
+
+  return (
+    <View style={[componentStyles.cardContainer, { paddingRight: 0 }]}>
+      <TouchableOpacity onPress={() => console.log("Card pressed")}>
+        <View style={componentStyles.imageContainer}>
+          {hasDiscount && <DiscountBadge discount={discountPercent} />}
+          <Image
+            source={
+              typeof item.image === "string" ? { uri: item.image } : item.image
             }
+            style={componentStyles.image}
           />
-        )}
 
-        <Image
-          source={{ uri: item.image }}
-          style={{
-            width: "100%",
-            height: "100%",
-            borderRadius: 14,
-          }}
-          resizeMode="cover"
-        />
-        <TouchableOpacity
-          style={{
-            position: "absolute",
-            bottom: 8,
-            left: 8,
-            width: 32,
-            height: 32,
-            borderRadius: 16,
-            backgroundColor: "#EBF2FF",
-            alignItems: "center",
-            justifyContent: "center",
-            shadowColor: "#000",
-            shadowOpacity: 0.05,
-            shadowRadius: 4,
-            shadowOffset: { width: 0, height: 1 },
-            elevation: 2,
-          }}
-          onPress={() => {
-            dispatch(addOrUpdateCartItem({ product_id: item.id, quantity: 1 }));
-          }}
-        >
+          <TouchableOpacity
+            onPress={() => dispatch(addOrUpdateCartItem(item))}
+            style={componentStyles.addButton}
+          >
+            <AntDesign name="plus" size={24} color="blue" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={componentStyles.infoContainer}>
           <Text
+            style={[styles.h3, componentStyles.titleText]}
+            numberOfLines={2}
+          >
+            {item.name}
+          </Text>
+
+          <View
             style={{
-              fontSize: 20,
-              color: "#327AFF",
-              fontWeight: "600",
-              marginTop: -1,
+              flexDirection: "row-reverse",
+              alignItems: "flex-end",
+              marginTop: 6,
+              flexWrap: "wrap",
+              gap: 4,
             }}
           >
-            +
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={[styles.h3, { fontSize: 14, color: colors.primary }]}>
+              {item.endPrice ?? item.traderprice} ج
+            </Text>
 
-      <Text
-        style={{
-          fontSize: 15,
-          color: "#1A1A1A",
-          fontWeight: "500",
-          textAlign: "left",
-          marginBottom: 6,
-        }}
-        numberOfLines={2}
-      >
-        {item.name}
-      </Text>
+            {hasDiscount && (
+              <Text
+                style={[
+                  styles.h3,
+                  {
+                    fontSize: 14,
+                    color: "#7B7686",
+                    textDecorationLine: "line-through",
+                  },
+                ]}
+              >
+                {item.traderprice} ج
+              </Text>
+            )}
 
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={{ fontSize: 14, color: "#327AFF", fontWeight: "600" }}>
-          {item.endPrice} EGP
-        </Text>
-        {item.traderprice > item.endPrice && (
-          <Text
-            style={{
-              fontSize: 12,
-              color: "#7B7686",
-              textDecorationLine: "line-through",
-              marginLeft: 6,
-            }}
-          >
-            {item.traderprice} EGP
-          </Text>
-        )}
-      </View>
+            {item.unit && (
+              <Text style={[styles.h3, { fontSize: 14 }]}>/{item.unit}</Text>
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
     </View>
   );
+};
+
 
   const renderEmptyComponent = () => {
     if (isSearching && isDebouncing) {
@@ -169,19 +134,13 @@ const OffersList = ({
       renderItem={renderItem}
       ListEmptyComponent={renderEmptyComponent}
       numColumns={2}
+      showsVerticalScrollIndicator={false}
       columnWrapperStyle={{
-          flexDirection: "row",
-          paddingHorizontal: 16,
-       justifyContent:
-  data.length % 2 === 1 ? "flex-start" : "space-between",
+          flexDirection: "row-reverse",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
       }}
-      contentContainerStyle={{
-        paddingBottom: 40,
-        flexGrow: 1,
-        paddingTop: 12,
-         direction: "rtl",
-         
-      }}
+    
     />
   );
 };

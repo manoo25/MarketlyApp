@@ -33,7 +33,7 @@ export default function CategoryTabs({ categories, onCategoryChange }) {
 
 const styles = StyleSheet.create({
   tabsContainer: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingTop: 16,
@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   tabTextActive: {
-    color: "#1A1A1A",
+    color: "#46B8F0",
     fontWeight: "600",
   },
   activeLine: {
     marginTop: 12,
-    height: 0.8,
-    backgroundColor: "black",
+    height: 1,
+    backgroundColor: "#46B8F0",
     width: "100%",
     borderRadius: 1,
   },
