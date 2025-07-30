@@ -12,7 +12,6 @@ const ImageModal = ({ visible, onClose, userId: propUserId, source }) => {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.Users.currentUser);
-    // استخدم userId من props أو من currentUser
     const userId = propUserId || (currentUser && currentUser.id);
 
     useEffect(() => {
@@ -48,7 +47,7 @@ const ImageModal = ({ visible, onClose, userId: propUserId, source }) => {
                             }
                         });
                 }
-                Alert.alert('تم الحذف', 'تم حذف الصورة بنجاح');
+                onClose();
             } else {
                 Alert.alert('خطأ', 'فشل حذف الصورة');
             }
@@ -99,7 +98,7 @@ const ImageModal = ({ visible, onClose, userId: propUserId, source }) => {
                     } else {
                         Alert.alert('خطأ', 'لم يتم العثور على معرف المستخدم (userId)!');
                     }
-                    Alert.alert('تم التغيير', 'تم تغيير الصورة بنجاح');
+                    onClose();
                 } else {
                     Alert.alert('خطأ', 'فشل رفع الصورة الجديدة');
                 }

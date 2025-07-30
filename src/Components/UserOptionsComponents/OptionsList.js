@@ -1,15 +1,23 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert , Modal , TextInput } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, Modal, TextInput } from 'react-native';
 import { styles } from '../../../styles';
-import { ArrowLeft2 } from 'iconsax-react-nativejs';
+import { ArrowLeft2, Star } from 'iconsax-react-nativejs';
 import { LogoutCurve } from 'iconsax-react-nativejs';
 import { logoutUser } from "../../Redux/Slices/users";
+import { updateCurrentUser } from "../../Redux/Slices/users";
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PATHS } from '../../routes/Paths';
 import React, { useState } from 'react';
 import { CloseCircle } from 'iconsax-react-nativejs';
-import { createComplaint , fetchUserComplaints } from '../../Redux/Slices/Complaints';
+import { createComplaint } from '../../Redux/Slices/Complaints';
+import { createRating } from '../../Redux/Slices/Ratings';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { Rating } from 'react-native-ratings';
+
+
+
 
 
 
@@ -30,27 +38,78 @@ const settings = [
 
 
 
+
 function OptionsList() {
-
-
-
     const dispatch = useDispatch();
     const { replace } = useNavigation();
     const navigation = useNavigation();
     const [isCompModalVisible, setIsCompModalVisible] = useState(false);
-    const [complaint, setComplaint] = useState('');
-    const [savedComplaint, setSavedComplaint] = useState('');
+    const [inputValue, setInputValue] = useState('');
+    const [rating, setRating] = useState();
+    const [modalType, setModalType] = useState(''); // complaint | rating
+    const [savedInput, setSavedInput] = useState('');
 
-    const handleSaveComplaint = () => {
-        // هنا يمكنك فعل أي شيء بالملاحظات (مثل إرسالها إلى API، تخزينها في Redux، إلخ)
-        setSavedComplaint(complaint); // نحفظ الملاحظات في حالة مؤقتة للعرض هنا
-        dispatch(createComplaint({ userId: '', complaint })); // استبدل '123' بمعرف المستخدم الفعلي
-        setComplaint(''); // مسح الملاحظات بعد الحفظ
-        setIsCompModalVisible(false); // إخفاء الـ Modal
-        Alert.alert('تم حفظ الملاحظات', `ملاحظاتك: ${complaint}`); // تأكيد للمستخدم
+    const usersState = useSelector(state => state.Users);
+    console.log('Users state:', usersState);
+    const currentUser = usersState.currentUser;
+
+    // جلب بيانات المستخدم من AsyncStorage إذا كان currentUser فارغ
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!currentUser) {
+                try {
+                    const userData = await AsyncStorage.getItem('userData');
+                    if (userData) {
+                        const parsedUser = JSON.parse(userData);
+                        if (parsedUser && parsedUser.id) {
+                            dispatch(updateCurrentUser(parsedUser));
+                        }
+                    }
+                } catch (e) {
+                    // تجاهل الخطأ
+                }
+            }
+        };
+        fetchUserData();
+    }, [currentUser, dispatch]);
+    // const currentUser = usersState.currentUser;
+    const userId = currentUser && currentUser.id;
+
+
+    const handleSave = () => {
+        setSavedInput(inputValue);
+        console.log('userId value:', userId, '| modalType:', modalType);
+        if (modalType === 'complaint') {
+            if (userId) {
+                console.log('Sending complaint with userId:', userId);
+                dispatch(createComplaint({ userId, complaint: inputValue }));
+                Alert.alert('تم حفظ الشكوى وسيتم التواصل معك في أقرب وقت');
+            } else {
+                console.log('No userId found for complaint');
+                Alert.alert('خطأ', 'لم يتم العثور على المستخدم');
+            }
+        } else if (modalType === 'rating') {
+            if (userId) {
+                console.log(`Sending rating: ${rating} with userId:`, userId);
+                dispatch(createRating({ userId, feed_back: inputValue, rate: rating }));
+                Alert.alert('تم إرسال تقييمك وشكرا لك ');
+            } else {
+                console.log('No userId found for rating');
+                Alert.alert('خطأ', 'لم يتم العثور على المستخدم');
+            }
+        }
+        setInputValue('');
+        setIsCompModalVisible(false);
     };
 
+    const handleRatingCompleted = (rating) => {
+        console.log("Rating is: " + rating);
+        setRating(rating);
+    };
 
+    
+
+    
 
 
 
@@ -68,10 +127,12 @@ function OptionsList() {
             navigation.navigate(PATHS.ChangePassword);
         }
         else if (item.id === "3") {
-            setIsCompModalVisible(true); // إخفاء الـ Modal بدون حفظ
+            setModalType('complaint');
+            setIsCompModalVisible(true);
         }
         else if (item.id === "4") {
-            setIsRatingModalVisible(true); // إخفاء الـ Modal بدون حفظ
+            setModalType('rating');
+            setIsCompModalVisible(true);
         }
     };
 
@@ -110,41 +171,53 @@ function OptionsList() {
                 <LogoutCurve size="20" color="#ee3030" />
                 <Text style={[styles.h3, style.logoutText]}>تسجيل خروج</Text>
             </TouchableOpacity>
-            {/* Complaints Modal */}
+            {/* Modal */}
             <Modal
-                animationType="slide" // تأثير ظهور من الأسفل
-                transparent={true} // يجعل الخلفية شفافة
-                visible={isCompModalVisible} // يتحكم في ظهوره أو إخفائه
+                animationType="slide"
+                transparent={true}
+                visible={isCompModalVisible}
                 onRequestClose={() => {
-                    // يمكن استخدام هذا في الأندرويد للتحكم في زر الرجوع بالجهاز
                     setIsCompModalVisible(!isCompModalVisible);
                 }}>
-
                 <View style={style.centeredView}>
                     <View style={style.modalView}>
                         <View style={{ flexDirection: 'row-reverse', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Text style={style.modalTitle}>أضف شكوتك</Text>
+                            <Text style={style.modalTitle}>
+                                {modalType === 'complaint' ? 'أضف شكوتك' : 'قيّم الخدمة'}
+                            </Text>
                             <TouchableOpacity
                                 style={{ marginRight: -16, marginTop: -16 }}
                                 onPress={() => {
-                                    setIsCompModalVisible(false); // إخفاء الـ Modal بدون حفظ
-                                    setComplaint(''); // مسح أي ملاحظات مكتوبة عند الإلغاء
+                                    setIsCompModalVisible(false);
+                                    setInputValue('');
                                 }}>
                                 <CloseCircle size="32" color="#424047" />
                             </TouchableOpacity>
                         </View>
+                        {modalType === 'rating' ? (
+                            <View style={{ alignItems: 'center', marginBottom: 16 }}>
+                                <Text style={[styles.h4, { marginRight: 8 }]}>تقييم الخدمة</Text>
+                                <View>
+                                    <Rating
+                                        showRating={false}
+                                        onFinishRating={handleRatingCompleted}
+                                        style={{ paddingVertical: 10 }}
+                                    />
+                                </View>
+                            </View>
+                        ) : null}
                         <TextInput
                             style={style.textInput}
-                            onChangeText={setComplaint} // تحديث حالة الملاحظات مع كل تغيير
-                            value={complaint} // عرض القيمة الحالية للملاحظات
-                            placeholder="اكتب ملاحظاتك هنا..."
-                            multiline={true} // السماح بعدة أسطر
-                            numberOfLines={4} // عدد الأسطر الافتراضي
+                            onChangeText={setInputValue}
+                            value={inputValue}
+                            placeholder={modalType === 'complaint' ? 'اكتب شكوتك هنا...' : 'اكتب تقييمك أو رأيك هنا...'}
+                            multiline={true}
+                            numberOfLines={4}
                         />
                         <View style={style.buttonContainer}>
                             <TouchableOpacity
                                 style={[style.modalButton, style.buttonSave]}
-                                onPress={handleSaveComplaint}>
+                                onPress={handleSave}>
                                 <Text style={style.buttonText}>حفظ</Text>
                             </TouchableOpacity>
                         </View>

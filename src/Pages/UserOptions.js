@@ -79,17 +79,27 @@ function UserOptions({ navigation }) {
             <View style={style.container}>
                 <View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
                     {user?.image ? (
-                        <TouchableOpacity
-                            style={{ width: 55, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EBF2FF', borderRadius: 50, height: 55 }}
-                            onPress={() => setModalVisible(true)}
-                        >
-                            <Image source={{ uri: user.image }} style={{ width: 55, height: 55, borderRadius: 50 }} />
-                        </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity
+                                style={{ width: 70, alignItems: 'center', justifyContent: 'center', borderRadius: 50, height: 70 }}
+                                onPress={() => setModalVisible(true)}
+                            >
+                                <Image source={{ uri: user.image }} style={{ width: 70, height: 70, borderRadius: 50 }} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModalVisible(true)}>
+                                <Text style={{ marginTop: 4, textAlign: 'center', color: '#327AFF' }}>تعديل </Text>
+                            </TouchableOpacity>
+                        </View>
                     ) : (
-                        <TouchableOpacity style={{ width: 55, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EBF2FF', borderRadius: 50, height: 55 }}
-                        onPress={() => setModalVisible(true)} >
-                            <User size="32" color="#327AFF" />
-                        </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity style={{ width: 70, alignItems: 'center', justifyContent: 'center', backgroundColor: '#EBF2FF', borderRadius: 50, height: 70 }}
+                                onPress={() => setModalVisible(true)} >
+                                <User size="32" color="#327AFF" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setModalVisible(true)}>
+                                <Text style={{ marginTop: 4, textAlign: 'center', color: '#327AFF' }}>تعديل </Text>
+                            </TouchableOpacity>
+                        </View>
                     )}
                     <View style={{ width: '80%', marginRight: 8 }}>
                         {/* user.name */}
