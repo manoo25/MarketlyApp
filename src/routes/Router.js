@@ -1,11 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
-import { View } from "react-native";
 import LoginPage from "../Pages/LoginPage";
 import IntroPage from "../Pages/intro";
 import RegisterPage from "../Pages/RegisterPage";
-import Home from "../Pages/Home";
 import ForgetPasswordPage from "../Pages/ForgetPasswordPage";
 import ResetPasswordForm from "../Components/ForgetPassword/ResetPassword";
 import { PATHS } from "./Paths";
@@ -19,12 +16,10 @@ import OrderDetails from '../Pages/OrderDetails';
 import AccountDetails from '../Pages/AccountDetails';
 import SavedAdresses from '../Pages/SavedAdresses';
 import ChangePassword from '../Pages/ChangePassword';
-import ProductDetails from "../Pages/ProductDetails";
-import UserOptions from "../Pages/UserOptions";
+import ProductDetails from '../Pages/ProductDetails';
 import TraderProducts from "../Pages/TraderProducts/TraderProducts";
 import Search from "../Pages/search";
 import Cart from "../Pages/Cart";
-
 
 
 
@@ -92,10 +87,9 @@ export default function Router() {
           component={CompanyProductsScreen}
         />
         <Stack.Screen
-          name={PATHS.UserOptions}
-          component={UserOptions}
+          name={PATHS.Search}
+          component={Search}
         />
-       
       </Stack.Navigator>
     </NavigationContainer>
   );

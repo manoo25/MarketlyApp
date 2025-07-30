@@ -39,7 +39,7 @@ function MainCategories() {
 
   useEffect(() => {
     if (categories.length > 0) {
-      const initialCategories = categories.slice(0, 5);
+      const initialCategories = categories.slice(0, 7);
       setDisplayCategories([...initialCategories, MoreObj]);
     }
   }, [categories]);

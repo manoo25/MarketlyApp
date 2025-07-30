@@ -10,18 +10,37 @@ import {
 } from "react-native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
+import { PATHS } from "../routes/Paths";
 const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
   const navigation = useNavigation();
-  const foodCategories = ["عصائر", "شيبس", "ألبان", "جبن معلبة", "كيكات"];
-  const mostSearchedItems = [
-    { name: "شيبسى", icon: "chevron-left" },
-    { name: "راني", icon: "chevron-left" },
-    { name: "جبنة", icon: "chevron-left" },
-    { name: "عصير", icon: "chevron-left" },
-    { name: "بسكويت", icon: "chevron-left" },
-    { name: "سيفن أب", icon: "chevron-left" },
-  ];
+
+  // استخراج الفئات الفريدة من المنتجات
+ const getUniqueCategories = () => {
+  const unique = new Map();
+
+  products.forEach((product) => {
+    const cat = product?.category;
+    if (cat && !unique.has(cat.id)) {
+      unique.set(cat.id, { id: cat.id, name: cat.name });
+    }
+  });
+
+  return Array.from(unique.values());
+};
+
+
+  const foodCategories = getUniqueCategories();
+
+  // دالة لتقسيم الفئات إلى صفوف كل منها يحتوي على 3 عناصر
+  const chunkArray = (array, chunkSize) => {
+    const result = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+
+  const categoriesChunks = chunkArray(foodCategories, 3);
 
   const renderProductItem = ({ item }) => (
     <>
@@ -47,14 +66,6 @@ const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
 
             <Text style={styles.productCompany}>{item.company.name}</Text>
 
-            <View style={styles.ratingRow}>
-              <View style={styles.ratingContainer}>
-                <AntDesign name="star" size={14} color="#FFD700" />
-                <Text style={styles.ratingText}>5.0</Text>
-                <Text style={styles.reviewCount}>(20)</Text>
-              </View>
-            </View>
-
             <View style={styles.deliveryRow}>
               <AntDesign
                 name="clockcircleo"
@@ -62,7 +73,7 @@ const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
                 color="#555"
                 style={{ marginLeft: 4 }}
               />
-              <Text style={styles.deliveryText}> ٥٥ دقيقة </Text>
+              <Text style={styles.deliveryText}>24 ساعة</Text>
               <Feather
                 name="truck"
                 size={15}
@@ -74,16 +85,11 @@ const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
             {item.onSale && (
               <View style={styles.saleTag}>
                 <Text style={styles.saleTagText}>
-                  {" "}
-                  خصم {item.sale}% علي بعض المنتجات{" "}
+                  خصم {item.sale}% علي بعض المنتجات
                 </Text>
               </View>
             )}
           </View>
-        </View>
-
-        <View style={styles.heartIconCenter}>
-          <AntDesign name="hearto" size={22} />
         </View>
       </TouchableOpacity>
       <View style={styles.productSeparator} />
@@ -119,53 +125,80 @@ const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
   return (
     <>
       <Text style={styles.sectionTitle}>ماذا تشتهي اليوم؟</Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.foodCategories}
-        contentContainerStyle={styles.foodCategoriesContent}
+     
+
+<FlatList
+  data={foodCategories}
+  horizontal
+  showsHorizontalScrollIndicator={false}
+ keyExtractor={(item) => item.id.toString()}
+
+  contentContainerStyle={styles.foodCategoriesContent}
+  style={styles.foodCategories}
+  renderItem={({ item: category }) => {
+    const product = products.find((p) => p?.category?.name === category.name);
+    return (
+      <TouchableOpacity 
+      onPress={()=> navigation.navigate("ProductDetails", { ProductId:product.id })}
       >
-        {foodCategories.map((food) => {
-          const product = products.find((p) => p?.category?.name === food);
-          return (
-            <View key={food} style={styles.foodCircleContainer}>
-              <View style={styles.foodImageCircle}>
-                <Image
-                  source={{
-                    uri: product?.image || "https://via.placeholder.com/80",
-                  }}
-                  style={styles.foodImage}
-                  resizeMode="contain"
-                />
-              </View>
-              <Text style={styles.foodCategoryText}>{food}</Text>
-            </View>
-          );
-        })}
-      </ScrollView>
-
-      <Text style={styles.sectionTitle}>الأكثر بحثاً</Text>
-
-      <View style={styles.mostSearchedContainer}>
-        {[0, 1].map((rowIndex) => (
-          <View key={rowIndex} style={styles.mostSearchedRow}>
-            {mostSearchedItems
-              .slice(rowIndex * 3, rowIndex * 3 + 3)
-              .map((item, index) => (
-                <View key={index} style={styles.mostSearchedItem}>
-                  <View style={styles.mostSearchedItemContent}>
-                    <Text style={styles.mostSearchedItemText}>{item.name}</Text>
-                    <Feather name={item.icon} size={18} color="#adb5bd" />
-                  </View>
-                </View>
-              ))}
-          </View>
-        ))}
+        <View style={styles.foodCircleContainer}>
+        <View style={styles.foodImageCircle}>
+          <Image
+            source={{
+              uri: product?.image || "https://via.placeholder.com/80",
+            }}
+            style={styles.foodImage}
+            resizeMode="contain"
+          />
+        </View>
+        <Text style={styles.foodCategoryText}>{category.name}</Text>
       </View>
+      </TouchableOpacity>
+    );
+  }}
+/>
+
+
+{foodCategories.length > 0 && (
+  <>
+    <Text style={styles.sectionTitle}>الأكثر بحثاً</Text>
+    <FlatList
+      data={foodCategories}
+      keyExtractor={(item) => item.id.toString()}
+      numColumns={3}
+      scrollEnabled={false}
+      contentContainerStyle={styles.mostSearchedContainer}
+      columnWrapperStyle={styles.mostSearchedRow}
+      renderItem={({ item: category, index }) => (
+        <TouchableOpacity
+          style={[
+            styles.mostSearchedItem,
+            index % 3 === 0 && { marginLeft: 0 },
+            index % 3 === 2 && { marginRight: 0 },
+          ]}
+          onPress={() => {
+            navigation.navigate(PATHS.CategoryProducts, {
+              category: category,
+            });
+           
+          }}
+        >
+          <View style={styles.mostSearchedItemContent}>
+            <Text style={styles.mostSearchedItemText}>{category.name}</Text>
+            <Feather name="chevron-left" size={18} color="#adb5bd" />
+          </View>
+        </TouchableOpacity>
+      )}
+    />
+  </>
+)}
+
+
     </>
   );
 };
 
+// بقية الأنماط تبقى كما هي
 const styles = StyleSheet.create({
   resultsContainer: {
     marginBottom: 20,
@@ -176,6 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     color: "#333",
+    fontFamily: "Tajawal-Regular",
   },
   noResults: {
     padding: 20,
@@ -185,6 +219,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#666",
     fontSize: 16,
+    fontFamily: "Tajawal-Regular",
   },
   productItem: {
     flexDirection: "row-reverse",
@@ -223,32 +258,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     marginBottom: 4,
+    fontFamily: "Tajawal-Regular",
   },
   productCompany: {
     textAlign: "right",
     fontSize: 14,
     color: "#666",
     marginBottom: 2,
-  },
-  ratingRow: {
-    flexDirection: "row-reverse",
-    alignItems: "center",
-    marginTop: 4,
-    marginBottom: 4,
-  },
-  ratingContainer: {
-    flexDirection: "row-reverse",
-    alignItems: "center",
-  },
-  ratingText: {
-    fontSize: 12,
-    color: "#333",
-    marginLeft: 2,
-  },
-  reviewCount: {
-    fontSize: 12,
-    color: "#888",
-    marginRight: 4,
+    fontFamily: "Tajawal-Regular",
   },
   deliveryRow: {
     flexDirection: "row-reverse",
@@ -259,16 +276,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#555",
     marginLeft: 8,
-  },
-  freeDelivery: {
-    fontSize: 12,
-    color: "#28a745",
-    fontWeight: "bold",
-  },
-  heartIconCenter: {
-    width: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    fontFamily: "Tajawal-Regular",
   },
   productSeparator: {
     height: 1,
@@ -283,6 +291,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     color: "#333",
+    fontFamily: "Tajawal-Regular",
   },
   foodCategories: {
     marginBottom: 40,
@@ -315,6 +324,7 @@ const styles = StyleSheet.create({
     color: "#333",
     fontSize: 14,
     fontWeight: "500",
+    fontFamily: "Tajawal-Regular",
   },
   mostSearchedContainer: {
     marginBottom: 20,
@@ -323,13 +333,14 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     justifyContent: "space-between",
     marginBottom: 12,
+    paddingHorizontal: 0, // إزالة الحشو الأفقي
   },
   mostSearchedItem: {
     backgroundColor: "#fff",
     borderRadius: 25,
     paddingVertical: 12,
     paddingHorizontal: 10,
-    flex: 0.32,
+    flex: 1, // جعل جميع العناصر متساوية في العرض
     minHeight: 45,
     borderWidth: 1,
     borderColor: "#dee3ed",
@@ -338,6 +349,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 2,
+    marginHorizontal: 4, // تقليل المسافة بين العناصر
   },
   mostSearchedItemContent: {
     flexDirection: "row-reverse",
@@ -351,11 +363,11 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "right",
     marginRight: 8,
+    fontFamily: "Tajawal-Regular",
   },
-
   saleTag: {
-     backgroundColor: '#EBF2FF',
-     paddingHorizontal: 4,
+    backgroundColor: "#EBF2FF",
+    paddingHorizontal: 4,
     paddingVertical: 8,
     borderRadius: 4,
     marginTop: 8,
@@ -364,6 +376,9 @@ const styles = StyleSheet.create({
     color: "#327AFF",
     fontSize: 12,
     fontWeight: "bold",
+    fontFamily: "Tajawal-Regular",
+    textAlign:'right',
+    paddingHorizontal:5
   },
 });
 

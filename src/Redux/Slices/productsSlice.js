@@ -14,12 +14,12 @@ export const fetchProducts = createAsyncThunk(
         .from("products")
         .select(`
           *,
-          category:category_id (name),
+          category:category_id (id,name),
           trader:trader_id (routes),
           company:company_id (name)
         `);
       
-
+console.log("Fetched products:", data); 
       if (error) throw error;
 const filterPro = data.filter(
   x =>
