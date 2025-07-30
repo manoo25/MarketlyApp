@@ -1,45 +1,38 @@
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { supabase } from "../Supabase";
 
-
-
-// ✅ تسجيل شكوى جديدة
-export const createComplaint = createAsyncThunk(
-    "complaints/createComplaint",
-    async ({ userId, complaint }, { rejectWithValue }) => {
+// ✅ إضافة تقييم جديد
+export const createRating = createAsyncThunk(
+    "ratings/createRating",
+    async ({ userId, rate, feed_back }, { rejectWithValue }) => {
         try {
             const { data, error } = await supabase
-                .from("complaints")
-                .insert([{ user_id: userId, description: complaint }])
+                .from("testimonials")
+                .insert([{ user_id: userId, rate, feed_back }])
                 .select()
                 .single();
 
             if (error) throw error;
-
             return data;
         } catch (error) {
-            // عرض الخطأ في الكونسول
-            console.log('Supabase Complaint Error:', error);
-            // إعادة الخطأ للواجهة
+            console.log('Supabase Rating Error:', error);
             return rejectWithValue(error.message);
         }
     }
-    );
+);
 
-
-
-// ✅ جلب الشكاوى للمستخدم
-export const fetchUserComplaints = createAsyncThunk(
-    "complaints/fetchUserComplaints",
+// ✅ جلب التقييمات للمستخدم
+export const fetchUserRatings = createAsyncThunk(
+    "ratings/fetchUserRatings",
     async (userId, { rejectWithValue }) => {
         try {
             const { data, error } = await supabase
-                .from("complaints")
+                .from("testimonials")
                 .select("*")
                 .eq("user_id", userId);
 
             if (error) throw error;
-
             return data;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -47,48 +40,45 @@ export const fetchUserComplaints = createAsyncThunk(
     }
 );
 
-
 // ✅ Slice
-const complaintsSlice = createSlice({
-    name: "complaints",
+const ratingsSlice = createSlice({
+    name: "ratings",
     initialState: {
-        complaints: [],
+        ratings: [],
         loading: false,
         error: null,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // إنشاء شكوى جديدة
-            .addCase(createComplaint.pending, (state) => {
+            // إضافة تقييم جديد
+            .addCase(createRating.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createComplaint.fulfilled, (state, action) => {
+            .addCase(createRating.fulfilled, (state, action) => {
                 state.loading = false;
-                state.complaints.push(action.payload);
+                state.ratings.push(action.payload);
             })
-            .addCase(createComplaint.rejected, (state, action) => {
+            .addCase(createRating.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
 
-            // جلب شكاوى المستخدم
-            .addCase(fetchUserComplaints.pending, (state) => {
+            // جلب تقييمات المستخدم
+            .addCase(fetchUserRatings.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchUserComplaints.fulfilled, (state, action) => {
+            .addCase(fetchUserRatings.fulfilled, (state, action) => {
                 state.loading = false;
-                state.complaints = action.payload;
+                state.ratings = action.payload;
             })
-            .addCase(fetchUserComplaints.rejected, (state, action) => {
+            .addCase(fetchUserRatings.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default complaintsSlice;
-
-
+export default ratingsSlice;
