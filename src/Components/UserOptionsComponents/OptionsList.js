@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, Modal, TextInput } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { styles } from '../../../styles';
 import { ArrowLeft2, Star } from 'iconsax-react-nativejs';
 import { LogoutCurve } from 'iconsax-react-nativejs';
@@ -13,8 +13,14 @@ import { CloseCircle } from 'iconsax-react-nativejs';
 import { createComplaint } from '../../Redux/Slices/Complaints';
 import { createRating } from '../../Redux/Slices/Ratings';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Rating } from 'react-native-ratings';
+import Modal from 'react-native-modal';
+import { InteractionManager } from 'react-native';
+import Octicons from "@expo/vector-icons/Octicons";
+
+
+
 
 
 
@@ -28,7 +34,7 @@ import { Rating } from 'react-native-ratings';
 
 const settings = [
     { id: '1', title: 'بيانات الحساب' },
-    { id: '2', title: 'تغيير كلمة المرور' },
+    { id: '2', title: 'تغيير كلمة السر' },
     { id: '3', title: 'ارسال شكوى' },
     { id: '4', title: 'تقييم الخدمة' },
     { id: '5', title: 'اللغة', value: 'العربية' },
@@ -107,9 +113,19 @@ function OptionsList() {
         setRating(rating);
     };
 
-    
 
-    
+    const inputRef = useRef(null);
+
+
+    useEffect(() => {
+  if (isCompModalVisible) {
+    InteractionManager.runAfterInteractions(() => {
+      inputRef.current?.focus();
+    });
+  }
+}, [isCompModalVisible]);
+
+
 
 
 
@@ -173,57 +189,64 @@ function OptionsList() {
             </TouchableOpacity>
             {/* Modal */}
             <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isCompModalVisible}
-                onRequestClose={() => {
-                    setIsCompModalVisible(!isCompModalVisible);
-                }}>
-                <View style={style.centeredView}>
-                    <View style={style.modalView}>
-                        <View style={{ flexDirection: 'row-reverse', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Text style={style.modalTitle}>
-                                {modalType === 'complaint' ? 'أضف شكوتك' : 'قيّم الخدمة'}
-                            </Text>
-                            <TouchableOpacity
-                                style={{ marginRight: -16, marginTop: -16 }}
-                                onPress={() => {
-                                    setIsCompModalVisible(false);
-                                    setInputValue('');
-                                }}>
-                                <CloseCircle size="32" color="#424047" />
-                            </TouchableOpacity>
+                isVisible={isCompModalVisible}
+                onBackdropPress={() => setIsCompModalVisible(false)}
+                onBackButtonPress={() => setIsCompModalVisible(false)}
+                style={style.modalBottom}
+                swipeDirection="down"
+                onSwipeComplete={() => setIsCompModalVisible(false)}
+                backdropOpacity={0.4}
+                animationIn="slideInUp"
+                animationOut="slideOutDown"
+                avoidKeyboard
+            >
+                <View style={style.modalView}>
+                    <Octicons name="dash" size={60} color="#dbdbdb" style={styles.icon} />
+                    <View style={{ flexDirection: 'row-reverse', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={style.modalTitle}>
+                            {modalType === 'complaint' ? 'أضف شكوتك' : 'قيّم الخدمة'}
+                        </Text>
+                        <TouchableOpacity
+                            style={{ marginRight: -16, marginTop: -16 }}
+                            onPress={() => {
+                                setIsCompModalVisible(false);
+                                setInputValue('');
+                            }}>
+                            <CloseCircle size="32" color="#424047" />
+                        </TouchableOpacity>
+                    </View>
+
+                    {modalType === 'rating' ? (
+                        <View style={{ alignItems: 'center', marginBottom: 16 }}>
+                            <Text style={[styles.h4, { marginRight: 8 }]}>تقييم الخدمة</Text>
+                            <Rating
+                                showRating={false}
+                                onFinishRating={handleRatingCompleted}
+                                style={{ paddingVertical: 10 }}
+                            />
                         </View>
-                        {modalType === 'rating' ? (
-                            <View style={{ alignItems: 'center', marginBottom: 16 }}>
-                                <Text style={[styles.h4, { marginRight: 8 }]}>تقييم الخدمة</Text>
-                                <View>
-                                    <Rating
-                                        showRating={false}
-                                        onFinishRating={handleRatingCompleted}
-                                        style={{ paddingVertical: 10 }}
-                                    />
-                                </View>
-                            </View>
-                        ) : null}
-                        <TextInput
-                            style={style.textInput}
-                            onChangeText={setInputValue}
-                            value={inputValue}
-                            placeholder={modalType === 'complaint' ? 'اكتب شكوتك هنا...' : 'اكتب تقييمك أو رأيك هنا...'}
-                            multiline={true}
-                            numberOfLines={4}
-                        />
-                        <View style={style.buttonContainer}>
-                            <TouchableOpacity
-                                style={[style.modalButton, style.buttonSave]}
-                                onPress={handleSave}>
-                                <Text style={style.buttonText}>حفظ</Text>
-                            </TouchableOpacity>
-                        </View>
+                    ) : null}
+
+                    <TextInput
+                        ref={inputRef}
+                        style={style.textInput}
+                        onChangeText={setInputValue}
+                        value={inputValue}
+                        placeholder={modalType === 'complaint' ? 'اكتب شكوتك هنا...' : 'اكتب تقييمك أو رأيك هنا...'}
+                        multiline={true}
+                        numberOfLines={4}
+                    />
+
+                    <View style={style.buttonContainer}>
+                        <TouchableOpacity
+                            style={[style.modalButton, style.buttonSave]}
+                            onPress={handleSave}>
+                            <Text style={style.buttonText}>حفظ</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
+
 
         </View>
     );
@@ -278,10 +301,11 @@ const style = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
     modalView: {
-        margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        paddingLeft: 35,
+        paddingRight: 35,
+        paddingBottom: 35,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -291,7 +315,7 @@ const style = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        width: '80%',
+        width: '100%',
     },
     modalTitle: {
         fontSize: 20,
@@ -334,6 +358,11 @@ const style = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    modalBottom: {
+        justifyContent: 'flex-end',
+        margin: 0,
+    },
+
 });
 
 export default OptionsList

@@ -7,6 +7,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import OptionsList from '../Components/UserOptionsComponents/OptionsList';
 import ImageModal from '../Components/UserOptionsComponents/ImageModal';
+import HeaderPages from '../Components/GlobalComponents/HeaderPages';
+import { useNavigation } from "@react-navigation/native";
+import { PATHS } from '../routes/Paths';
+
+
 
 
 
@@ -17,6 +22,8 @@ function UserOptions({ navigation }) {
     const currentUser = useSelector(state => state.Users.currentUser);
     const [user, setUser] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+      const { navigate } = useNavigation();
+    
 
     // إعادة جلب بيانات المستخدم عند التركيز على الصفحة
     useFocusEffect(
@@ -65,14 +72,9 @@ function UserOptions({ navigation }) {
     return (
         <View style={style.container}>
             {/* الهيدر */}
-            <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
-                <View style={{ width: '100%', alignItems: 'flex-end' }}>
-                    <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'flex-end' }}>
-                        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <ArrowRight2 size="32" color="#424047" />
-                        </TouchableOpacity> */}
-                        <Text style={[styles.h3, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>الحساب</Text>
-                    </View>
+            <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
+                <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
+                    <HeaderPages title={'الحساب'} navigate={() => navigate(PATHS.Home)} />
                 </View>
             </View>
             {/* محتوى الصفحة */}
@@ -128,7 +130,7 @@ function UserOptions({ navigation }) {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 8,
+        padding: 16,
         backgroundColor: '#fff',
     },
 
