@@ -9,9 +9,10 @@ import {
   Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import {  MaterialIcons } from "@expo/vector-icons";
 import { editOrder, getDelegatorOrders, getOrders } from "../../Redux/Slices/Orders";
-import { useNavigation } from "@react-navigation/native";
-// import NotesModal from "../Components/GlobalComponents/Modal";
+import { useNavigation,useIsFocused } from "@react-navigation/native";
+import NotesModal from "../../Components/GlobalComponents/Modal";
 import HeaderPages from "../../Components/GlobalComponents/HeaderPages";
 import { styles } from "../../../styles";
 import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
@@ -24,16 +25,37 @@ const DelegatorOrders = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.Orders);
   const  orders = useSelector((state) => state.Orders.delegatesOrders);
+const isFocused = useIsFocused();
 
-  useEffect(() => {
+useEffect(() => {
+  if (isFocused) {
     dispatch(getDelegatorOrders());
-  }, [dispatch]);
+  }
+}, [dispatch, isFocused]);
 
+async function handleSaveNotes() {
+  const resultAction = await dispatch(
+    editOrder({
+      id: cancelOrderId,
+      updatedData: {
+        status: "returns",
+        reason: note,
+      },
+    })
+  );
+
+  if (editOrder.fulfilled.match(resultAction)) {
+     dispatch(getDelegatorOrders());
+    Alert.alert("تم", "تم الغاءالطلب بنجاح.");
+  } 
+
+  setIsModalVisible(false);
+}
 
   return (
     <View style={style.container}>
  <HeaderPages title={'طلبات العملاء'} navigate={() => navigate(DelegatesPaths.DelegatorProducts)}/>   
- {/* <NotesModal
+ <NotesModal
         visible={isModalVisible}
         onClose={() => {
           setIsModalVisible(false);
@@ -43,7 +65,7 @@ const DelegatorOrders = () => {
         setNote={setNote}
         onSave={handleSaveNotes}
         style={style}
-      /> */}
+      />
       {orders?.length > 0 && (
         <FlatList
           data={orders}
@@ -122,8 +144,15 @@ const DelegatorOrders = () => {
                     <Text style={[styles.h2,style.productTitle]}>{item.total} ج.م</Text>
                   </View>
                   <View style={style.orderNumberRow}>
-                    <Text style={[styles.h3,style.dateText]} >اسم التاجر: </Text>
-                    <Text style={[styles.h3,style.dateText]}>{item.trader_id?.name??'--'}</Text>
+                    <Text style={[styles.h3,style.dateText]} >اسم العميل: </Text>
+                    <Text style={[styles.h3,style.dateText]}>
+                      {item.user_id?.name.split(' ',2).join(' ')??'--'}</Text>
+                  </View>
+                  <View style={[style.orderNumberRow,{marginTop:8}]}>
+                      <Text style={[styles.h3,style.dateText]} >الهاتف: </Text>
+              
+                    <Text style={[styles.h3,style.dateText]}>
+                      {item.user_id?.phone??'--'}</Text>
                   </View>
                 </View>
               </View>

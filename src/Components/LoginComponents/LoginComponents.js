@@ -14,6 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingSpinner from "../GlobalComponents/LoadingSpinner";
 import { PATHS } from "../../routes/Paths";
 import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
+import { UserData } from "../../Redux/Slices/GetUserData";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -34,8 +35,10 @@ export default function LoginForm() {
       AsyncStorage.setItem("userData", JSON.stringify(currentUser));
 
  if(currentUser.role=='delegate'){
-  console.log('currentUser.trader_id'+currentUser.trader_id);
-  
+ const fetchUser = async () => {
+     await UserData();
+    };
+    fetchUser();
       replace(DelegatesPaths.DelegatorProducts);
      return;
     }

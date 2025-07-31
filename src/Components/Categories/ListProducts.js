@@ -142,62 +142,6 @@ function ListProducts({ products }) {
   );
 }
 
-// const cardWidth = (Dimensions.get("window").width - 16 * 2 - 12) / 2;
 
-// const componentStyles = StyleSheet.create({
-//   cardContainer: {
-//     // height: 188,
-//     width: 175,
-//     marginTop: 12,
-//     paddingRight: 15,
-//     overflow: "hidden",
-//     backgroundColor: "#FFFFFF",
-//     borderRadius: 16,
-//     padding: 12,
-//     // shadowColor: "#000",
-//     // shadowOpacity: 0.05,
-//     // shadowRadius: 6,
-//     // shadowOffset: { width: 0, height: 2 },
-//     // elevation: 3,
-//   },
-//   imageContainer: {
-//     height: 130,
-//     width: "100%",
-//     borderRadius: 20,
-//     backgroundColor: "#EBF2FF",
-//   },
-//   image: {
-//     width: "100%",
-//     height: "100%",
-//     borderRadius: 20,
-//   },
-//   addButton: {
-//     position: "absolute",
-//     left: 10,
-//     bottom: 10,
-//     backgroundColor: "#EBF2FF",
-//     borderRadius: 25,
-//     width: 35,
-//     height: 35,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     elevation: 5,
-//   },
-//   infoContainer: {
-//     paddingRight: 10,
-//   },
-//   titleText: {
-//     textAlign: "right",
-//     fontSize: 13,
-//     marginTop: 8,
-//     color: "#424047",
-//   },
-//   priceText: {
-//     textAlign: "right",
-//     fontSize: 13,
-//     marginTop: 8,
-//     color: "#424047",
-//   },
-// });
 
 export default ListProducts;

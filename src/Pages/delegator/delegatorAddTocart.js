@@ -15,6 +15,7 @@ import SortFilterModal from "../../Components/Categories/SortFilterModal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchTraderProducts } from "../../Redux/Slices/productsSlice";
 import { Building } from "iconsax-react-nativejs";
+import DelegatorListAddToCart from "../../Components/Categories/delegatorListAddToCart";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
@@ -48,6 +49,7 @@ const AllCompaniesCard = ({ isSelected, onPress }) => (
 
 const DelegatorAddToCart = ({ route, navigation }) => {
   const { TraderID } = route.params;
+  const { OrderID } = route.params;
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
@@ -155,7 +157,7 @@ dispatch(fetchTraderProducts(TraderID));
       />
 
       {/* ✅ المنتجات */}
-      <ListProducts products={sortedProducts} />
+      <DelegatorListAddToCart products={sortedProducts}  order_id={OrderID}/>
     </View>
     </SafeAreaView>
   );

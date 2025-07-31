@@ -10,13 +10,14 @@ import { Feather } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import CustomAppBar from "../../Components/Categories/CustomAppBar";
 import useFetchCompanies from "../../Components/Categories/useFetchCompanies";
-import ListProducts from "../../Components/Categories/ListProducts";
 import SortFilterModal from "../../Components/Categories/SortFilterModal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchTraderProducts } from "../../Redux/Slices/productsSlice";
 import { Building } from "iconsax-react-nativejs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDelegatorOrders } from "../../Redux/Slices/Orders";
+import { useIsFocused } from "@react-navigation/native";
+import DelegatorListProducts from "../../Components/Categories/delegatorListProducts";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
@@ -75,18 +76,20 @@ async function GetTraderId() {
   }
 }
 
+const isFocused = useIsFocused();
 
-    useEffect(()=>{
+
+   
+useEffect(()=>{
 GetTraderId();
  dispatch(getDelegatorOrders());
     },[]);
 
- useEffect(() => {
-  if (TraderID) {
+useEffect(() => {
+  if (TraderID&&isFocused) { 
     dispatch(fetchTraderProducts(TraderID));
   }
-}, [TraderID]);
-
+}, [dispatch, isFocused,TraderID]);
  
  
     const handleSelectCompany = (id) => {
@@ -186,7 +189,7 @@ GetTraderId();
       />
 
       {/* ✅ المنتجات */}
-      <ListProducts products={sortedProducts} />
+      <DelegatorListProducts products={sortedProducts} />
     </View>
     </SafeAreaView>
   );

@@ -11,7 +11,7 @@ import {
   FlatList,
 } from "react-native";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { colors, styles } from "../../../styles";
@@ -19,118 +19,127 @@ import HeaderPages from "../../Components/GlobalComponents/HeaderPages";
 import { deleteOrderItem, fetchOrderItems, updateOrderItem } from "../../Redux/Slices/OrderItems";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoBack from "../../Components/GlobalComponents/GoBack";
+import { editOrder } from "../../Redux/Slices/Orders";
+import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
 
-const RenderItem = ({ item, EditMode, setOrderItemsArr, OrderItemsArr }) => {
+const RenderItem = ({ item, EditMode, setOrderItemsArr, OrderItemsArr, UpdateTotalOfOrder }) => {
   const dispatch = useDispatch();
   
-function IncreaseQuantity(ItemID) {
-  const CloneArr = [...OrderItemsArr];
-  const Index = CloneArr.findIndex((item) => item.id === ItemID);
-  
-  if (Index !== -1) {
-    const productPrice = CloneArr[Index].product?.endPrice || CloneArr[Index].product_id?.endPrice || 0;
-    const newQuantity = CloneArr[Index].quantity + 1;
-    const newPrice = productPrice * newQuantity;
+  function IncreaseQuantity(ItemID) {
+    const CloneArr = [...OrderItemsArr];
+    const Index = CloneArr.findIndex((item) => item.id === ItemID);
     
-    const updatedItem = { 
-      ...CloneArr[Index], 
-      quantity: newQuantity,
-      price: newPrice
-    };
-    
-    CloneArr[Index] = updatedItem;
-    setOrderItemsArr(CloneArr);
-    
-    dispatch(updateOrderItem({
-      id: ItemID,
-      updates: {
-        quantity: newQuantity,
-        price: newPrice
-      }
-    })).then((action) => {
-      if (updateOrderItem.fulfilled.match(action)) {
-        // تحديث الحالة مع البيانات الجديدة
-        const newArr = [...OrderItemsArr];
-        const updatedIndex = newArr.findIndex(item => item.id === ItemID);
-        if (updatedIndex !== -1) {
-          newArr[updatedIndex] = action.payload;
-          setOrderItemsArr(newArr);
-        }
-      }
-    });
-  }
-}
-
-function DecreaseQuantity(ItemID) {
-  const CloneArr = [...OrderItemsArr];
-  const Index = CloneArr.findIndex((item) => item.id === ItemID);
-  
-  if (Index !== -1) {
-    const productPrice = CloneArr[Index].product?.endPrice || CloneArr[Index].product_id?.endPrice || 0;
-    const newQuantity = CloneArr[Index].quantity - 1;
-    
-    if (newQuantity <= 0) {
-      const deletedItemId = CloneArr[Index].id;
-      CloneArr.splice(Index, 1);
-      dispatch(deleteOrderItem(deletedItemId));
-    } else {
+    if (Index !== -1) {
+      const productPrice = CloneArr[Index].product?.endPrice || CloneArr[Index].product?.endPrice || 0;
+      const newQuantity = CloneArr[Index].quantity + 1;
       const newPrice = productPrice * newQuantity;
-      const updatedItem = {
-        ...CloneArr[Index],
+      
+      const updatedItem = { 
+        ...CloneArr[Index], 
         quantity: newQuantity,
-        price: newPrice
+        price: newPrice,
+        isCancelled: false  
       };
+      
       CloneArr[Index] = updatedItem;
+      setOrderItemsArr(CloneArr);
       
       dispatch(updateOrderItem({
         id: ItemID,
         updates: {
           quantity: newQuantity,
-          price: newPrice
+          price: newPrice,
+          isCancelled: false
         }
-      })).then((action) => {
-        if (updateOrderItem.fulfilled.match(action)) {
-          const newArr = [...OrderItemsArr];
-          const updatedIndex = newArr.findIndex(item => item.id === ItemID);
-          if (updatedIndex !== -1) {
-            newArr[updatedIndex] = action.payload;
-            setOrderItemsArr(newArr);
-          }
-        }
+      })).then(() => {
+        UpdateTotalOfOrder(CloneArr);
       });
     }
-    
-    setOrderItemsArr(CloneArr);
   }
-}
+
+  function DecreaseQuantity(ItemID) {
+    const CloneArr = [...OrderItemsArr];
+    const Index = CloneArr.findIndex((item) => item.id === ItemID);
+    
+    if (Index !== -1) {
+      const productPrice = CloneArr[Index].product?.endPrice || CloneArr[Index].product?.endPrice || 0;
+      const newQuantity = CloneArr[Index].quantity - 1;
+      
+      if (newQuantity <= 0) {
+        // بدلاً من الحذف، نقوم بوضع علامة "ملغى"
+        const updatedItem = {
+          ...CloneArr[Index],
+          quantity: 0,
+          price: 0,
+          isCancelled: true
+        };
+        CloneArr[Index] = updatedItem;
+        
+        dispatch(updateOrderItem({
+          id: ItemID,
+          updates: {
+            quantity: 0,
+            price: 0,
+            isCancelled: true
+          }
+        })).then(() => {
+          setOrderItemsArr(CloneArr);
+          UpdateTotalOfOrder(CloneArr);
+        });
+      } else {
+        const newPrice = productPrice * newQuantity;
+        const updatedItem = {
+          ...CloneArr[Index],
+          quantity: newQuantity,
+          price: newPrice,
+          isCancelled: false
+        };
+        CloneArr[Index] = updatedItem;
+        
+        dispatch(updateOrderItem({
+          id: ItemID,
+          updates: {
+            quantity: newQuantity,
+            price: newPrice,
+            isCancelled: false
+          }
+        })).then(() => {
+          setOrderItemsArr(CloneArr);
+          UpdateTotalOfOrder(CloneArr);
+        });
+      }
+    }
+  }
   
   return (
-    <View style={style.productItem}>
+    <View style={[style.productItem, item.isCancelled && { opacity: 0.5 }]}>
       <View style={style.productRow}>
         <View style={style.imageContainer}>
           <Image
-            source={{ uri: item.product_id?.image }}
+            source={{ uri: item.product?.image }}
             style={style.productImage}
             resizeMode="cover"
           />
         </View>
         <View style={style.productDetails}>
-          <Text style={[styles.h2, style.productName]}>
-            {item.product_id?.name ?? "اسم المنتج غير متوفر"}
+          <Text style={[styles.h2, style.productName, item.isCancelled && { textDecorationLine: 'line-through' }]}>
+            {item.isCancelled ? 'ملغى - ' : ''}{item.product?.name ?? "اسم المنتج غير متوفر"}
           </Text>
           <View style={style.productMeta}>
-            <Text style={[styles.h3, style.productQuantity]}>
+            <Text style={[styles.h3, style.productQuantity, item.isCancelled && { textDecorationLine: 'line-through' }]}>
               الكمية: {item.quantity}
             </Text>
-            <Text style={[styles.h3, style.productPrice]}>
-              {item.product_id?.endPrice}
-              جنيه /{item.product_id?.unit}
+            <Text style={[styles.h3, style.productPrice, item.isCancelled && { textDecorationLine: 'line-through' }]}>
+              {item.product?.endPrice}
+              جنيه /{item.product?.unit}
             </Text>
           </View>
         </View>
         <View style={{gap:8}}>
           <View style={style.productTotal}>
-            <Text style={style.totalPrice}>{item.price} جنيه</Text>
+            <Text style={[style.totalPrice, item.isCancelled && { textDecorationLine: 'line-through' }]}>
+              {item.isCancelled ? '0' : item.price} جنيه
+            </Text>
           </View>
           {EditMode &&
             <View style={styles.quantityContainer}>
@@ -159,22 +168,53 @@ const DelegatorOrderDetails = () => {
   const { orderItems } = useSelector((state) => state.OrderItems);
   const [OrderItemsArr, setOrderItemsArr] = useState([]);
   const route = useRoute();
+    const isFocused = useIsFocused();
+  const navigation=useNavigation();
   const { OrderData } = route.params;
   
   // حساب المجموع الكلي بناءً على العناصر المعدلة
   const calculateTotal = () => {
-    return OrderItemsArr.reduce((sum, item) => sum + item.price, 0);
+    return OrderItemsArr.reduce((sum, item) => sum + (item.price || 0), 0);
   };
+
+  function UpdateTotalOfOrder(Arr) {
+   
+      const OrderID = OrderItemsArr[0].order_id;
+      const newTotal =Arr.reduce((sum, item) => sum + (item.price || 0), 0)   
+      dispatch(editOrder({
+        id: OrderID,
+        updatedData: { total: newTotal }
+      }));
+    
+  }
+ async function CompleteOrder() {
+  const OrderID = OrderItemsArr[0].order_id;
+  await dispatch(editOrder({
+    id: OrderID,
+    updatedData: { status: "done" }
+  }));
+
+  navigation.goBack();
+}
+
 
   useEffect(() => {
     dispatch(fetchOrderItems(OrderData.id));
-  }, [dispatch, OrderData.id]);
+  }, [dispatch, OrderData.id,isFocused]);
 
   useEffect(() => {
-    if (orderItems.length > 0) {
-      setOrderItemsArr(orderItems);
-    }
-  }, [orderItems]);
+
+      if (isFocused&&orderItems.length > 0) {
+   setOrderItemsArr(orderItems);
+  }
+  }, [orderItems,isFocused,dispatch]);
+  useEffect(() => {
+
+      if (OrderItemsArr.length > 0) {
+   UpdateTotalOfOrder(OrderItemsArr)
+  }
+  }, [OrderItemsArr,isFocused]);
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
@@ -290,15 +330,18 @@ const DelegatorOrderDetails = () => {
                 المنتجات المطلوبة
               </Text>
 
-              {EditMode ? (
-                <TouchableOpacity onPress={() => setEditMode(false)}>
-                  <Entypo name="save" size={35} color="#0cad34f3" />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={() => setEditMode(true)}>
-                  <Edit size="35" color="#327AFF" variant="Bulk" />
-                </TouchableOpacity>
-              )}
+           {OrderData.status !== 'done' && OrderData.status !== 'returns' && (
+  EditMode ? (
+    <TouchableOpacity onPress={() => setEditMode(false)}>
+      <Entypo name="save" size={35} color="#0cad34f3" />
+    </TouchableOpacity>
+  ) : (
+    <TouchableOpacity onPress={() => setEditMode(true)}>
+      <Edit size="35" color="#327AFF" variant="Bulk" />
+    </TouchableOpacity>
+  )
+)}
+
             </View>
             
             <FlatList
@@ -312,6 +355,7 @@ const DelegatorOrderDetails = () => {
                   EditMode={EditMode}
                   setOrderItemsArr={setOrderItemsArr}
                   OrderItemsArr={OrderItemsArr}
+                  UpdateTotalOfOrder={UpdateTotalOfOrder}
                 />
               )}
               scrollEnabled={false}
@@ -346,7 +390,8 @@ const DelegatorOrderDetails = () => {
             </View>
           </View>
 
-          <View
+        {OrderData.status!=='returns'&&OrderData.status!=='done'&&
+            <View
             style={{
               alignSelf: "stretch",
               justifyContent: "space-between",
@@ -374,8 +419,8 @@ const DelegatorOrderDetails = () => {
                   borderRadius: 16,
                 }}
                 onPress={() =>
-                  navigate(PATHS.TraderProducts, {
-                    TraderID: OrderItemsArr[0]?.product.trader_id,
+                navigation.navigate(DelegatesPaths.DelegatorAddToCart, {
+                    OrderID:OrderData.id
                   })
                 }
               >
@@ -401,7 +446,7 @@ const DelegatorOrderDetails = () => {
               }}
             >
               <TouchableOpacity
-                // onPress={CompleteOrder}
+                onPress={CompleteOrder}
                 style={{
                   backgroundColor: colors.BtnsColor,
                   flexDirection: "row",
@@ -427,6 +472,7 @@ const DelegatorOrderDetails = () => {
               </TouchableOpacity>
             </View>
           </View>
+        }
         </ScrollView>
       </View>
     </SafeAreaView>

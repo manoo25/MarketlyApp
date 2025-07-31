@@ -39,9 +39,7 @@ export const getDelegatorOrders = createAsyncThunk(
       if (error) throw error;
         console.log('DelOrders'+data);
       return data;
-    
-      
-      return data;
+
     } catch (error) {
       return rejectWithValue(error.message);
     }

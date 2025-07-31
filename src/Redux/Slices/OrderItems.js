@@ -10,7 +10,7 @@ export const fetchOrderItems = createAsyncThunk(
         .from("order_items")
         .select(`
           *,
-          product_id (name, image, endPrice,unit)
+          product: product_id (name, image, endPrice,unit)
   
         `)
         .eq("order_id", OrderId);
@@ -63,26 +63,23 @@ export const updateOrderItem = createAsyncThunk(
   "order_items/updateOrderItem",
   async ({ id, updates }, { rejectWithValue }) => {
     try {
+      console.log('Data to Update:', updates);
+      console.log('Item ID:', id);
+      
       const { data, error } = await supabase
         .from("order_items")
-        .update(updates)
+        .update(updates)  // هنا نمرر كائن التحديثات مباشرة
         .eq("id", id)
         .select(`
           *,
-          product_id (name, image, endPrice, unit)
+          product:product_id (name, image, endPrice, unit)
         `)
         .single();
 
       if (error) throw error;
+      console.log('Updated Data:', data);
       
-      // إعادة هيكلة البيانات لتكون متوافقة مع الهيكل الأصلي
-      const formattedData = {
-        ...data,
-        product: data.product_id,
-        product_id: data.product_id?.id
-      };
-      
-      return formattedData;
+      return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -102,6 +99,55 @@ export const deleteOrderItem = createAsyncThunk(
     }
   }
 );
+
+
+export const addOrUpdateOrderItem = createAsyncThunk(
+  "order_items/addOrUpdateOrderItem",
+  async ({ product_id, order_id,price, quantity = 1 }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const { orderItems } = getState().OrderItems;
+      const existingItem = orderItems.find(
+        (item) => item.product_id === product_id && item.order_id === order_id
+      );
+
+      if (existingItem) {
+        const newQuantity = existingItem.quantity + quantity;
+
+        const updatedItem = await dispatch(
+          updateOrderItem({ id: existingItem.id, updates: { quantity: newQuantity } })
+        ).unwrap();
+
+        return updatedItem;
+      }
+       else {
+        const newItem = await dispatch(
+          addOrderItems([
+            {
+              product_id,
+              order_id,
+              quantity,
+              price
+            },
+          ])
+        ).unwrap();
+console.log('newItem'+JSON.stringify(newItem[0]));
+
+        return newItem[0]; // لأن `addOrderItems` بيرجع array
+      }
+    } catch (error) {
+      return rejectWithValue(error.message || "Failed to add or update order item");
+    }
+  }
+);
+
+
+
+
+
+
+
+
+
 
 
 // ✅ Initial state
@@ -147,12 +193,23 @@ extraReducers: (builder) => {
     })
 
     // ✅ Update
-    builder.addCase(updateOrderItem.fulfilled, (state, action) => {
-    const index = state.orderItems.findIndex(item => item.id === action.payload.id);
-    if (index !== -1) {
-      state.orderItems[index] = action.payload;
-    }
-  })
+    .addCase(updateOrderItem.fulfilled, (state, action) => {
+      const index = state.orderItems.findIndex(item => item.id === action.payload.id);
+      if (index !== -1) {
+        state.orderItems[index] = action.payload;
+      }
+    })
+
+        // ✅ Add or Update
+    .addCase(addOrUpdateOrderItem.fulfilled, (state, action) => {
+      const index = state.orderItems.findIndex(item => item.id === action.payload.id);
+      if (index !== -1) {
+        state.orderItems[index] = action.payload;
+      } else {
+        state.orderItems.push(action.payload);
+      }
+    })
+
 
     // ✅ Delete
     .addCase(deleteOrderItem.fulfilled, (state, action) => {
