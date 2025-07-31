@@ -20,6 +20,12 @@ import ProductDetails from '../Pages/ProductDetails';
 import TraderProducts from "../Pages/TraderProducts/TraderProducts";
 import Search from "../Pages/search";
 import Cart from "../Pages/Cart";
+import DelegatorOrderDetails from "../Pages/delegator/delegatorOrderDetails";
+import DelegatesBottomTabs from "./delegatesRoute/delegatesBottomTabs";
+import DelegatorAddToCart from "../Pages/delegator/delegatorAddTocart";
+import DelegatorOrders from "../Pages/delegator/delegatorOrders";
+import { DelegatesPaths } from "./delegatesRoute/delegatesPaths";
+
 
 
 
@@ -39,6 +45,7 @@ export default function Router() {
         <Stack.Screen name={PATHS.Login} component={LoginPage} />
         <Stack.Screen name={PATHS.Register} component={RegisterPage} />
         <Stack.Screen name={PATHS.Home} component={BottomTabs} />
+        <Stack.Screen name={DelegatesPaths.DelegatorProducts} component={DelegatesBottomTabs} />
 
         <Stack.Screen
           name={PATHS.ForgetPassword}
@@ -90,6 +97,10 @@ export default function Router() {
           name={PATHS.Search}
           component={Search}
         />
+          {/* <Stack.Screen name={DelegatesPaths.delegatorProducts} component={delegatorProducts} /> */}
+                <Stack.Screen name={DelegatesPaths.DelegatorAddToCart} component={DelegatorAddToCart} />
+                <Stack.Screen name={DelegatesPaths.DelegatorOrderDetails} component={DelegatorOrderDetails} />
+                <Stack.Screen name={DelegatesPaths.DelegatorOrders} component={DelegatorOrders} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -36,6 +36,10 @@ if (data.role === 'trader' || data.role === 'admin') {
   );
   return;
 }
+else if (data.isBlocked) {
+       Alert.alert('تنبيه!!!', 'لا يمكنك تسجيل الدخول لأن حسابك محظور.');
+       return;
+      }
 
       return data;
     } catch (error) {

@@ -11,6 +11,7 @@ import Logo from "../../assets/imgs/Logo.png";
 import { useNavigation } from "@react-navigation/native";
 import { PATHS } from "../routes/Paths";
 import { UserData } from '../Redux/Slices/GetUserData';
+import { DelegatesPaths } from "../routes/delegatesRoute/delegatesPaths";
 
 
 
@@ -25,7 +26,13 @@ useEffect(()=>{
 
  const fetchUser = async () => {
       const user = await UserData();
-      if (user) {       
+      if (user) {   
+        if(user.role==='delegate'){
+replace(DelegatesPaths.DelegatorProducts) ;
+return;
+        }
+       
+            
   replace(PATHS.Home)   
       }
       else{

@@ -132,7 +132,7 @@ const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
   horizontal
   showsHorizontalScrollIndicator={false}
  keyExtractor={(item) => item.id.toString()}
-
+inverted
   contentContainerStyle={styles.foodCategoriesContent}
   style={styles.foodCategories}
   renderItem={({ item: category }) => {

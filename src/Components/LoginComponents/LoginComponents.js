@@ -13,6 +13,7 @@ import { UserLogin } from "../../Redux/Slices/users";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingSpinner from "../GlobalComponents/LoadingSpinner";
 import { PATHS } from "../../routes/Paths";
+import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -30,8 +31,15 @@ export default function LoginForm() {
   }, []);
   useEffect(() => {
     if (currentUser) {
-      console.log("currentUser", currentUser);
       AsyncStorage.setItem("userData", JSON.stringify(currentUser));
+
+ if(currentUser.role=='delegate'){
+  console.log('currentUser.trader_id'+currentUser.trader_id);
+  
+      replace(DelegatesPaths.DelegatorProducts);
+     return;
+    }
+
       replace(PATHS.Home);
     }
   }, [currentUser]);
@@ -45,8 +53,12 @@ export default function LoginForm() {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "صيغة البريد الإلكتروني غير صحيحة")
-      .required("البريد مطلوب"),
+    .required("هذا الحقل مطلوب")
+    .test("is-email-or-phone", "يجب إدخال بريد إلكتروني أو رقم هاتف صحيح", function (value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^01[0125][0-9]{8}$/; // مثال: أرقام مصر
+      return emailRegex.test(value) || phoneRegex.test(value);
+    }),
     password: Yup.string().required("كلمة المرور مطلوبة"),
   });
 
@@ -69,7 +81,7 @@ export default function LoginForm() {
           <View style={styles.inputWrapper}>
             <Fontisto name="email" size={24} color="black" style={styles.icon} />
             <TextInput
-              placeholder="البريد الإلكتروني"
+              placeholder="البريد الإلكتروني او الهاتف"
               placeholderTextColor="#7B7686"
               style={[styles.input, styles.h4]}
               onChangeText={handleChange("email")}

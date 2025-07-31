@@ -59,7 +59,6 @@ export const addOrderItems = createAsyncThunk(
 );
 
 
-// ✅ Update order item
 export const updateOrderItem = createAsyncThunk(
   "order_items/updateOrderItem",
   async ({ id, updates }, { rejectWithValue }) => {
@@ -69,13 +68,21 @@ export const updateOrderItem = createAsyncThunk(
         .update(updates)
         .eq("id", id)
         .select(`
-          * ,
-          product:product_id (name, image, endPrice, unit)
+          *,
+          product_id (name, image, endPrice, unit)
         `)
         .single();
 
       if (error) throw error;
-      return data;
+      
+      // إعادة هيكلة البيانات لتكون متوافقة مع الهيكل الأصلي
+      const formattedData = {
+        ...data,
+        product: data.product_id,
+        product_id: data.product_id?.id
+      };
+      
+      return formattedData;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -140,12 +147,12 @@ extraReducers: (builder) => {
     })
 
     // ✅ Update
-    .addCase(updateOrderItem.fulfilled, (state, action) => {
-      const index = state.orderItems.findIndex(item => item.id === action.payload.id);
-      if (index !== -1) {
-        state.orderItems[index] = action.payload;
-      }
-    })
+    builder.addCase(updateOrderItem.fulfilled, (state, action) => {
+    const index = state.orderItems.findIndex(item => item.id === action.payload.id);
+    if (index !== -1) {
+      state.orderItems[index] = action.payload;
+    }
+  })
 
     // ✅ Delete
     .addCase(deleteOrderItem.fulfilled, (state, action) => {

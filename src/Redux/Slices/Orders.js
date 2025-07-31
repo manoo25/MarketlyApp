@@ -22,6 +22,31 @@ export const getOrders = createAsyncThunk(
     }
   }
 );
+export const getDelegatorOrders = createAsyncThunk(
+  "orders/getDelegatorOrders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data, error } = await supabase
+        .from("orders")
+        .select(
+          `*,
+           user_id (*),
+           trader_id (name)
+           `
+        )
+        .eq("delegator", UserId)
+        .order("created_at", { ascending: false }); 
+      if (error) throw error;
+        console.log('DelOrders'+data);
+      return data;
+    
+      
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 
 // ✅ Get Done Orders (Status = 'done')
@@ -133,6 +158,7 @@ const ordersSlice = createSlice({
   name: "orders",
   initialState: {
     orders: [],
+    delegatesOrders: [],
     doneOrders: [],
     loading: false,
     error: null,
@@ -148,9 +174,19 @@ const ordersSlice = createSlice({
         state.loading = false;
         state.orders = action.payload;
       })
+    
       .addCase(getOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+        .addCase(getDelegatorOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.delegatesOrders = action.payload;
+      })
+       .addCase(getDelegatorOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
 
       // Get Done Orders
