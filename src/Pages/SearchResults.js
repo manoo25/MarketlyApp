@@ -85,7 +85,7 @@ const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
             {item.onSale && (
               <View style={styles.saleTag}>
                 <Text style={styles.saleTagText}>
-                  خصم {item.sale}% علي بعض المنتجات
+                  خصم {(item.traderprice-item.endPrice)*(100/item.traderprice)}% علي بعض المنتجات
                 </Text>
               </View>
             )}

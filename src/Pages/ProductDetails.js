@@ -154,13 +154,10 @@ function ProductDetails() {
                   ]}
                 >
                   وفر{" "}
-                  {specificProduct[0] &&
-                    `${Math.round(
-                      ((specificProduct[0].endPrice -
-                        specificProduct[0].traderprice) /
-                        specificProduct[0].endPrice) *
-                        100
-                    )}%`}
+                 {Math.round((specificProduct[0].traderprice-specificProduct[0].endPrice)*(100/specificProduct[0].traderprice))
+               
+                 }
+               %
                 </Text>
               )}
             </View>

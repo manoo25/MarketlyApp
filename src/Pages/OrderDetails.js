@@ -23,20 +23,20 @@ const RenderItem = ({ item }) => (
     <View style={style.productRow}>
       <View style={style.imageContainer}>
         <Image
-          source={{ uri: item.product_id?.image }}
+          source={{ uri: item.product?.image }}
           style={style.productImage}
           resizeMode="cover"
         />
       </View>
       <View style={style.productDetails}>
-        <Text style={[styles.h2,style.productName]}>{item.product_id?.name ?? 'اسم المنتج غير متوفر'}</Text>
+        <Text style={[styles.h2,style.productName]}>{item.product?.name ?? 'اسم المنتج غير متوفر'}</Text>
         <View style={style.productMeta}>
           <Text style={[styles.h3,style.productQuantity]}>الكمية: {item.quantity}</Text>
           <Text style={[styles.h3,style.productPrice]}>
-            {item.product_id?.endPrice} 
+            {item.product?.endPrice} 
             جنيه
              / 
-             {item.product_id?.unit}
+             {item.product?.unit}
           </Text>
         </View>
       </View>

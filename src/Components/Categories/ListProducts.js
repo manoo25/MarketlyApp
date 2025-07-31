@@ -13,6 +13,7 @@ import DiscountBadge from "../../Components/OffersComponents/DiscountBadge";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
+import { PATHS } from "../../routes/Paths";
 
 
 
