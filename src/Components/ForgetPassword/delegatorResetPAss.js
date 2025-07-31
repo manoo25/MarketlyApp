@@ -10,8 +10,9 @@ import { fetchUserIdByEmail, updateUser } from "../../Redux/Slices/users";
 import { useDispatch } from "react-redux";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { PATHS } from "../../routes/Paths";
+import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
 
-export default function ResetPasswordForm() {
+export default function DelegatorResetPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [UserID, SetUserId] = useState('');
 
@@ -66,7 +67,7 @@ const handleFormSubmit = (values) => {
     .then(() => {
       setLoading(false);
       Alert.alert('تم تغيير كلمة المرور بنجاح');
-      replace(PATHS.Login)
+      replace(DelegatesPaths.DelegatorProducts)
     })
     .catch(() => {
       console.error("خطأ في التحديث");
@@ -188,7 +189,7 @@ const handleFormSubmit = (values) => {
                      </TouchableOpacity>
           </View>
 
-          <BackToSignUp />
+          {/* <BackToSignUp /> */}
         </View>
             </View>
             </View>

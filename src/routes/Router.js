@@ -25,6 +25,7 @@ import DelegatesBottomTabs from "./delegatesRoute/delegatesBottomTabs";
 import DelegatorAddToCart from "../Pages/delegator/delegatorAddTocart";
 import DelegatorOrders from "../Pages/delegator/delegatorOrders";
 import { DelegatesPaths } from "./delegatesRoute/delegatesPaths";
+import DelegatorResetPasswordForm from "../Components/ForgetPassword/delegatorResetPAss";
 
 
 
@@ -97,10 +98,12 @@ export default function Router() {
           name={PATHS.Search}
           component={Search}
         />
+      
           {/* <Stack.Screen name={DelegatesPaths.delegatorProducts} component={delegatorProducts} /> */}
                 <Stack.Screen name={DelegatesPaths.DelegatorAddToCart} component={DelegatorAddToCart} />
                 <Stack.Screen name={DelegatesPaths.DelegatorOrderDetails} component={DelegatorOrderDetails} />
                 <Stack.Screen name={DelegatesPaths.DelegatorOrders} component={DelegatorOrders} />
+                <Stack.Screen name={DelegatesPaths.DelegatorResetPasswordForm} component={DelegatorResetPasswordForm} />
       </Stack.Navigator>
     </NavigationContainer>
   );

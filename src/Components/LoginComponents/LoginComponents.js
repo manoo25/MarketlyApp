@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, TextInput, Text, TouchableOpacity } from "react-native";
+import { View, TextInput, Text, TouchableOpacity, Alert } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
@@ -20,6 +20,7 @@ export default function LoginForm() {
   const dispatch = useDispatch();
   const { currentUser, error, loading } = useSelector((state) => state.Users);
   const { replace } = useNavigation();
+  const { navigate } = useNavigation();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [loginError, setLoginError] = useState("");
 
@@ -40,6 +41,14 @@ export default function LoginForm() {
     };
     fetchUser();
       replace(DelegatesPaths.DelegatorProducts);
+if (currentUser.email === currentUser.password) {
+  Alert.alert(
+    "تنبيه",
+   "يجب عليك تغيير كلمة مرورك الموقتة لامان حسابك!!",
+    { cancelable: true }
+  );
+  replace(DelegatesPaths.DelegatorResetPasswordForm,{email:currentUser.email})
+}
      return;
     }
 

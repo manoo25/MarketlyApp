@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
+  Alert,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors, componentStyles, styles } from "../../../styles";
@@ -101,6 +102,11 @@ function DelegatorListAddToCart({ products,order_id }) {
     function AddToCart(ProId,price) {
     
     dispatch(addOrUpdateOrderItem({ product_id: ProId,order_id:order_id,price:price }));
+     Alert.alert(
+    "نجاح",
+   "تم اضافة المنتج للفاتورة بنجاح",
+    { cancelable: true }
+  );
     }
   if (!products || products.length === 0) {
     return (
