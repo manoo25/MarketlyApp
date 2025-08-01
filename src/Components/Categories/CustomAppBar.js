@@ -24,12 +24,12 @@ const CustomAppBar = ({
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSearchPress = () => {
-      if (isSearching) {
-        setIsSearching(false);
-        onSearchClose?.();
-      } else {
-        setIsSearching(true);
-      }
+    if (isSearching) {
+      setIsSearching(false);
+      onSearchClose?.();
+    } else {
+      setIsSearching(true);
+    }
   };
 
   const handleCloseSearch = () => {
@@ -41,7 +41,11 @@ const CustomAppBar = ({
     <View style={styles.container}>
       {/* الهيدر الرئيسي */}
       <View style={styles.header}>
-         <HeaderPages title={title}/>
+        <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
+          <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
+            <HeaderPages title={title} />
+          </View>
+        </View>
 
         {showSearch && (
           <TouchableOpacity
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingStart: 16,
- 
+
 
   },
   titleContainer: {
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
     borderColor: "#EFECF3",
     justifyContent: "center",
     alignItems: "center",
-    marginTop:40,
+    marginTop: 40,
   },
   searchBox: {
     flexDirection: "row-reverse",

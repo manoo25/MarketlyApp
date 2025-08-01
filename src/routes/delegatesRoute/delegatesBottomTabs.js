@@ -7,6 +7,8 @@ import UserOptions from '../../Pages/UserOptions';
 import { styles } from '../../../styles';
 import DelegatorProducts from '../../Pages/delegator/delegatorProducts';
 import DelegatorOrders from '../../Pages/delegator/delegatorOrders';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -14,6 +16,8 @@ const Tab = createBottomTabNavigator();
 
 
 export default function DelegatesBottomTabs() {
+    const insets = useSafeAreaInsets();
+  
   return (
     <Tab.Navigator
       initialRouteName="DelegatorProducts"
@@ -26,14 +30,14 @@ export default function DelegatesBottomTabs() {
           let icon;
 
           if (route.name === "DelegatorProducts") {
-            icon = <Shop size={35} color={iconColor} variant={variant} />;
+            icon = <Shop size={30} color={iconColor} variant={variant} />;
           } 
           else if (route.name === 'DelegatorOrders') {
-                      icon = <Receipt1 size={35} color={iconColor} variant={variant} />;
+                      icon = <Receipt1 size={30} color={iconColor} variant={variant} />;
                     }
           else if (route.name === "Profile") {
             icon = (
-              <ProfileCircle size={35} color={iconColor} variant={variant} />
+              <ProfileCircle size={30} color={iconColor} variant={variant} />
             );
           }
 
@@ -43,12 +47,12 @@ export default function DelegatesBottomTabs() {
         tabBarInactiveTintColor: "#292D32",
         tabBarLabelStyle: styles.titleNavegator,
         tabBarStyle: {
-          height: Platform.OS === "android" ? 75 : 70,
+          height: Platform.OS === "android" ? 75 + insets.bottom : 70,
           alignItems: "center",
           backgroundColor: "#FFFFFF",
           justifyContent: "space-between",
-          marginBottom: Platform.OS === "android" ? 35 : 0,
-          paddingTop: 5,
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 10,
+          paddingTop: 10,
         },
       })}
     >

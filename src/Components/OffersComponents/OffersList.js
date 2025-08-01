@@ -13,6 +13,7 @@ import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
 import { colors, componentStyles, styles } from "../../../styles";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { PATHS } from "../../routes/Paths";
 
 const OffersList = ({
   data,

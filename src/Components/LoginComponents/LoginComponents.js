@@ -44,7 +44,8 @@ export default function LoginForm() {
 if (currentUser.email === currentUser.password) {
   Alert.alert(
     "تنبيه",
-   "يجب عليك تغيير كلمة مرورك الموقتة لامان حسابك!!",
+    "يجب عليك تغيير كلمة مرورك الموقتة لامان حسابك!!",
+    [{ text: "حسناً" }],
     { cancelable: true }
   );
   replace(DelegatesPaths.DelegatorResetPasswordForm,{email:currentUser.email})
