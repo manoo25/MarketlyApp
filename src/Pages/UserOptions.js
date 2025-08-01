@@ -10,6 +10,7 @@ import ImageModal from '../Components/UserOptionsComponents/ImageModal';
 import HeaderPages from '../Components/GlobalComponents/HeaderPages';
 import { useNavigation } from "@react-navigation/native";
 import { PATHS } from '../routes/Paths';
+import { DelegatesPaths } from '../routes/delegatesRoute/delegatesPaths';
 
 
 
@@ -74,7 +75,12 @@ function UserOptions({ navigation }) {
             {/* الهيدر */}
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
-                    <HeaderPages title={'الحساب'} navigate={() => navigate(PATHS.Home)} />
+                    {user.role=='user'?
+                <HeaderPages title={'الحساب'} navigate={() => navigate(PATHS.Home)} />
+                :
+                   <HeaderPages title={'الحساب'} navigate={() => navigate(DelegatesPaths.DelegatorProducts)} /> 
+                }
+                    
                 </View>
             </View>
             {/* محتوى الصفحة */}
