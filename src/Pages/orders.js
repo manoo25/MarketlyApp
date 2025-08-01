@@ -19,12 +19,12 @@ import HeaderPages from "../Components/GlobalComponents/HeaderPages";
 import NotesModal from "../Components/GlobalComponents/Modal";
 
 const Orders = () => {
- const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [note, setNote] = useState('');
   const [cancelOrderId, setcancelOrderId] = useState('');
-  const {navigate}=useNavigation();
+  const { navigate } = useNavigation();
   const dispatch = useDispatch();
-  const { orders,loading } = useSelector((state) => state.Orders);
+  const { orders, loading } = useSelector((state) => state.Orders);
 
   useEffect(() => {
     dispatch(getOrders());
@@ -32,30 +32,34 @@ const Orders = () => {
 
 
 
-async function handleSaveNotes() {
-  const resultAction = await dispatch(
-    editOrder({
-      id: cancelOrderId,
-      updatedData: {
-        status: "returns",
-        reason: note,
-      },
-    })
-  );
+  async function handleSaveNotes() {
+    const resultAction = await dispatch(
+      editOrder({
+        id: cancelOrderId,
+        updatedData: {
+          status: "returns",
+          reason: note,
+        },
+      })
+    );
 
-  if (editOrder.fulfilled.match(resultAction)) {
-    Alert.alert("تم", "تم الغاءالطلب بنجاح.");
-  } 
+    if (editOrder.fulfilled.match(resultAction)) {
+      Alert.alert("تم", "تم الغاءالطلب بنجاح.");
+    }
 
-  setIsModalVisible(false);
-}
+    setIsModalVisible(false);
+  }
 
 
 
   return (
     <View style={style.container}>
- <HeaderPages title={'الطلبات'} navigate={() => navigate(PATHS.Home)}/>   
- <NotesModal
+      <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
+        <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
+          <HeaderPages title={'الطلبات'} navigate={() => navigate(PATHS.Home)} />
+        </View>
+      </View>
+      <NotesModal
         visible={isModalVisible}
         onClose={() => {
           setIsModalVisible(false);
@@ -69,58 +73,58 @@ async function handleSaveNotes() {
       {orders?.length > 0 && (
         <FlatList
           data={orders}
-           keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
+          keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={style.section}>
               <View style={style.infoRowBordered}>
-<View
-  style={[
-    style.deliveryStatusRow,
-    {
-      backgroundColor:
-        item.status === "done"
-          ? "#D4EDDA"
-          : item.status === "inprogress"
-          ? "#E3F0FF"
-          : item.status === "pending"
-          ? "#FFF4E5"
-          : item.status === "returns"
-          ? "#F8D7DA"
-          : "#F0F0F0",
-    },
-  ]}
->
-  <Text
-    style={[
-      styles.h2,
-      style.deliveryTextRow,
-      {
-        color:
-          item.status === "done"
-            ? "green"
-            : item.status === "inprogress"
-            ? "#327AFF"
-            : item.status === "pending"
-            ? "#e2980eff"
-            : item.status === "returns"
-            ? "red"
-            : "#327AFF",
-      },
-    ]}
-  >
-    {item.status === "done" && "تم التوصيل" ||
-     item.status === "inprogress" && "قيد التنفيذ" ||
-     item.status === "pending" && "معلق" ||
-     item.status === "returns" && "ملغى"}
-  </Text>
-</View>
+                <View
+                  style={[
+                    style.deliveryStatusRow,
+                    {
+                      backgroundColor:
+                        item.status === "done"
+                          ? "#D4EDDA"
+                          : item.status === "inprogress"
+                            ? "#E3F0FF"
+                            : item.status === "pending"
+                              ? "#FFF4E5"
+                              : item.status === "returns"
+                                ? "#F8D7DA"
+                                : "#F0F0F0",
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.h2,
+                      style.deliveryTextRow,
+                      {
+                        color:
+                          item.status === "done"
+                            ? "green"
+                            : item.status === "inprogress"
+                              ? "#327AFF"
+                              : item.status === "pending"
+                                ? "#e2980eff"
+                                : item.status === "returns"
+                                  ? "red"
+                                  : "#327AFF",
+                      },
+                    ]}
+                  >
+                    {item.status === "done" && "تم التوصيل" ||
+                      item.status === "inprogress" && "قيد التنفيذ" ||
+                      item.status === "pending" && "معلق" ||
+                      item.status === "returns" && "ملغى"}
+                  </Text>
+                </View>
 
 
-                <Text style={[styles.h2,style.dateText]}>
+                <Text style={[styles.h2, style.dateText]}>
                   {new Date(item.created_at).toLocaleDateString("ar-EG")}
                 </Text>
-                <Text style={[styles.h2,style.dateText]}>
+                <Text style={[styles.h2, style.dateText]}>
                   {new Date(item.created_at).toLocaleTimeString("ar-EG", {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -138,56 +142,56 @@ async function handleSaveNotes() {
                   />
                 </View>
                 <View style={style.productInfo}>
-                 
+
                   <View style={style.orderNumberRow}>
-                    <Text style={[styles.h2,style.productTitle]} >إجمالى الطلب: </Text>
-                    <Text style={[styles.h2,style.productTitle]}>{item.total} ج.م</Text>
+                    <Text style={[styles.h2, style.productTitle]} >إجمالى الطلب: </Text>
+                    <Text style={[styles.h2, style.productTitle]}>{item.total} ج.م</Text>
                   </View>
                   <View style={style.orderNumberRow}>
-                    <Text style={[styles.h3,style.dateText]} >اسم التاجر: </Text>
-                    <Text style={[styles.h3,style.dateText]}>{item.trader_id?.name??'--'}</Text>
+                    <Text style={[styles.h3, style.dateText]} >اسم التاجر: </Text>
+                    <Text style={[styles.h3, style.dateText]}>{item.trader_id?.name ?? '--'}</Text>
                   </View>
                 </View>
               </View>
 
               <View style={style.priceRow}>
-               
-                 <TouchableOpacity  onPress={() =>navigate(PATHS.OrderDetails, { OrderData: item })}>
-                   <Text style={[style.detailsLink]}>تفاصيل الطلب</Text>
-                  </TouchableOpacity> 
-                {(item.status === "pending"||item.status === "inprogress")&&
-             <TouchableOpacity
-  onPress={() => {
-    setIsModalVisible(true);
-    setcancelOrderId(item.id);
-  }}
->
-                  <View style={style.deliveryStatusRow}>
-                  <Text style={[styles.h2,style.deliveryTextRow]}>الغاء الطلبية</Text>
-                </View>
-                  </TouchableOpacity>  
-              } 
-              {
-item.status === "done"&&
-                
-                  <View style={[style.deliveryStatusRow,{backgroundColor:'#D4EDDA'}]}>
-                  <Text style={[[
-                    styles.h3,style.deliveryTextRow,{fontSize:12,color:'green'}]]}
+
+                <TouchableOpacity onPress={() => navigate(PATHS.OrderDetails, { OrderData: item })}>
+                  <Text style={[style.detailsLink]}>تفاصيل الطلب</Text>
+                </TouchableOpacity>
+                {(item.status === "pending" || item.status === "inprogress") &&
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsModalVisible(true);
+                      setcancelOrderId(item.id);
+                    }}
+                  >
+                    <View style={style.deliveryStatusRow}>
+                      <Text style={[styles.h2, style.deliveryTextRow]}>الغاء الطلبية</Text>
+                    </View>
+                  </TouchableOpacity>
+                }
+                {
+                  item.status === "done" &&
+
+                  <View style={[style.deliveryStatusRow, { backgroundColor: '#D4EDDA' }]}>
+                    <Text style={[[
+                      styles.h3, style.deliveryTextRow, { fontSize: 12, color: 'green' }]]}
                     >تم التاكيد من قبل المندوب</Text>
-                </View>
-                 
-              }
-                 
-               
-                
+                  </View>
+
+                }
+
+
+
               </View>
 
-            
+
             </View>
           )}
         />
       )}
-     
+
     </View>
   );
 };
@@ -210,7 +214,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     padding: 2,
     borderRadius: 12,
-    marginBottom:0,
+    marginBottom: 0,
   },
   underline: {
     height: 1,
@@ -236,7 +240,7 @@ const style = StyleSheet.create({
     color: "#B0B0B0",
     fontSize: 16,
     fontWeight: "bold",
-    paddingHorizontal:3
+    paddingHorizontal: 3
   },
   productRow: {
     flexDirection: "row-reverse",

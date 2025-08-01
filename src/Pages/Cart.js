@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import {  StyleSheet, Text, TouchableOpacity, ScrollView, View, Modal, TextInput, Alert } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, ScrollView, View, Modal, TextInput, Alert } from "react-native";
 import { useState } from 'react';
 import CartList from '../Components/CartComponents/CartList';
 import { colors, styles } from '../../styles';
@@ -12,7 +12,7 @@ import { deleteCartItemsByUserId, fetchCartItems } from '../Redux/Slices/CartIte
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { UserId } from '../Redux/Slices/GetUserData';
-import {  addOrderItems } from '../Redux/Slices/OrderItems';
+import { addOrderItems } from '../Redux/Slices/OrderItems';
 import { addOrder } from '../Redux/Slices/Orders';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useNavigation } from '@react-navigation/native';
@@ -33,28 +33,28 @@ function Cart() {
     const [notes, setNotes] = useState('');
     const [savedNotes, setSavedNotes] = useState('');
     const [TotalPrice, SetTotalPrice] = useState(0);
-    const dispatch=useDispatch();
-    const{cartItems}=useSelector((state)=>state.CartItems);
-const[CartItemsArr,setCartItemsArr]=useState([]);
+    const dispatch = useDispatch();
+    const { cartItems } = useSelector((state) => state.CartItems);
+    const [CartItemsArr, setCartItemsArr] = useState([]);
 
-  const {navigate}=useNavigation();
-    useEffect(()=>{
+    const { navigate } = useNavigation();
+    useEffect(() => {
         dispatch(fetchCartItems());
-        },[dispatch]);
-    useEffect(()=>{
-       if (cartItems.length > 0) {
-        setCartItemsArr(cartItems);
-       } 
-        },[cartItems]);
+    }, [dispatch]);
+    useEffect(() => {
+        if (cartItems.length > 0) {
+            setCartItemsArr(cartItems);
+        }
+    }, [cartItems]);
 
     useEffect(() => {
-  const Total = CartItemsArr.reduce((acc, item) => {
-    return acc + item.product.endPrice * item.quantity;
-  }, 0); // قيمة ابتدائية 0
+        const Total = CartItemsArr.reduce((acc, item) => {
+            return acc + item.product.endPrice * item.quantity;
+        }, 0); // قيمة ابتدائية 0
 
 
-  SetTotalPrice(Total);
-}, [CartItemsArr]);
+        SetTotalPrice(Total);
+    }, [CartItemsArr]);
 
 
 
@@ -67,43 +67,43 @@ const[CartItemsArr,setCartItemsArr]=useState([]);
 
 
 
-async function CompleteOrder() {
-  const orderId = uuidv4();
+    async function CompleteOrder() {
+        const orderId = uuidv4();
 
-  // تجهيز عناصر الطلب
-  const orderItems = CartItemsArr.map((item) => ({
-    order_id: orderId,
-    product_id: item.product_id,
-    quantity: item.quantity,
-    price: item.product.endPrice * item.quantity,
-  }));
+        // تجهيز عناصر الطلب
+        const orderItems = CartItemsArr.map((item) => ({
+            order_id: orderId,
+            product_id: item.product_id,
+            quantity: item.quantity,
+            price: item.product.endPrice * item.quantity,
+        }));
 
-  // تجهيز كائن الطلب
-  const order = {
-    id: orderId,
-    trader_id: CartItemsArr[0].product.trader_id,
-    user_id: UserId,
-    status: 'pending',
-    imageCover: CartItemsArr[0].product.image,
-    total: TotalPrice,
-    note: savedNotes,
-  };
+        // تجهيز كائن الطلب
+        const order = {
+            id: orderId,
+            trader_id: CartItemsArr[0].product.trader_id,
+            user_id: UserId,
+            status: 'pending',
+            imageCover: CartItemsArr[0].product.image,
+            total: TotalPrice,
+            note: savedNotes,
+        };
 
-  try {
-    const resultOrder = await dispatch(addOrder(order));
-    unwrapResult(resultOrder);
-    const resultItems = await dispatch(addOrderItems(orderItems));
-    unwrapResult(resultItems);
-    const resultDelete = await dispatch(deleteCartItemsByUserId(UserId));
-    unwrapResult(resultDelete);
-navigate(PATHS.Orders);
-    Alert.alert(' تم إرسال الطلب بنجاح');
+        try {
+            const resultOrder = await dispatch(addOrder(order));
+            unwrapResult(resultOrder);
+            const resultItems = await dispatch(addOrderItems(orderItems));
+            unwrapResult(resultItems);
+            const resultDelete = await dispatch(deleteCartItemsByUserId(UserId));
+            unwrapResult(resultDelete);
+            navigate(PATHS.Orders);
+            Alert.alert(' تم إرسال الطلب بنجاح');
 
-  } catch (error) {
-    console.error(' Failed to complete order:', error);
-    Alert.alert(' حدث خطأ أثناء إرسال الطلب');
-  }
-}
+        } catch (error) {
+            console.error(' Failed to complete order:', error);
+            Alert.alert(' حدث خطأ أثناء إرسال الطلب');
+        }
+    }
 
 
 
@@ -115,7 +115,13 @@ navigate(PATHS.Orders);
 
     return (
         <View style={style.container}>
-           <HeaderPages title={'سلة التسوق'} navigate={() => navigate(PATHS.Home)} />
+
+
+            <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
+                <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
+                    <HeaderPages title={'سلة التسوق'} navigate={() => navigate(PATHS.Home)} />
+                </View>
+            </View>
 
             {/* محتوى السلة */}
             <View style={{ flex: 1 }}>
@@ -124,10 +130,10 @@ navigate(PATHS.Orders);
                 ) : (
                     <>
                         <ScrollView showsVerticalScrollIndicator={false}>
-                             <CartList CartItemsArr={CartItemsArr} setCartItemsArr={setCartItemsArr} />
-                           
+                            <CartList CartItemsArr={CartItemsArr} setCartItemsArr={setCartItemsArr} />
+
                             <View>
-                                <Text style={[{ textAlign: 'right',marginTop:15 }, styles.h3]}>ملاحظات إضافية</Text>
+                                <Text style={[{ textAlign: 'right', marginTop: 15 }, styles.h3]}>ملاحظات إضافية</Text>
                                 <TouchableOpacity onPress={() => setIsModalVisible(true)}>
                                     <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 16 }}>
                                         <View style={{ width: '10%', alignItems: 'center', justifyContent: 'center' }}>
@@ -156,7 +162,7 @@ navigate(PATHS.Orders);
                                     <Text style={{ textAlign: 'right' }}>مصاريف التوصيل</Text>
                                 </View>
                                 <View>
-                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 ,color:'green'}]}>مجانا</Text>
+                                    <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7, color: 'green' }]}>مجانا</Text>
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
@@ -186,10 +192,10 @@ navigate(PATHS.Orders);
                                     height: 60,
                                     borderRadius: 16
                                 }}
-                                
-                                onPress={()=>navigate(PATHS.TraderProducts
-                                ,{TraderID:CartItemsArr[0].product.trader_id})
-                             }
+
+                                    onPress={() => navigate(PATHS.TraderProducts
+                                        , { TraderID: CartItemsArr[0].product.trader_id })
+                                    }
                                 >
                                     <Text
                                         style={[
@@ -214,16 +220,16 @@ navigate(PATHS.Orders);
                                 }}
                             >
                                 <TouchableOpacity
-                              onPress={CompleteOrder}
-                                style={{
-                                    backgroundColor: colors.BtnsColor,
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: 175,
-                                    height: 60,
-                                    borderRadius: 16
-                                }} >
+                                    onPress={CompleteOrder}
+                                    style={{
+                                        backgroundColor: colors.BtnsColor,
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        width: 175,
+                                        height: 60,
+                                        borderRadius: 16
+                                    }} >
                                     <Text
                                         style={[
                                             styles.h3,

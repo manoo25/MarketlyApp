@@ -20,12 +20,14 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   StyleSheet,
+  ScrollView
 } from "react-native";
 import Modal from "react-native-modal";
 import { colors, styles } from "../../styles";
 import CategoryTabs from "../Components/OffersComponents/CategoryTabs";
 import SortFilter from "../Components/OffersComponents/useSortedProducts";
 import HeaderPages from "../Components/GlobalComponents/HeaderPages";
+import SkeletonBox from "../Components/GlobalComponents/SkeletonBox.js";
 
 export default function OffersPage() {
   const dispatch = useDispatch();
@@ -91,8 +93,8 @@ export default function OffersPage() {
       searchQuery.trim() === ""
         ? filteredOffers
         : searchedData.length > 0
-        ? searchedData
-        : [];
+          ? searchedData
+          : [];
 
     if (selectedSortOption === "highToLow") {
       return [...baseData].sort(
@@ -119,8 +121,54 @@ export default function OffersPage() {
 
   if (loading) {
     return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#327AFF" />
+      <View style={{ flex: 1 }}>
+        <View style={style.container}>
+          {/* Header */}
+          <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
+            <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
+              <HeaderPages title={'العروض'} navigate={() => navigation.navigate("Home")} />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <TouchableOpacity
+                  style={style.searchIconContainer}
+                  onPress={() => setShowSearch((prev) => !prev)}
+                >
+                  <Ionicons name="search" size={24} color="#424047" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* Search Input */}
+          {showSearch && (
+            <OffersSearch
+              query={searchQuery}
+              onChange={handleSearchChange}
+              onClose={() => {
+                setSearchQuery("");
+                setShowSearch(false);
+              }}
+            />
+          )}
+        </View>
+        <View style={style.skContainer}>
+          <View style={style.grid}>
+            {[...Array(6)].map((_, index) => (
+              <View key={index} style={style.gridItem}>
+                <SkeletonBox style={style.imageSkeleton} />
+                <SkeletonBox style={style.textSkeleton} />
+                <SkeletonBox style={style.priceSkeleton} />
+              </View>
+            ))}
+          </View>
+        </View>
+
+
       </View>
     );
   }
@@ -136,19 +184,24 @@ export default function OffersPage() {
       <View style={{ flex: 1 }}>
         <View style={style.container}>
           {/* Header */}
-          <View style={[style.header]}>
-          
-<View style={{position:'relative',top:-20}}>
-   <HeaderPages title={'العروض'} navigate={() => navigation.navigate("Home")}/>
-</View>
-           
-            
-              <TouchableOpacity
-              style={style.searchIconContainer}
-              onPress={() => setShowSearch((prev) => !prev)}
-            >
-              <Ionicons name="search" size={24} color="#424047" />
-            </TouchableOpacity>
+          <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
+            <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
+              <HeaderPages title={'العروض'} navigate={() => navigation.navigate("Home")} />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <TouchableOpacity
+                  style={style.searchIconContainer}
+                  onPress={() => setShowSearch((prev) => !prev)}
+                >
+                  <Ionicons name="search" size={24} color="#424047" />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
 
           {/* Search Input */}
@@ -179,7 +232,7 @@ export default function OffersPage() {
             hasResults={displayData.length > 0}
             searchQuery={searchQuery}
             isDebouncing={isDebouncing}
-            
+
           />
         </View>
 
@@ -233,7 +286,7 @@ const style = StyleSheet.create({
     flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
-height:90
+    height: 90
   },
   titleContainer: {
     flexDirection: "row",
@@ -264,5 +317,45 @@ height:90
   },
   modalOption: {
     paddingVertical: 12,
+  },
+  skContainer: {
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    backgroundColor: '#fff',
+  },
+
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+
+  gridItem: {
+    width: '48%',
+    marginBottom: 20,
+    borderRadius: 12,
+    backgroundColor: '#F7F7F7',
+    padding: 8,
+    alignItems: 'center',
+  },
+
+  imageSkeleton: {
+    width: '100%',
+    height: 130,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+
+  textSkeleton: {
+    width: '80%',
+    height: 14,
+    borderRadius: 6,
+    marginBottom: 6,
+  },
+
+  priceSkeleton: {
+    width: '60%',
+    height: 12,
+    borderRadius: 6,
   },
 });

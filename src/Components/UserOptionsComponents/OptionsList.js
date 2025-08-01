@@ -20,15 +20,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Rating } from "react-native-ratings";
+import { logoutUser } from "../../Redux/Slices/users";
+import { updateCurrentUser } from "../../Redux/Slices/users";
+import { PATHS } from '../../routes/Paths';
+import { createComplaint } from '../../Redux/Slices/Complaints';
+import { createRating } from '../../Redux/Slices/Ratings';
+import { InteractionManager } from 'react-native';
+import Octicons from "@expo/vector-icons/Octicons";
 
 // ✅ --- [الخطوة 1]: استيراد الـ Supabase client ---
 import { supabase } from "../../Redux/Supabase";
-
-import { logoutUser, updateCurrentUser } from "../../Redux/Slices/users";
-import { createComplaint } from "../../Redux/Slices/Complaints";
-import { createRating } from "../../Redux/Slices/Ratings";
-import { PATHS } from "../../routes/Paths";
 import ChatModal from "../ChatComponents/ChatModal";
+
+
+
+
+
+
+
+
+
+
+
+
+const settings = [
+    { id: '1', title: 'بيانات الحساب' },
+    { id: '2', title: 'تغيير كلمة السر' },
+    { id: '3', title: 'ارسال شكوى' },
+    { id: '4', title: 'تقييم الخدمة' },
+    { id: '5', title: 'اللغة', value: 'العربية' },
+];
+
+
+
+
 
 // ✅ --- [الخطوة 2]: تعريف ID الأدمن ---
 const SUPPORT_ADMIN_ID = "a157b1db-54c3-46e3-968c-b3e0be6f6392";
@@ -80,6 +105,19 @@ function OptionsList() {
       .eq("receiver_id", userId)
       .eq("sender_id", SUPPORT_ADMIN_ID)
       .is("read_at", null);
+
+    const inputRef = useRef(null);
+
+
+    useEffect(() => {
+  if (isCompModalVisible) {
+    InteractionManager.runAfterInteractions(() => {
+      inputRef.current?.focus();
+    });
+  }
+}, [isCompModalVisible]);
+
+
 
     if (error) {
       console.error("Error fetching unread count:", error.message);
@@ -171,26 +209,28 @@ function OptionsList() {
     { id: "6", title: "الشات مع الدعم" },
   ];
 
-  const RenderItem = ({ item, onPress }) => (
-    <TouchableOpacity style={style.item} onPress={onPress}>
-      <View style={style.textContainer}>
-        <View style={style.titleContainer}>
-          <Text style={[style.title, styles.h4]}>{item.title}</Text>
-          {item.id === "6" && unreadCount > 0 && (
-            <View style={style.badgeContainer}>
-              <Text style={style.badgeText}>{unreadCount}</Text>
-            </View>
-          )}
-        </View>
-        <View>
-          {item.value && (
-            <Text style={[style.value, styles.h5]}>{item.value}</Text>
-          )}
-        </View>
+ const RenderItem = ({ item, onPress }) => (
+  <TouchableOpacity style={style.item} onPress={onPress}>
+    <View style={style.textContainer}>
+      <View style={style.titleContainer}>
+        <Text style={[style.title, styles.h4]}>{item.title}</Text>
+
+        {item.id === "6" && unreadCount > 0 && (
+          <View style={style.badgeContainer}>
+            <Text style={style.badgeText}>{unreadCount}</Text>
+          </View>
+        )}
       </View>
-      <ArrowLeft2 size="24" color="#424047" />
-    </TouchableOpacity>
-  );
+
+      {item.value && (
+        <Text style={[style.value, styles.h5]}>{item.value}</Text>
+      )}
+    </View>
+
+    <ArrowLeft2 size="24" color="#424047" />
+  </TouchableOpacity>
+);
+
 
   return (
     <View style={style.container}>
@@ -379,6 +419,115 @@ const style = StyleSheet.create({
     paddingHorizontal: 6,
   },
   badgeText: { color: "white", fontSize: 12, fontWeight: "bold" },
+    container: {
+        padding: 16,
+    },
+    item: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 14,
+        marginTop: 4,
+    },
+    textContainer: {
+        width: '90%',
+        flexDirection: 'row-reverse',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    title: {
+        fontSize: 16,
+        color: '#333',
+    },
+    value: {
+        fontSize: 14,
+        color: '#999',
+
+    },
+    separator: {
+        height: 1,
+        backgroundColor: '#eee',
+    },
+    logout: {
+        flexDirection: 'row-reverse',
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        marginTop: 16,
+        gap: 6,
+    },
+    logoutText: {
+        color: '#ee3030',
+        fontSize: 16,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    modalView: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        paddingLeft: 35,
+        paddingRight: 35,
+        paddingBottom: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        width: '100%',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 15,
+        textAlign: 'right',
+        width: '100%',
+    },
+    textInput: {
+        width: '100%',
+        height: 100,
+        borderColor: '#ddd',
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 20,
+        textAlignVertical: 'top',
+        textAlign: 'right',
+    },
+    buttonContainer: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-around',
+        width: '100%',
+    },
+    modalButton: {
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+        width: '45%',
+        alignItems: 'center',
+    },
+    buttonSave: {
+        backgroundColor: '#327AFF',
+    },
+    buttonCancel: {
+        backgroundColor: '#f44336',
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalBottom: {
+        justifyContent: 'flex-end',
+        margin: 0,
+    },
+
 });
 
 export default OptionsList;
