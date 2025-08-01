@@ -31,7 +31,7 @@ function HomeStack() {
       <Stack.Screen name="AllCategories" component={AllCategoriesScreen} />
       <Stack.Screen name="CategoryProducts" component={CategoryProductsPage} />
       <Stack.Screen name="AllCompaniesScreen" component={AllCompaniesScreen} />
-      <Stack.Screen name="ProductDetails" component={ProductDetails} />
+      {/* <Stack.Screen name="ProductDetails" component={ProductDetails} /> */}
       <Stack.Screen
         name="CompanyProductsScreen"
         component={CompanyProductsScreen}

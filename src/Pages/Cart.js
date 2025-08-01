@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { PATHS } from '../routes/Paths';
 import HeaderPages from '../Components/GlobalComponents/HeaderPages';
 import Empty from '../Components/GlobalComponents/Empty';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
@@ -115,6 +116,7 @@ function Cart() {
 
 
     return (
+       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={style.container}>
 
 
@@ -298,6 +300,8 @@ function Cart() {
                 </View>
             </Modal>
         </View>
+
+       </SafeAreaView>
     );
 }
 
@@ -309,7 +313,9 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        paddingBottom:40,
         backgroundColor: '#fff',
+       
     },
     emptyContainer: {
         flex: 1,

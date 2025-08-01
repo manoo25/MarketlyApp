@@ -25,13 +25,15 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import SectionHeader from "../Components/GlobalComponents/SectionHeader";
 import GoBack from "../Components/GlobalComponents/GoBack";
+import CartIcon from "../Components/GlobalComponents/CartIcon";
+import { PATHS } from "../routes/Paths";
 
 function ProductDetails() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const { specificProduct } = useSelector((state) => state.products);
-  const { specificCartItem } = useSelector((state) => state.CartItems);
+  const { specificCartItem,cartItems } = useSelector((state) => state.CartItems);
   const [SpecificCartItemQty, SetSpecificCartItemQty] = useState(0);
 
   const route = useRoute();
@@ -99,6 +101,16 @@ function ProductDetails() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, backgroundColor: "#FFFF" }}>
           <View style={{ alignItems: "center" }}>
+           {cartItems.length>0 &&
+          
+             <View style={{ position: 'absolute', top: 20, left: 20, zIndex: 999 }}>
+  <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
+    <CartIcon />
+  </TouchableOpacity>
+</View>
+          
+           }
+           
             <View
               style={{
                 width: 35,
@@ -113,6 +125,7 @@ function ProductDetails() {
                 zIndex: 1,
               }}
             >
+              
              <GoBack/>
             </View>
 
