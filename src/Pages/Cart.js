@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, ScrollView, View, Modal, TextInput, Alert } from "react-native";
+import React, { useEffect, useRef } from 'react'
+import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput, Alert } from "react-native";
 import { useState } from 'react';
 import CartList from '../Components/CartComponents/CartList';
 import { colors, styles } from '../../styles';
@@ -20,6 +20,9 @@ import { PATHS } from '../routes/Paths';
 import HeaderPages from '../Components/GlobalComponents/HeaderPages';
 import Empty from '../Components/GlobalComponents/Empty';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Octicons } from '@expo/vector-icons';
+import Modal from 'react-native-modal';
+
 
 
 
@@ -38,6 +41,8 @@ function Cart() {
     const dispatch = useDispatch();
     const { cartItems } = useSelector((state) => state.CartItems);
     const [CartItemsArr, setCartItemsArr] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+
 
     const { navigate } = useNavigation();
     useEffect(() => {
@@ -57,6 +62,9 @@ function Cart() {
 
         SetTotalPrice(Total);
     }, [CartItemsArr]);
+
+    const inputRef = useRef(null);
+
 
 
 
@@ -116,10 +124,8 @@ function Cart() {
 
 
     return (
-       <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        //    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={style.container}>
-
-
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
                     <HeaderPages
@@ -259,7 +265,7 @@ function Cart() {
                     </>
                 )}
             </View>
-            <Modal
+            {/* <Modal
                 animationType="slide" // تأثير ظهور من الأسفل
                 transparent={true} // يجعل الخلفية شفافة
                 visible={isModalVisible} // يتحكم في ظهوره أو إخفائه
@@ -298,10 +304,61 @@ function Cart() {
                         </View>
                     </View>
                 </View>
+            </Modal> */}
+
+
+
+
+
+            <Modal
+                isVisible={isModalVisible}
+                onBackdropPress={() => setIsModalVisible(false)}
+                onBackButtonPress={() => setIsModalVisible(false)}
+                style={style.modalBottom}
+                swipeDirection="down"
+                onSwipeComplete={() => setIsModalVisible(false)}
+                backdropOpacity={0.4}
+                animationIn="slideInUp"
+                animationOut="slideOutDown"
+                avoidKeyboard
+            >
+                <View style={style.modalView}>
+                    <Octicons name="dash" size={60} color="#dbdbdb" style={styles.icon} />
+                    <View style={{ flexDirection: 'row-reverse', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={style.modalTitle}>
+                            أضف ملاحظاتك
+                        </Text>
+                        <TouchableOpacity
+                            style={{ marginRight: -16, marginTop: -16 }}
+                            onPress={() => {
+                                setIsModalVisible(false);
+                                setInputValue('');
+                            }}>
+                            <CloseCircle size="32" color="#424047" />
+                        </TouchableOpacity>
+                    </View>
+                    <TextInput
+                        ref={inputRef}
+                        style={style.textInput}
+                        onChangeText={setNotes}
+                        value={notes}
+                        placeholder="اكتب ملاحظاتك هنا..."
+                        multiline={true}
+                        numberOfLines={4}
+                    />
+
+                    <View style={style.buttonContainer}>
+                        <TouchableOpacity
+                            style={[style.modalButton, style.buttonSave]}
+                            onPress={handleSaveNotes}>
+                            <Text style={style.buttonText}>حفظ</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </Modal>
         </View>
 
-       </SafeAreaView>
+        //    </SafeAreaView>
     );
 }
 
@@ -313,9 +370,9 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        paddingBottom:40,
+        paddingBottom: 40,
         backgroundColor: '#fff',
-       
+
     },
     emptyContainer: {
         flex: 1,
@@ -363,10 +420,11 @@ const style = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
     modalView: {
-        margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        paddingLeft: 35,
+        paddingRight: 35,
+        paddingBottom: 35,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -376,7 +434,7 @@ const style = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        width: '80%',
+        width: '100%',
     },
     modalTitle: {
         fontSize: 20,
@@ -418,6 +476,10 @@ const style = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    modalBottom: {
+        justifyContent: 'flex-end',
+        margin: 0,
     },
 });
 

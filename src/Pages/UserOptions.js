@@ -112,10 +112,10 @@ function UserOptions({ navigation }) {
                     <View style={{ width: '80%', marginRight: 8 }}>
                         {/* user.name */}
                         <Text style={[styles.h3, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>
-                            {user?.name || "---"}
+                            {user?.name }
                         </Text>
                         {/* user.email */}
-                        <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>{user?.email || "---"}</Text>
+                        <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>{user?.email }</Text>
                     </View>
                 </View>
                 <OptionsList />
@@ -136,7 +136,7 @@ function UserOptions({ navigation }) {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        padding: 10,
         backgroundColor: '#fff',
     },
 
