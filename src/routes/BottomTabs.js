@@ -17,6 +17,7 @@ import AllCompaniesScreen from '../Pages/companies/AllCompaniesScreen';
 import CompanyProductsScreen from '../Pages/companies/CompanyProductsScreen';
 import ProductDetails from '../Pages/ProductDetails';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import CartList from '../Components/CartComponents/CartList';
 
 // import Search from '../Pages/search';
 
@@ -66,7 +67,7 @@ export default function BottomTabs() {
           } else if (route.name === 'OffersPage') {
             icon = <DiscountShape size={30} color={iconColor} variant={variant} />;
           } else if (route.name === 'Cart') {
-            icon = <Bag size={30} color={iconColor} variant={variant} />;
+            icon = <CartIcon focused={focused} />;
           } else if (route.name === 'Orders') {
             icon = <Receipt1 size={30} color={iconColor} variant={variant} />;
           } else if (route.name === "Profile") {

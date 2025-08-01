@@ -11,7 +11,7 @@ export default function CartIcon({ focused }) {
 
   return (
     <View>
-      <Bag size={35} color={iconColor} variant={variant} />
+      <Bag size={30} color={iconColor} variant={variant} />
       {cartItems.length > 0 && (
         <View
           style={{
