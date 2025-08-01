@@ -20,7 +20,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  FlatList,
 } from "react-native";
 import Modal from "react-native-modal";
 import { colors, styles } from "../../styles";
@@ -144,29 +145,24 @@ export default function OffersPage() {
             </View>
           </View>
 
-          {/* Search Input */}
-          {showSearch && (
-            <OffersSearch
-              query={searchQuery}
-              onChange={handleSearchChange}
-              onClose={() => {
-                setSearchQuery("");
-                setShowSearch(false);
-              }}
-            />
-          )}
         </View>
         <View style={style.skContainer}>
-          <View style={style.grid}>
-            {[...Array(6)].map((_, index) => (
+          <FlatList
+            data={[...Array(6)]}
+            keyExtractor={(_, index) => index.toString()}
+            numColumns={2}
+            columnWrapperStyle={style.column}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
               <View key={index} style={style.gridItem}>
                 <SkeletonBox style={style.imageSkeleton} />
                 <SkeletonBox style={style.textSkeleton} />
                 <SkeletonBox style={style.priceSkeleton} />
               </View>
-            ))}
-          </View>
+            )}
+          />
         </View>
+
 
 
       </View>
@@ -324,15 +320,13 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
   },
 
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  column: {
     justifyContent: 'space-between',
+    marginBottom: 20,
   },
 
   gridItem: {
     width: '48%',
-    marginBottom: 20,
     borderRadius: 12,
     backgroundColor: '#F7F7F7',
     padding: 8,
@@ -358,4 +352,5 @@ const style = StyleSheet.create({
     height: 12,
     borderRadius: 6,
   },
+
 });

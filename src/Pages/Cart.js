@@ -18,6 +18,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { useNavigation } from '@react-navigation/native';
 import { PATHS } from '../routes/Paths';
 import HeaderPages from '../Components/GlobalComponents/HeaderPages';
+import Empty from '../Components/GlobalComponents/Empty';
 
 
 
@@ -119,14 +120,20 @@ function Cart() {
 
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
-                    <HeaderPages title={'سلة التسوق'} navigate={() => navigate(PATHS.Home)} />
+                    <HeaderPages
+                        title={'سلة التسوق'}
+                        navigate={() => navigate(PATHS.Home)} />
                 </View>
             </View>
 
             {/* محتوى السلة */}
             <View style={{ flex: 1 }}>
                 {CartItemsArr.length === 0 ? (
-                    <EmptyCart />
+                    <Empty
+                        header={"لا يوجد شىء فى سلة التسوق !"}
+                        subHeader={"جاهز لطلب شىء ؟"}
+                        icon={<BagCross size="200" color="#424047" />}
+                    />
                 ) : (
                     <>
                         <ScrollView showsVerticalScrollIndicator={false}>
@@ -294,45 +301,6 @@ function Cart() {
     );
 }
 
-const EmptyCart = () => (
-    <View style={style.emptyContainer}>
-        <BagCross size="200" color="#424047" />
-        <Text style={[styles.h3, { marginTop: 12 }]}>لا يوجد شىء فى سلة التسوق !</Text>
-        <Text style={[styles.paragraph, { marginTop: 8 }]}>جاهز لطلب شىء ؟</Text>
-        <View
-            style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 16,
-            }}
-        >
-            <TouchableOpacity style={{
-                backgroundColor: '#EBF2FF',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 180,
-                height: 70,
-                borderRadius: 16
-            }} >
-                <Text
-                    style={[
-                        styles.h2,
-                        {
-                            textAlign: "right",
-                            fontSize: 20,
-                            color: colors.BtnsColor,
-
-                        },
-                    ]}
-                >
-                    مواصلة الشراء
-                </Text>
-            </TouchableOpacity>
-        </View>
-    </View>
-);
 
 
 

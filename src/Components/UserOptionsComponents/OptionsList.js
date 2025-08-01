@@ -26,7 +26,6 @@ import { PATHS } from '../../routes/Paths';
 import { createComplaint } from '../../Redux/Slices/Complaints';
 import { createRating } from '../../Redux/Slices/Ratings';
 import { InteractionManager } from 'react-native';
-import Octicons from "@expo/vector-icons/Octicons";
 
 // ✅ --- [الخطوة 1]: استيراد الـ Supabase client ---
 import { supabase } from "../../Redux/Supabase";
