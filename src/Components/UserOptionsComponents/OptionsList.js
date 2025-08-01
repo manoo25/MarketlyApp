@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback , useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
     View,
     Text,
@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Alert,
     TextInput,
+    Keyboard,
 } from "react-native";
 import { styles } from "../../../styles";
 import {
@@ -33,6 +34,8 @@ import { createComplaint } from "../../Redux/Slices/Complaints";
 import { createRating } from "../../Redux/Slices/Ratings";
 import { PATHS } from "../../routes/Paths";
 import ChatModal from "../ChatComponents/ChatModal";
+import ToastMessage from "../GlobalComponents/ToastMessage";
+import CustomAlert from "../GlobalComponents/CustomAlert";
 
 // ✅ --- [الخطوة 2]: تعريف ID الأدمن ---
 const SUPPORT_ADMIN_ID = "a157b1db-54c3-46e3-968c-b3e0be6f6392";
@@ -47,6 +50,13 @@ function OptionsList() {
     const [modalType, setModalType] = useState(""); // complaint | rating
     const [savedInput, setSavedInput] = useState("");
     const [isChatVisible, setIsChatVisible] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+
+    const handleConfirm = () => {
+        console.log('Confirmed!');
+        setShowAlert(false);
+    };
 
     // ✅ --- [الخطوة 3]: إضافة state جديد لعدّاد الرسائل ---
     const [unreadCount, setUnreadCount] = useState(0);
@@ -75,6 +85,10 @@ function OptionsList() {
     }, [currentUser, dispatch]);
 
     const userId = currentUser && currentUser.id;
+
+    const handleShowToast = () => {
+        setShowToast(true);
+    };
 
 
     // ✅ --- [الخطوة 4]: دالة لجلب عدد الرسائل غير المقروءة ---
@@ -130,7 +144,18 @@ function OptionsList() {
             if (userId) {
                 console.log('Sending complaint with userId:', userId);
                 dispatch(createComplaint({ userId, complaint: inputValue }));
-                Alert.alert('تم حفظ الشكوى وسيتم التواصل معك في أقرب وقت');
+                // setShowToast(true);
+                // Alert.alert('تم حفظ الشكوى وسيتم التواصل معك في أقرب وقت');
+                // Keyboard.dismiss(); // ✅ اقفل الكيبورد
+
+                // const listener = Keyboard.addListener('keyboardDidHide', () => {
+                //     setTimeout(() => {
+                //         setShowToast(true);
+                //     }, 1000); // ✅ بعد ثانية من اختفاء الكيبورد
+                //     listener.remove(); // ✅ إزالة المستمع بعد أول مرة
+                // });
+                setShowAlert(true);
+
             } else {
                 console.log('No userId found for complaint');
                 Alert.alert('خطأ', 'لم يتم العثور على المستخدم');
@@ -304,6 +329,18 @@ function OptionsList() {
             <ChatModal
                 visible={isChatVisible}
                 onClose={() => setIsChatVisible(false)}
+            />
+            <ToastMessage
+                visible={showToast}
+                message="تم حفظ الشكوى وسيتم التواصل معك في أقرب وقت'"
+                onHide={() => setShowToast(false)}
+            />
+            <CustomAlert
+                visible={showAlert}
+                title=" تأكيد "
+                message="هل انت متأكد من الارسال"
+                onClose={() => setShowAlert(false)}
+                onConfirm={handleConfirm}
             />
         </View>
     );
