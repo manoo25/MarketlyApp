@@ -325,6 +325,7 @@ export const Sortstyles = StyleSheet.create({
   },
   closeButton: {
     width: 26,
+    marginLeft: -3,
     height: 26,
     borderWidth: 2,
     borderColor: "#424047",

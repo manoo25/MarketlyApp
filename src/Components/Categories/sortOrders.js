@@ -15,6 +15,7 @@ const SortOrders = ({
   onChangeOption,
   onApply,
   options = [
+    { label: "كل الطلبات", value: "All" },
     { label: "طلبات مكتملة", value: "done" },
     { label: "طلبات قيدالتنفيذ", value: "inprogress" },
     { label: "طلبات ملغاه", value: "returns" }

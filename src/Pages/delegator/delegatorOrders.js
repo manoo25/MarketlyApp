@@ -22,6 +22,8 @@ const DelegatorOrders = () => {
  const [isModalVisible, setIsModalVisible] = useState(false);
   const [note, setNote] = useState('');
   const [cancelOrderId, setcancelOrderId] = useState('');
+   const [selectedSortOption, setSelectedSortOption] = useState("All");
+  const [SortedOrders, setSortedOrders] = useState([]);
   const {navigate}=useNavigation();
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.Orders);
@@ -31,8 +33,14 @@ const isFocused = useIsFocused();
 useEffect(() => {
   if (isFocused) {
     dispatch(getDelegatorOrders());
+    
   }
 }, [dispatch, isFocused]);
+useEffect(() => {
+  if (isFocused&& orders.length > 0) {
+   setSortedOrders(orders)
+  }
+}, [dispatch,orders, isFocused]);
 
 async function handleSaveNotes() {
   const resultAction = await dispatch(
@@ -53,16 +61,30 @@ async function handleSaveNotes() {
   setIsModalVisible(false);
 }
 
-  const [selectedSortOption, setSelectedSortOption] = useState("All");
-  const [appliedSortOption, setAppliedSortOption] = useState("highToLow");
+ 
 
  const handleApplySort = (option) => {
-   setAppliedSortOption(option);
+if(option=='All'){
+   const FilterData=orders;
+ setSortedOrders(FilterData);
+
+}
+else{
+   const FilterData=orders.filter((x)=>x.status===option)
+ setSortedOrders(FilterData);
+
+}
+   
  };
 
   return (
     <View style={style.container}>
- <HeaderPages title={'طلبات العملاء'} navigate={() => navigate(DelegatesPaths.DelegatorProducts)}/>  
+ <HeaderPages title={selectedSortOption=='All'&&'كل الطلبات'||
+ selectedSortOption=='done'&&'طلبات مكتملة'||
+ selectedSortOption=='inprogress'&&'طلبات قيد التنفيذ'||
+ selectedSortOption=='returns'&&'طلبات ملغاه'
+ 
+ } navigate={() => navigate(DelegatesPaths.DelegatorProducts)}/>  
   <SortOrders
      selectedOption={selectedSortOption}
         onChangeOption={setSelectedSortOption}
@@ -79,9 +101,9 @@ async function handleSaveNotes() {
         onSave={handleSaveNotes}
         style={style}
       />
-      {orders?.length > 0 && (
+      {SortedOrders?.length > 0 && (
         <FlatList
-          data={orders}
+          data={SortedOrders}
            keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
