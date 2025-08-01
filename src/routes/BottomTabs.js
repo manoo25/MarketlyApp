@@ -16,6 +16,8 @@ import OffersPage from '../Pages/OffersPage';
 import AllCompaniesScreen from '../Pages/companies/AllCompaniesScreen';
 import CompanyProductsScreen from '../Pages/companies/CompanyProductsScreen';
 import ProductDetails from '../Pages/ProductDetails';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 // import Search from '../Pages/search';
 
 const Stack = createNativeStackNavigator();
@@ -47,6 +49,7 @@ function OrdersStack() {
 
 
 export default function BottomTabs() {
+  const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -59,16 +62,16 @@ export default function BottomTabs() {
           let icon;
 
           if (route.name === "Home") {
-            icon = <Home2 size={35} color={iconColor} variant={variant} />;
+            icon = <Home2 size={30} color={iconColor} variant={variant} />;
           } else if (route.name === 'OffersPage') {
-            icon = <DiscountShape size={35} color={iconColor} variant={variant} />;
+            icon = <DiscountShape size={30} color={iconColor} variant={variant} />;
           } else if (route.name === 'Cart') {
-            icon = <CartIcon focused={focused} />; 
+            icon = <Bag size={30} color={iconColor} variant={variant} />;
           } else if (route.name === 'Orders') {
-            icon = <Receipt1 size={35} color={iconColor} variant={variant} />;
+            icon = <Receipt1 size={30} color={iconColor} variant={variant} />;
           } else if (route.name === "Profile") {
             icon = (
-              <ProfileCircle size={35} color={iconColor} variant={variant} />
+              <ProfileCircle size={30} color={iconColor} variant={variant} />
             );
           }
 
@@ -78,12 +81,12 @@ export default function BottomTabs() {
         tabBarInactiveTintColor: "#292D32",
         tabBarLabelStyle: styles.titleNavegator,
         tabBarStyle: {
-          height: Platform.OS === "android" ? 75 : 70,
+          height: Platform.OS === "android" ? 75 + insets.bottom : 70,
           alignItems: "center",
           backgroundColor: "#FFFFFF",
           justifyContent: "space-between",
-          marginBottom: Platform.OS === "android" ? 35 : 0,
-          paddingTop: 5,
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 10,
+          paddingTop: 10,
         },
       })}
     >
