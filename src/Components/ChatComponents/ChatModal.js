@@ -135,20 +135,10 @@ export default function ChatModal({ visible, onClose }) {
     markAdminMessagesAsRead();
   }, [messages, visible, userId]); // ✅ يعتمد على 'messages' و 'visible'
 
-  // التأثير الرابع: التمرير لأسفل عند وصول رسالة جديدة
-  // التأثير الرابع: التمرير لأسفل عند وصول رسالة جديدة
-//   useEffect(() => {
-//     if (ready && flatListRef.current) {
-//       // ✅ إضافة تأخير بسيط لإعطاء الـ FlatList فرصة كاملة للرسم
-//       setTimeout(() => {
-//         flatListRef.current?.scrollToEnd({ animated: true });
-//       }, 100); // 100 ميلي ثانية كافية جدًا
-//     }
-//   }, [messages, ready]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (newMessage.trim() === "" || !userId || !userRole) return;
-    dispatch(
+    await dispatch(
       sendMessage({
         senderId: userId,
         senderRole: userRole,
@@ -157,6 +147,14 @@ export default function ChatModal({ visible, onClose }) {
         content: newMessage,
       })
     );
+    dispatch(
+            fetchMessages({
+              myUserId: userId,
+              myRole: userRole,
+              otherUserId: SUPPORT_ADMIN_ID,
+              otherUserRole: SUPPORT_ADMIN_ROLE,
+            })
+          );
     setNewMessage("");
   };
 
