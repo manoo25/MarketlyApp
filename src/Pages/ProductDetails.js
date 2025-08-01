@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Image,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
 import { colors, styles } from "../../styles";
 import RecommendedProducts from "../Components/ProductDeatailsComponents/RecommendedProducts";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import { fetchSpecificProducts } from "../Redux/Slices/productsSlice";
 import {
   addOrUpdateCartItem,
@@ -19,11 +19,8 @@ import {
   updateCartItem,
 } from "../Redux/Slices/CartItems";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowRight2 } from "iconsax-react-nativejs";
 import { AntDesign } from "@expo/vector-icons";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
-import SectionHeader from "../Components/GlobalComponents/SectionHeader";
+import Loader from "../Components/GlobalComponents/loader";
 import GoBack from "../Components/GlobalComponents/GoBack";
 import CartIcon from "../Components/GlobalComponents/CartIcon";
 import { PATHS } from "../routes/Paths";
@@ -31,19 +28,34 @@ import { PATHS } from "../routes/Paths";
 function ProductDetails() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const { specificProduct } = useSelector((state) => state.products);
-  const { specificCartItem,cartItems } = useSelector((state) => state.CartItems);
-  const [SpecificCartItemQty, SetSpecificCartItemQty] = useState(0);
-
   const route = useRoute();
   const { ProductId } = route.params;
 
+  const { specificProduct } = useSelector((state) => state.products);
+  const { specificCartItem, cartItems } = useSelector((state) => state.CartItems);
+  const [SpecificCartItemQty, SetSpecificCartItemQty] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(fetchSpecificProducts(ProductId));
-    dispatch(fetchSpecificCartItems(ProductId));
-  }, [dispatch, ProductId]);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        await Promise.all([
+          dispatch(fetchSpecificProducts(ProductId)),
+          dispatch(fetchSpecificCartItems(ProductId)),
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (isFocused) {
+      fetchData();
+    }
+  }, [dispatch, ProductId, isFocused]);
 
   useEffect(() => {
     if (specificCartItem.length > 0) {
@@ -53,64 +65,64 @@ function ProductDetails() {
     }
   }, [specificCartItem]);
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(fetchSpecificCartItems(ProductId));
-    }, [])
-  );
-
-  function IncreseQuantity() {
+  const IncreseQuantity = () => {
     const newQty = SpecificCartItemQty + 1;
     SetSpecificCartItemQty(newQty);
 
     if (specificCartItem.length > 0) {
-      dispatch(
-        updateCartItem({
-          id: specificCartItem[0].id,
-          quantity: newQty,
-        })
-      );
+      dispatch(updateCartItem({
+        id: specificCartItem[0].id,
+        quantity: newQty,
+      }));
     }
-  }
+  };
 
-  function DecreseQuantity() {
-    if (SpecificCartItemQty > 0) {
+  const DecreseQuantity = () => {
+    if (SpecificCartItemQty > 1) {
       const newQty = SpecificCartItemQty - 1;
       SetSpecificCartItemQty(newQty);
 
-      if (newQty === 0 && specificCartItem.length > 0) {
-        dispatch(deleteCartItem(specificCartItem[0].id));
-        dispatch(fetchSpecificCartItems(ProductId));
-      } else if (specificCartItem.length > 0) {
-        dispatch(
-          updateCartItem({
-            id: specificCartItem[0].id,
-            quantity: newQty,
-          })
-        );
-      }
+      dispatch(updateCartItem({
+        id: specificCartItem[0].id,
+        quantity: newQty,
+      }));
+    } else if (SpecificCartItemQty === 1 && specificCartItem.length > 0) {
+      dispatch(deleteCartItem(specificCartItem[0].id));
+      SetSpecificCartItemQty(0);
     }
+  };
+
+  const AddToCart = async (ProId, traderID) => {
+    await dispatch(addOrUpdateCartItem({
+      product_id: ProId,
+      traderID,
+      quantity: 1,
+      navigate: navigation.navigate,
+    }));
+    dispatch(fetchSpecificCartItems(ProductId));
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <Loader />
+      </SafeAreaView>
+    );
   }
 
-  async function AddToCart(ProId,traderID) {
-    await dispatch(addOrUpdateCartItem({ product_id: ProId,traderID:traderID, quantity: 1, navigate:navigation.navigate }));
-    dispatch(fetchSpecificCartItems(ProductId));
-  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, backgroundColor: "#FFFF" }}>
           <View style={{ alignItems: "center" }}>
-           {cartItems.length>0 &&
-          
-             <View style={{ position: 'absolute', top: 20, left: 20, zIndex: 999 }}>
-  <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
-    <CartIcon />
-  </TouchableOpacity>
-</View>
-          
-           }
-           
+            {cartItems.length > 0 && (
+              <View style={{ position: "absolute", top: 20, left: 20, zIndex: 999 }}>
+                <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
+                  <CartIcon />
+                </TouchableOpacity>
+              </View>
+            )}
+
             <View
               style={{
                 width: 35,
@@ -125,8 +137,7 @@ function ProductDetails() {
                 zIndex: 1,
               }}
             >
-              
-             <GoBack/>
+              <GoBack />
             </View>
 
             <View
@@ -167,10 +178,12 @@ function ProductDetails() {
                   ]}
                 >
                   وفر{" "}
-                 {Math.round((specificProduct[0].traderprice-specificProduct[0].endPrice)*(100/specificProduct[0].traderprice))
-               
-                 }
-               %
+                  {Math.round(
+                    ((specificProduct[0].traderprice - specificProduct[0].endPrice) *
+                      100) /
+                      specificProduct[0].traderprice
+                  )}
+                  %
                 </Text>
               )}
             </View>
@@ -201,54 +214,16 @@ function ProductDetails() {
                   </Text>
                 )}
 
-                <Text
-                  style={[
-                    styles.h3,
-                    {
-                      textAlign: "right",
-                      marginTop: 10,
-                      fontSize: 20,
-                      color: colors.primary,
-                    },
-                  ]}
-                >
-                  {specificProduct[0]?.endPrice}
-                </Text>
-                <Text
-                  style={[
-                    styles.h3,
-                    {
-                      textAlign: "right",
-                      marginTop: 10,
-                      fontSize: 20,
-                      color: colors.primary,
-                    },
-                  ]}
-                >
-                  ج.م /
-                </Text>
-                <Text
-                  style={[
-                    styles.h3,
-                    {
-                      textAlign: "right",
-                      marginTop: 10,
-                      fontSize: 20,
-                      color: colors.primary,
-                    },
-                  ]}
-                >
-                  {specificProduct[0]?.unit}
+                <Text style={[styles.h3, { marginTop: 10, fontSize: 20, color: colors.primary }]}>
+                  {specificProduct[0]?.endPrice} ج.م / {specificProduct[0]?.unit}
                 </Text>
               </View>
             </View>
 
             <View style={styles.dividerLine} />
-            {/* <Text style={[{ marginTop: 5, marginBottom: 4 }, styles.h3]}>
-              منتجات هذا التاجر
-            </Text> */}
-           
-            <RecommendedProducts  TraderID={specificProduct[0]?.trader_id}/>
+
+            <RecommendedProducts TraderID={specificProduct[0]?.trader_id} />
+
             <View style={styles.dividerLine} />
 
             <View
@@ -263,46 +238,17 @@ function ProductDetails() {
             >
               <View style={{ marginRight: 10 }}>
                 <View style={styles.priceContainer}>
-                  <Text
-                    style={[styles.h2, { color: colors.primary, fontSize: 20 }]}
-                  >
+                  <Text style={[styles.h2, { color: colors.primary, fontSize: 20 }]}>
                     الإجمالى:
                   </Text>
-                  {specificCartItem?.length > 0 ? (
-                    <Text
-                      style={[
-                        styles.h2,
-                        { color: colors.primary, fontSize: 20 },
-                      ]}
-                    >
-                      {specificProduct[0]?.endPrice * SpecificCartItemQty}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={[
-                        styles.h2,
-                        { color: colors.primary, fontSize: 20 },
-                      ]}
-                    >
-                      {specificProduct[0]?.endPrice}
-                    </Text>
-                  )}
-                  <Text
-                    style={[styles.h2, { color: colors.primary, fontSize: 20 }]}
-                  >
-                    ج.م
+                  <Text style={[styles.h2, { color: colors.primary, fontSize: 20 }]}>
+                    {(specificProduct[0]?.endPrice * (SpecificCartItemQty || 1))} ج.م
                   </Text>
                 </View>
               </View>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {specificCartItem?.length > 0 && (
+              <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                {specificCartItem?.length > 0 ? (
                   <View
                     style={[
                       styles.quantityContainer,
@@ -316,15 +262,10 @@ function ProductDetails() {
                       },
                     ]}
                   >
-                    <TouchableOpacity
-                      onPress={IncreseQuantity}
-                      style={styles.quantityButton}
-                    >
+                    <TouchableOpacity onPress={IncreseQuantity} style={styles.quantityButton}>
                       <AntDesign name="plus" size={25} color="#327AFF" />
                     </TouchableOpacity>
-                    <Text
-                      style={[styles.quantityText, styles.h3, { fontSize: 20 }]}
-                    >
+                    <Text style={[styles.quantityText, styles.h3, { fontSize: 20 }]}>
                       {SpecificCartItemQty}
                     </Text>
                     <TouchableOpacity
@@ -339,36 +280,34 @@ function ProductDetails() {
                       />
                     </TouchableOpacity>
                   </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => AddToCart(specificProduct[0]?.id, specificProduct[0]?.trader_id)}
+                    style={{
+                      backgroundColor: colors.BtnsColor,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 175,
+                      height: 60,
+                      borderRadius: 12,
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.h3,
+                        {
+                          textAlign: "right",
+                          fontSize: 20,
+                          color: colors.white,
+                        },
+                      ]}
+                    >
+                      اضافة الى العربة
+                    </Text>
+                  </TouchableOpacity>
                 )}
               </View>
-
-              {specificCartItem?.length == 0 && (
-                <TouchableOpacity
-                  onPress={() => AddToCart(specificProduct[0]?.id,specificProduct[0]?.trader_id)}
-                  style={{
-                    backgroundColor: colors.BtnsColor,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 175,
-                    height: 60,
-                    borderRadius: 12,
-                  }}
-                >
-                  <Text
-                    style={[
-                      styles.h3,
-                      {
-                        textAlign: "right",
-                        fontSize: 20,
-                        color: colors.white,
-                      },
-                    ]}
-                  >
-                    اضافة الى العربة
-                  </Text>
-                </TouchableOpacity>
-              )}
             </View>
           </View>
         </View>

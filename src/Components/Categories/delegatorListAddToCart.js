@@ -14,6 +14,8 @@ import DiscountBadge from "../../Components/OffersComponents/DiscountBadge";
 import { useDispatch } from "react-redux";
 import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
 import { addOrUpdateOrderItem } from "../../Redux/Slices/OrderItems";
+import { useState } from "react";
+import ToastMessage from "../GlobalComponents/ToastMessage";
 
 
 
@@ -97,16 +99,16 @@ const ProductCard = ({ item,AddToCart }) => {
 };
 
 function DelegatorListAddToCart({ products,order_id }) {
-
+const [showToast, setShowToast] = useState(false);
+const handleShowToast = () => {
+    setShowToast(true);
+  };
  const dispatch=useDispatch();
     function AddToCart(ProId,price) {
     
     dispatch(addOrUpdateOrderItem({ product_id: ProId,order_id:order_id,price:price }));
-     Alert.alert(
-    "نجاح",
-   "تم اضافة المنتج للفاتورة بنجاح",
-    { cancelable: true }
-  );
+     
+ handleShowToast();
     }
   if (!products || products.length === 0) {
     return (
@@ -126,6 +128,13 @@ function DelegatorListAddToCart({ products,order_id }) {
 
   return (
     <View style={{ flex: 1,  marginTop: 16 }}>
+        <View >
+ <ToastMessage
+                visible={showToast}
+                message={"تم اضافة المنتج للفاتورة بنجاح"}
+                onHide={() => setShowToast(false)}
+            />
+         </View>
    <FlatList
   data={products}
   renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item}  />}

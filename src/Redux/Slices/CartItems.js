@@ -3,6 +3,7 @@ import { supabase } from "../Supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Alert } from "react-native";
+import { UserId } from "./GetUserData";
 
 // ✅ Fetch cart items
 export const fetchCartItems = createAsyncThunk(
@@ -180,6 +181,7 @@ export const deleteCartItemsByUserId = createAsyncThunk(
         .delete()
         .eq("user_id", userId);
       if (error) throw error;
+      
       return userId;
     } catch (error) {
       return rejectWithValue(error.message);

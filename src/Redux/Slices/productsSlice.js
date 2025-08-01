@@ -141,6 +141,10 @@ const productsSlice = createSlice({
         state.loading = false;
         state.traderProducts = action.payload;
       })
+      .addCase(fetchSpecificProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
        .addCase(fetchSpecificProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.specificProduct = action.payload;

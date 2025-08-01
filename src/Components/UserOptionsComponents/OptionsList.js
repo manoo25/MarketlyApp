@@ -35,7 +35,7 @@ import { createRating } from "../../Redux/Slices/Ratings";
 import { PATHS } from "../../routes/Paths";
 import ChatModal from "../ChatComponents/ChatModal";
 import ToastMessage from "../GlobalComponents/ToastMessage";
-import CustomAlert from "../GlobalComponents/CustomAlert";
+// import CustomAlert from "../GlobalComponents/CustomAlert";
 
 // ✅ --- [الخطوة 2]: تعريف ID الأدمن ---
 const SUPPORT_ADMIN_ID = "a157b1db-54c3-46e3-968c-b3e0be6f6392";
@@ -51,22 +51,19 @@ function OptionsList() {
     const [savedInput, setSavedInput] = useState("");
     const [isChatVisible, setIsChatVisible] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [Message, setToastMessage] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
-    const handleConfirm = () => {
-        console.log('Confirmed!');
-        setShowAlert(false);
-    };
+    // const handleConfirm = () => {
+    //     console.log('Confirmed!');
+    //     setShowAlert(false);
+    // };
 
     // ✅ --- [الخطوة 3]: إضافة state جديد لعدّاد الرسائل ---
     const [unreadCount, setUnreadCount] = useState(0);
 
     const usersState = useSelector(state => state.Users);
-    console.log('Users state:', usersState);
     const currentUser = usersState.currentUser;
-
-    // ✅ --- [إصلاح هام]: إعادة الـ useEffect الخاص بجلب بيانات المستخدم ---
-    // هذا الكود ضروري لضمان أن `userId` لن يكون فارغًا
     useEffect(() => {
         const fetchUserData = async () => {
             if (!currentUser) {
@@ -86,12 +83,7 @@ function OptionsList() {
 
     const userId = currentUser && currentUser.id;
 
-    const handleShowToast = () => {
-        setShowToast(true);
-    };
 
-
-    // ✅ --- [الخطوة 4]: دالة لجلب عدد الرسائل غير المقروءة ---
     const fetchUnreadCount = useCallback(async () => {
         if (!userId) return;
 
@@ -139,34 +131,25 @@ function OptionsList() {
     // --- استعادة الدوال الأصلية ---
     const handleSave = () => {
         setSavedInput(inputValue);
-        console.log('userId value:', userId, '| modalType:', modalType);
         if (modalType === 'complaint') {
             if (userId) {
-                console.log('Sending complaint with userId:', userId);
                 dispatch(createComplaint({ userId, complaint: inputValue }));
-                // setShowToast(true);
-                // Alert.alert('تم حفظ الشكوى وسيتم التواصل معك في أقرب وقت');
-                // Keyboard.dismiss(); // ✅ اقفل الكيبورد
-
-                // const listener = Keyboard.addListener('keyboardDidHide', () => {
-                //     setTimeout(() => {
-                //         setShowToast(true);
-                //     }, 1000); // ✅ بعد ثانية من اختفاء الكيبورد
-                //     listener.remove(); // ✅ إزالة المستمع بعد أول مرة
-                // });
-                setShowAlert(true);
+                setToastMessage('تم حفظ الشكوى وسيتم التواصل معك في أقرب وقت')
+                setShowToast(true);
 
             } else {
-                console.log('No userId found for complaint');
+                
                 Alert.alert('خطأ', 'لم يتم العثور على المستخدم');
             }
         } else if (modalType === 'rating') {
             if (userId) {
-                console.log(`Sending rating: ${rating} with userId:`, userId);
+              
                 dispatch(createRating({ userId, feed_back: inputValue, rate: rating }));
-                Alert.alert('تم إرسال تقييمك وشكرا لك ');
+                 setToastMessage('تم إرسال تقييمك وشكرا لك ')
+                setShowToast(true);
+              
             } else {
-                console.log('No userId found for rating');
+               
                 Alert.alert('خطأ', 'لم يتم العثور على المستخدم');
             }
         }
@@ -190,6 +173,7 @@ function OptionsList() {
         }
     }, [isCompModalVisible]);
 
+   
     const handleLogout = async () => {
         await AsyncStorage.removeItem("userData");
         dispatch(logoutUser());
@@ -243,7 +227,16 @@ function OptionsList() {
     );
 
     return (
-        <View style={style.container}>
+        <>
+         <View >
+ <ToastMessage
+                visible={showToast}
+                message={Message}
+                onHide={() => setShowToast(false)}
+            />
+         </View>
+         <View style={style.container}>
+            
             <FlatList
                 data={settings}
                 keyExtractor={(item) => item.id}
@@ -330,19 +323,19 @@ function OptionsList() {
                 visible={isChatVisible}
                 onClose={() => setIsChatVisible(false)}
             />
-            <ToastMessage
-                visible={showToast}
-                message="تم حفظ الشكوى وسيتم التواصل معك في أقرب وقت'"
-                onHide={() => setShowToast(false)}
-            />
-            <CustomAlert
+          
+           
+          
+            {/* <CustomAlert
                 visible={showAlert}
                 title=" تأكيد "
                 message="هل انت متأكد من الارسال"
                 onClose={() => setShowAlert(false)}
                 onConfirm={handleConfirm}
-            />
+            /> */}
         </View>
+        </>
+       
     );
 }
 
