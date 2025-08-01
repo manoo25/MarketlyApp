@@ -16,6 +16,7 @@ import NotesModal from "../../Components/GlobalComponents/Modal";
 import HeaderPages from "../../Components/GlobalComponents/HeaderPages";
 import { styles } from "../../../styles";
 import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
+import SortOrders from "../../Components/Categories/sortOrders";
 
 const DelegatorOrders = () => {
  const [isModalVisible, setIsModalVisible] = useState(false);
@@ -52,9 +53,21 @@ async function handleSaveNotes() {
   setIsModalVisible(false);
 }
 
+  const [selectedSortOption, setSelectedSortOption] = useState("All");
+  const [appliedSortOption, setAppliedSortOption] = useState("highToLow");
+
+ const handleApplySort = (option) => {
+   setAppliedSortOption(option);
+ };
+
   return (
     <View style={style.container}>
- <HeaderPages title={'طلبات العملاء'} navigate={() => navigate(DelegatesPaths.DelegatorProducts)}/>   
+ <HeaderPages title={'طلبات العملاء'} navigate={() => navigate(DelegatesPaths.DelegatorProducts)}/>  
+  <SortOrders
+     selectedOption={selectedSortOption}
+        onChangeOption={setSelectedSortOption}
+        onApply={handleApplySort}
+  /> 
  <NotesModal
         visible={isModalVisible}
         onClose={() => {

@@ -130,7 +130,7 @@ export const addOrUpdateOrderItem = createAsyncThunk(
             },
           ])
         ).unwrap();
-console.log('newItem'+JSON.stringify(newItem[0]));
+// console.log('newItem'+JSON.stringify(newItem[0]));
 
         return newItem[0]; // لأن `addOrderItems` بيرجع array
       }
