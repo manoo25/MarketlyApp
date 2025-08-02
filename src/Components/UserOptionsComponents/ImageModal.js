@@ -17,7 +17,7 @@ const ImageModal = ({ visible, onClose, userId: propUserId, source }) => {
     useEffect(() => {
         setImageUri(source);
         // لوج للتأكد من userId
-        console.log('ImageModal opened with userId:', userId);
+       
     }, [source, visible, userId]);
 
     const handleDeleteImage = async () => {
@@ -76,8 +76,7 @@ const ImageModal = ({ visible, onClose, userId: propUserId, source }) => {
                 const uploadedUrl = await uploadUserImage(compressedUri);
                 if (uploadedUrl) {
                     setImageUri(uploadedUrl);
-                    // لوج للتأكد من القيم المرسلة
-                    console.log('🖼️ ImageModal: Dispatching updateUser with:', { id: userId, updatedData: { image: uploadedUrl } });
+                   
                     if (userId) {
                         dispatch(updateUser({ id: userId, updatedData: { image: uploadedUrl } }))
                             .then((res) => {

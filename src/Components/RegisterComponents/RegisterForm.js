@@ -45,7 +45,6 @@ export default function RegisterForm() {
 
   useEffect(() => {
     if (currentUser) {
-      console.log("currentUser", currentUser);
       AsyncStorage.setItem("userData", JSON.stringify(currentUser));
       replace(PATHS.Home);
     }
@@ -64,9 +63,7 @@ const handleRegister = async (userdata) => {
   const updatedUser = {
     ...userdata,
     image: uploadedUrl || userdata.image,
-  };
-
-  console.log("User Data بعد الرفع", updatedUser);
+  }
   SetIsLoading(false);
   dispatch(UserRegister(updatedUser));
   

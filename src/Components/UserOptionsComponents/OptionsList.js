@@ -158,7 +158,7 @@ function OptionsList() {
     };
 
     const handleRatingCompleted = (rating) => {
-        console.log("Rating is: " + rating);
+       
         setRating(rating);
     };
 

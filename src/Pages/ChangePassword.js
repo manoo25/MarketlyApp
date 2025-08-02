@@ -61,8 +61,6 @@ function ChangePassword() {
     // مراقبة حالة التحميل
     useEffect(() => {
         if (hasSubmitted && loading) {
-            // بدأت عملية التحميل
-            console.log("بدأت عملية تغيير كلمة المرور");
         }
     }, [loading, hasSubmitted]);
 

@@ -84,8 +84,6 @@ export default function ChatModal({ visible, onClose }) {
           filter: `receiver_id=eq.${userId}`,
         },
         (payload) => {
-        //   console.log("📥 New message received via subscription:", payload.new);
-          // جلب الرسائل مرة أخرى لتحديث الواجهة
           dispatch(
             fetchMessages({
               myUserId: userId,
@@ -103,7 +101,7 @@ export default function ChatModal({ visible, onClose }) {
     // دالة التنظيف: إلغاء الاشتراك عند إغلاق المودال
     return () => {
       supabase.removeChannel(channel);
-      console.log("❌ Unsubscribed from chat channel.");
+   
     };
   }, [visible, userId, userRole]); // ✅ يعتمد على 'visible' و 'userId'
 

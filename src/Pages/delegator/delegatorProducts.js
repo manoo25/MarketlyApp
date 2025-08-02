@@ -69,7 +69,6 @@ async function GetTraderId() {
     const userDataString = await AsyncStorage.getItem('userData');
     const userData = JSON.parse(userDataString);
     const id = userData?.trader_id;
-    console.log('Loaded TraderID:', id);
     setTraderID(id);
   } catch (error) {
     console.error("Failed to get trader ID:", error);
