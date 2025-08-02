@@ -57,7 +57,7 @@ export default function BottomTabs() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
-          const variant = focused ? "Bold" : "Outline";
+          const variant = focused ? "Bold" : "Linear";
           const iconColor = focused ? "#327AFF" : "#292D32";
 
           let icon;

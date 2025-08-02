@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import  { useEffect, useRef } from 'react'
 import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput, Alert } from "react-native";
 import { useState } from 'react';
 import CartList from '../Components/CartComponents/CartList';
@@ -6,7 +6,6 @@ import { colors, styles } from '../../styles';
 import { MessageText1 } from 'iconsax-react-nativejs';
 import { CloseCircle } from 'iconsax-react-nativejs';
 import { BagCross } from 'iconsax-react-nativejs';
-import { ArrowRight2 } from 'iconsax-react-nativejs';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteCartItemsByUserId, fetchCartItems } from '../Redux/Slices/CartItems';
 import 'react-native-get-random-values';
@@ -19,7 +18,6 @@ import { useNavigation } from '@react-navigation/native';
 import { PATHS } from '../routes/Paths';
 import HeaderPages from '../Components/GlobalComponents/HeaderPages';
 import Empty from '../Components/GlobalComponents/Empty';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Octicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import ToastMessage from '../Components/GlobalComponents/ToastMessage';
@@ -132,7 +130,6 @@ const handleShowToast = () => {
 
 
     return (
-        //    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={style.container}>
           
              <ToastMessage
@@ -280,50 +277,7 @@ const handleShowToast = () => {
                     </>
                 )}
             </View>
-            {/* <Modal
-                animationType="slide" // تأثير ظهور من الأسفل
-                transparent={true} // يجعل الخلفية شفافة
-                visible={isModalVisible} // يتحكم في ظهوره أو إخفائه
-                onRequestClose={() => {
-                    // يمكن استخدام هذا في الأندرويد للتحكم في زر الرجوع بالجهاز
-                    setIsModalVisible(!isModalVisible);
-                }}>
-
-                <View style={style.centeredView}>
-                    <View style={style.modalView}>
-                        <View style={{ flexDirection: 'row-reverse', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Text style={style.modalTitle}>أضف ملاحظاتك</Text>
-                            <TouchableOpacity
-                                style={{ marginRight: -16, marginTop: -16 }}
-                                onPress={() => {
-                                    setIsModalVisible(false); // إخفاء الـ Modal بدون حفظ
-                                    setNotes(''); // مسح أي ملاحظات مكتوبة عند الإلغاء
-                                }}>
-                                <CloseCircle size="32" color="#424047" />
-                            </TouchableOpacity>
-                        </View>
-                        <TextInput
-                            style={style.textInput}
-                            onChangeText={setNotes} // تحديث حالة الملاحظات مع كل تغيير
-                            value={notes} // عرض القيمة الحالية للملاحظات
-                            placeholder="اكتب ملاحظاتك هنا..."
-                            multiline={true} // السماح بعدة أسطر
-                            numberOfLines={4} // عدد الأسطر الافتراضي
-                        />
-                        <View style={style.buttonContainer}>
-                            <TouchableOpacity
-                                style={[style.modalButton, style.buttonSave]}
-                                onPress={handleSaveNotes}>
-                                <Text style={style.buttonText}>حفظ</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal> */}
-
-
-
-
+            
 
             <Modal
                 isVisible={isModalVisible}
@@ -372,8 +326,6 @@ const handleShowToast = () => {
                 </View>
             </Modal>
         </View>
-
-        //    </SafeAreaView>
     );
 }
 

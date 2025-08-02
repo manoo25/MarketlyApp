@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { colors, styles } from '../../styles';
 import { ArrowRight2 } from 'iconsax-react-nativejs';
-import LoadingSpinner from "../Components/GlobalComponents/LoadingSpinner";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../Redux/Slices/users";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -13,7 +12,6 @@ import { Warning2 } from 'iconsax-react-nativejs';
 import { TickCircle } from 'iconsax-react-nativejs';
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import * as Yup from "yup";
 
 
 
@@ -124,11 +122,6 @@ function ChangePassword() {
 
 
     return (
-        // <KeyboardAvoidingView
-        //     style={{ flex: 1 }}
-        //     behavior={Platform.OS === "ios" ? "padding" : "height"}
-        //     keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
-        // >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
                 <View style={style.container}>
@@ -147,7 +140,6 @@ function ChangePassword() {
                     <View style={{ justifyContent: 'center' }}>
                         <Formik
                             initialValues={{ password1: "", password2: "", password3: "" }}
-                            // validationSchema={validationSchema}
                             onSubmit={handleChangePassword}>
                             {({
                                 handleChange,
@@ -158,7 +150,6 @@ function ChangePassword() {
                                 handleSubmit,
                             }) => (
                                 <>
-                                    {/* <Text style={[styles.h4, { textAlign: 'right' }]}>كلمة المرور الحالية</Text> */}
                                     <View style={styles.container}>
                                         <View style={[stylesheet.inputWrapper, touched.password1 && errors.password1 && stylesheet.inputWrapperError]}>
                                             <TextInput
@@ -182,12 +173,7 @@ function ChangePassword() {
                                                     <EyeSlash size="32" color="#A6A1B1" />}
                                             </TouchableOpacity>
                                         </View>
-                                        {/* {touched.password1 && errors.password1 && (
-                                                    <View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
-                                                        <Warning2 size="16" color="#FF3B30" />
-                                                        <Text style={[styles.errorText, { marginRight: 8 }]}>{errors.password1}</Text>
-                                                    </View>
-                                                )} */}
+                
                                         {hasSubmitted && error && (error.includes("كلمة المرور الحالية") || error.includes("غير صحيحة")) && (
                                             <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 8, marginBottom: 8 }}>
                                                 <Warning2 size="16" color="#FF3B30" />
@@ -195,7 +181,6 @@ function ChangePassword() {
                                             </View>
                                         )}
                                     </View>
-                                    {/* <Text style={[styles.h4, { textAlign: 'right', marginTop: 22 }]}>كلمة المرور الجديدة</Text> */}
                                     <View style={styles.container}>
                                         <View style={[stylesheet.inputWrapper, touched.password2 && errors.password2 && stylesheet.inputWrapperError]}>
                                             <TextInput
@@ -219,12 +204,7 @@ function ChangePassword() {
                                                     <EyeSlash size="32" color="#A6A1B1" />}
                                             </TouchableOpacity>
                                         </View>
-                                        {/* {touched.password2 && errors.password2 && (
-                                                    <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 8, marginBottom: 8 }}>
-                                                        <Warning2 size="16" color="#FF3B30" />
-                                                        <Text style={[styles.errorText, { marginRight: 8 }]}>{errors.password2}</Text>
-                                                    </View>
-                                                )} */}
+                                        
                                         {hasSubmitted && error && (error.includes("كلمة المرور الجديدة") || error.includes("المستخدم غير موجود")) && (
                                             <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 8, marginBottom: 8 }}>
                                                 <Warning2 size="16" color="#FF3B30" />
@@ -232,7 +212,6 @@ function ChangePassword() {
                                             </View>
                                         )}
                                     </View>
-                                    {/* <Text style={[styles.h4, { textAlign: 'right', marginTop: 22 }]}>تأكيد كلمة المرور</Text> */}
                                     <View style={styles.container}>
                                         <View style={[stylesheet.inputWrapper, touched.password3 && errors.password3 && stylesheet.inputWrapperError]}>
                                             <TextInput
@@ -254,12 +233,7 @@ function ChangePassword() {
                                                     <EyeSlash size="32" color="#A6A1B1" />}
                                             </TouchableOpacity>
                                         </View>
-                                        {/* {touched.password3 && errors.password3 && (
-                                                    <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 8, marginBottom: 8 }}>
-                                                        <Warning2 size="16" color="#FF3B30" />
-                                                        <Text style={[styles.errorText, { marginRight: 8 }]}>{errors.password3}</Text>
-                                                    </View>
-                                                )} */}
+                                        
                                         {hasSubmitted && error && error.includes("تأكيد") && (
                                             <View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginTop: 8, marginBottom: 8 }}>
                                                 <Warning2 size="16" color="#FF3B30" />
@@ -334,7 +308,6 @@ function ChangePassword() {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-        // </KeyboardAvoidingView>
     )
 }
 

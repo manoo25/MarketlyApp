@@ -9,25 +9,7 @@ export default function Loader() {
     <View style={{ flex: 1 }}>
            <View style={style.container}>
              {/* Header */}
-             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 16 }}>
-               <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
-                 <HeaderPages title={'العروض'} navigate={() => navigation.navigate("Home")} />
-                 <View
-                   style={{
-                     flexDirection: "row",
-                     alignItems: "center",
-                     justifyContent: "center",
-                   }}
-                 >
-                   <TouchableOpacity
-                     style={style.searchIconContainer}
-                     onPress={() => setShowSearch((prev) => !prev)}
-                   >
-                     <Ionicons name="search" size={24} color="#424047" />
-                   </TouchableOpacity>
-                 </View>
-               </View>
-             </View>
+
    
            </View>
            <View style={style.skContainer}>
