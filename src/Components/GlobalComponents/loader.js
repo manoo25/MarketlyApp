@@ -7,31 +7,31 @@ import HeaderPages from './HeaderPages.js'
 export default function Loader() {
   return (
     <View style={{ flex: 1 }}>
-           <View style={style.container}>
-             {/* Header */}
+      <View style={style.container}>
+        {/* Header */}
 
-   
-           </View>
-           <View style={style.skContainer}>
-             <FlatList
-               data={[...Array(6)]}
-               keyExtractor={(_, index) => index.toString()}
-               numColumns={2}
-               columnWrapperStyle={style.column}
-               showsVerticalScrollIndicator={false}
-               renderItem={({ item, index }) => (
-                 <View key={index} style={style.gridItem}>
-                   <SkeletonBox style={style.imageSkeleton} />
-                   <SkeletonBox style={style.textSkeleton} />
-                   <SkeletonBox style={style.priceSkeleton} />
-                 </View>
-               )}
-             />
-           </View>
-   
-   
-   
-         </View>
+
+      </View>
+      <View style={style.skContainer}>
+        <FlatList
+          data={[...Array(6)]}
+          keyExtractor={(_, index) => index.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <View key={index} style={style.item}>
+              <SkeletonBox style={style.imageSkeleton} />
+              <SkeletonBox style={style.textSkeleton} />
+              <SkeletonBox style={style.priceSkeleton} />
+            </View>
+          )}
+        />
+      </View>
+
+
+
+
+    </View>
   )
 }
 const style = StyleSheet.create({
@@ -78,42 +78,38 @@ const style = StyleSheet.create({
     paddingVertical: 12,
   },
   skContainer: {
-    paddingHorizontal: 12,
-    paddingTop: 8,
-    backgroundColor: '#fff',
-  },
+  paddingVertical: 8,
+  paddingHorizontal: 12,
+  backgroundColor: '#fff',
+},
 
-  column: {
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
+item: {
+  width: 120, // عرض العنصر زي الصورة
+  marginRight: 12,
+  borderRadius: 12,
+  backgroundColor: '#F7F7F7',
+  padding: 8,
+  alignItems: 'center',
+},
 
-  gridItem: {
-    width: '48%',
-    borderRadius: 12,
-    backgroundColor: '#F7F7F7',
-    padding: 8,
-    alignItems: 'center',
-  },
+imageSkeleton: {
+  width: '100%',
+  height: 100, // أصغر شوية من اللي كان عندك عشان تناسب الكروت الصغيرة
+  borderRadius: 8,
+  marginBottom: 8,
+},
 
-  imageSkeleton: {
-    width: '100%',
-    height: 130,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
+textSkeleton: {
+  width: '80%',
+  height: 14,
+  borderRadius: 6,
+  marginBottom: 6,
+},
 
-  textSkeleton: {
-    width: '80%',
-    height: 14,
-    borderRadius: 6,
-    marginBottom: 6,
-  },
-
-  priceSkeleton: {
-    width: '60%',
-    height: 12,
-    borderRadius: 6,
-  },
+priceSkeleton: {
+  width: '60%',
+  height: 12,
+  borderRadius: 6,
+},
 
 });

@@ -65,7 +65,7 @@ function CompaniesSlide({ sectionName }) {
               styles.h3,
               {
                 fontSize: 15,
-                color: colors.primary,
+                color: colors.BtnsColor,
                 padding: 8,
                 borderRadius: 10,
                 backgroundColor: "#327AFF1A",

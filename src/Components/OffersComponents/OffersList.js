@@ -71,7 +71,7 @@ const renderItem = ({ item }) => {
               gap: 4,
             }}
           >
-            <Text style={[styles.h3, { fontSize: 14, color: colors.primary }]}>
+            <Text style={[styles.h3, { fontSize: 14, color: colors.BtnsColor }]}>
               {item.endPrice ?? item.traderprice} ج
             </Text>
 

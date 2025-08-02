@@ -17,6 +17,8 @@ import HeaderPages from "../../Components/GlobalComponents/HeaderPages";
 import { styles } from "../../../styles";
 import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
 import SortOrders from "../../Components/Categories/sortOrders";
+import { ReceiptText } from 'iconsax-react-nativejs';
+
 
 const DelegatorOrders = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -94,6 +96,8 @@ const DelegatorOrders = () => {
           />
         </View>
       </View>
+
+
       <NotesModal
         visible={isModalVisible}
         onClose={() => {
@@ -105,7 +109,7 @@ const DelegatorOrders = () => {
         onSave={handleSaveNotes}
         style={style}
       />
-      {SortedOrders?.length > 0 && (
+      {SortedOrders?.length > 0 ? (
         <FlatList
           data={SortedOrders}
           keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
@@ -230,10 +234,21 @@ const DelegatorOrders = () => {
             </View>
           )}
         />
+      ) : (
+        <View style={style.container}>
+        <View style={{ flex: 1 }}>
+          <View style={style.emptyContainer}>
+            <ReceiptText size="200" color="#424047" />
+            <Text style={[styles.h3, { marginTop: 12 }]}>لا يوجد طلبات</Text>
+            <Text style={[styles.paragraph, { marginTop: 8 }]}>يبدو انه لا يوجد أي طلبات بعد</Text>
+          </View>
+        </View>
+        </View>
       )}
-
     </View>
+
   );
+
 };
 
 const style = StyleSheet.create({
@@ -242,6 +257,12 @@ const style = StyleSheet.create({
     padding: 16,
     backgroundColor: "#fff",
   },
+  emptyContainer: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: 93,
+    },
   section: {
     marginBottom: 20,
     padding: 16,

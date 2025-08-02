@@ -63,7 +63,7 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
           >
             {/* السعر بعد الخصم أو العادي */}
             <Text
-               style={[styles.h3,{fontSize:14,color:colors.primary}]}
+               style={[styles.h3,{fontSize:14,color:colors.BtnsColor}]}
             >
               {item.endPrice ?? item.traderprice} ج
             </Text>

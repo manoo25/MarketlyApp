@@ -138,7 +138,6 @@ useEffect(() => {
   }
 
   return (
-    <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
       <CustomAppBar
         title={'منتجاتى'}
@@ -191,7 +190,6 @@ useEffect(() => {
       {/* ✅ المنتجات */}
       <DelegatorListProducts products={sortedProducts} />
     </View>
-    </SafeAreaView>
   );
 };
 

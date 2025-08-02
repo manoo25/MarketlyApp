@@ -210,7 +210,7 @@ function OptionsList() {
             <View style={style.textContainer}>
                 <View style={style.titleContainer}>
                     <Text style={[style.title, styles.h4]}>{item.title}</Text>
-                    {item.id === "6" && unreadCount > 0 && (
+                    {item.id === "5" && unreadCount > 0 && (
                         <View style={style.badgeContainer}>
                             <Text style={style.badgeText}>{unreadCount}</Text>
                         </View>

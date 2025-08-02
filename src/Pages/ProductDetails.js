@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   View,
+  FlatList,
 } from "react-native";
 import { colors, styles } from "../../styles";
 import RecommendedProducts from "../Components/ProductDeatailsComponents/RecommendedProducts";
@@ -24,6 +25,7 @@ import Loader from "../Components/GlobalComponents/loader";
 import GoBack from "../Components/GlobalComponents/GoBack";
 import CartIcon from "../Components/GlobalComponents/CartIcon";
 import { PATHS } from "../routes/Paths";
+import SkeletonBox from "../Components/GlobalComponents/SkeletonBox.js";
 
 function ProductDetails() {
   const navigation = useNavigation();
@@ -104,9 +106,43 @@ function ProductDetails() {
 
   if (loading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <Loader />
-      </SafeAreaView>
+      <View style={{ flex: 1, paddingTop: 30, backgroundColor: "white" }}>
+        <View style={style.container}>
+          <View style={style.skContainer}>
+            {/* المنتج الكبير في الأعلى */}
+            <View style={style.mainProductCard}>
+              <SkeletonBox style={style.mainImage} />
+              <View style={style.mainTextContainer}>
+                <SkeletonBox style={style.mainTitle} />
+                <SkeletonBox style={style.mainOldPrice} />
+                <SkeletonBox style={style.mainNewPrice} />
+              </View>
+              <SkeletonBox style={style.mainQty} />
+            </View>
+
+            {/* عنوان منتجات هذا المنتج */}
+            <View style={style.sectionTitle}>
+              <SkeletonBox style={style.titleSkeleton} />
+            </View>
+
+            {/* المنتجات المقترحة في FlatList */}
+            <FlatList
+              data={[...Array(3)]}
+              keyExtractor={(_, index) => index.toString()}
+              horizontal
+              inverted
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item, index }) => (
+                <View key={index} style={style.suggestedCard}>
+                  <SkeletonBox style={style.suggestedImage} />
+                  <SkeletonBox style={style.suggestedText} />
+                  <SkeletonBox style={style.suggestedPrice} />
+                </View>
+              )}
+            />
+          </View>
+        </View>
+      </View>
     );
   }
 
@@ -164,7 +200,7 @@ function ProductDetails() {
                       styles.h3,
                       {
                         fontSize: 19,
-                        color: colors.primary,
+                        color: colors.BtnsColor,
                         paddingVertical: 6,
                         paddingHorizontal: 12,
                         borderRadius: 8,
@@ -215,7 +251,7 @@ function ProductDetails() {
                     </Text>
                   )}
 
-                  <Text style={[styles.h3, { marginTop: 10, fontSize: 20, color: colors.primary }]}>
+                  <Text style={[styles.h3, { marginTop: 10, fontSize: 20, color: colors.BtnsColor }]}>
                     {specificProduct[0]?.endPrice} ج.م / {specificProduct[0]?.unit}
                   </Text>
                 </View>
@@ -240,10 +276,10 @@ function ProductDetails() {
         >
           <View style={{ marginRight: 10 }}>
             <View style={styles.priceContainer}>
-              <Text style={[styles.h2, { color: colors.primary, fontSize: 20 }]}>
+              <Text style={[styles.h2, { color: colors.BtnsColor, fontSize: 20 }]}>
                 الإجمالى:
               </Text>
-              <Text style={[styles.h2, { color: colors.primary, fontSize: 20 }]}>
+              <Text style={[styles.h2, { color: colors.BtnsColor, fontSize: 20 }]}>
                 {(specificProduct[0]?.endPrice * (SpecificCartItemQty || 1))} ج.م
               </Text>
             </View>
@@ -321,6 +357,124 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
+  skContainer: {
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    backgroundColor: '#fff',
+
+  },
+
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+
+  gradient: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F2F8FC',
+    opacity: 0.5,
+  },
+
+  mainProductCard: {
+    width: '100%',
+    borderRadius: 12,
+    backgroundColor: '#F7F7F7',
+    padding: 12,
+    marginBottom: 24,
+  },
+
+  mainImage: {
+    width: '100%',
+    height: 180,
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+
+  mainTextContainer: {
+    marginBottom: 16,
+  },
+
+  mainTitle: {
+    width: '60%',
+    height: 18,
+    borderRadius: 6,
+    marginBottom: 8,
+    alignSelf: 'flex-end'
+  },
+
+  mainOldPrice: {
+    width: '40%',
+    height: 14,
+    borderRadius: 6,
+    marginBottom: 6,
+    alignSelf: 'flex-end'
+
+  },
+
+  mainNewPrice: {
+    width: '50%',
+    height: 16,
+    borderRadius: 6,
+    alignSelf: 'flex-end'
+
+  },
+
+  mainQty: {
+    width: '40%',
+    height: 32,
+    borderRadius: 8,
+    alignSelf: 'flex-end'
+
+  },
+
+  sectionTitle: {
+    marginBottom: 16,
+  },
+
+  titleSkeleton: {
+    width: '40%',
+    height: 20,
+    borderRadius: 6,
+    alignSelf: 'flex-end'
+
+  },
+
+  suggestedCard: {
+    width: 120,
+    borderRadius: 12,
+    backgroundColor: '#F7F7F7',
+    padding: 8,
+    marginRight: 12,
+
+  },
+
+  suggestedImage: {
+    width: '100%',
+    height: 80,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+
+  suggestedText: {
+    width: '80%',
+    height: 14,
+    borderRadius: 6,
+    marginBottom: 6,
+    alignSelf: 'flex-end'
+
+  },
+
+  suggestedPrice: {
+    width: '60%',
+    height: 12,
+    borderRadius: 6,
+    alignSelf: 'flex-end'
+
+  },
 });
+
 
 export default ProductDetails;

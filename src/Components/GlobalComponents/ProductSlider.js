@@ -11,7 +11,7 @@ import { PATHS } from "../../routes/Paths";
 import DiscountBadge from "../OffersComponents/DiscountBadge";
 
 
-const ProductCard = ({ item,AddToCart,navigate }) => {
+const ProductCard = ({ item, AddToCart, navigate }) => {
   const hasDiscount = item.traderprice > item.endPrice;
   const discountPercent = hasDiscount
     ? ((item.traderprice - item.endPrice) / item.traderprice) * 100
@@ -19,8 +19,8 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
 
   return (
     <View style={componentStyles.cardContainer}>
-     <TouchableOpacity onPress={()=>navigate(PATHS.ProductDetails,{ProductId:item.id})}>
-        <View  style={componentStyles.imageContainer}>
+      <TouchableOpacity onPress={() => navigate(PATHS.ProductDetails, { ProductId: item.id })}>
+        <View style={componentStyles.imageContainer}>
           {hasDiscount && <DiscountBadge discount={discountPercent} />}
 
           <Image
@@ -30,11 +30,11 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
             style={componentStyles.image}
           />
 
-         <TouchableOpacity
-           onPress={() => AddToCart(item.id,item.trader_id)}
+          <TouchableOpacity
+            onPress={() => AddToCart(item.id, item.trader_id)}
             style={componentStyles.addButton}>
-                <AntDesign name="plus" size={24} color="blue" />
-            </TouchableOpacity>
+            <AntDesign name="plus" size={24} color="blue" />
+          </TouchableOpacity>
         </View>
 
         <View style={componentStyles.infoContainer}>
@@ -56,7 +56,7 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
           >
             {/* السعر بعد الخصم أو العادي */}
             <Text
-               style={[styles.h3,{fontSize:14,color:colors.primary}]}
+              style={[styles.h3, { fontSize: 14, color: colors.BtnsColor }]}
             >
               {item.endPrice ?? item.traderprice} ج
             </Text>
@@ -64,10 +64,11 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
             {/* السعر قبل الخصم */}
             {hasDiscount && (
               <Text
-                style={[styles.h3,{fontSize:14,
+                style={[styles.h3, {
+                  fontSize: 14,
                   color: "#7B7686",
                   textDecorationLine: "line-through",
-                 
+
                 }]}
               >
                 {item.traderprice} ج
@@ -77,7 +78,7 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
             {/* وحدة البيع */}
             {item.unit && (
               <Text
-                 style={[styles.h3,{fontSize:14}]}
+                style={[styles.h3, { fontSize: 14 }]}
               >
                 /{item.unit}
               </Text>
@@ -112,67 +113,68 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
 //     </View>
 // );
 
-function ProductSlider({sectionName,data}) {
-     const {navigate} = useNavigation();
-const dispatch=useDispatch();
-    const {products}=useSelector((state)=>state.products);
-    const[SalePro,SetSalePro]=useState([])
-    useEffect(()=>{
-dispatch(fetchProducts());
-    },[]);
- useEffect(() => {
-  if(products.length > 0){
-    const TargetData=products.filter(x=>x.onSale==true).slice(0,6)
-SetSalePro(TargetData)
-  }
+function ProductSlider({ sectionName, data }) {
+  const { navigate } = useNavigation();
+  const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.products);
+  const [SalePro, SetSalePro] = useState([])
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+  useEffect(() => {
+    if (products.length > 0) {
+      const TargetData = products.filter(x => x.onSale == true).slice(0, 6)
+      SetSalePro(TargetData)
+    }
   }, [products]);
 
 
-  function AddToCart(ProId,traderID) {
- 
-    dispatch(addOrUpdateCartItem({ product_id: ProId,traderID:traderID, quantity: 1, navigate: navigate }));
+  function AddToCart(ProId, traderID) {
+
+    dispatch(addOrUpdateCartItem({ product_id: ProId, traderID: traderID, quantity: 1, navigate: navigate }));
   }
-    return (
-        <View style={{marginTop:15}}>
-            
-             <View 
-             style={{
-               flex:1,
-               flexDirection:'row',
-               justifyContent:'space-between',
-            //    backgroundColor:'green',
-               position:'relative',
-               alignItems:'center',
-               paddingLeft:15,
-               marginBottom:5,
-              
-              
-               }}>
-                 <TouchableOpacity onPress={()=>navigate(PATHS.OffersPage)}>
-                     <Text style={[styles.h3,{fontSize:15,
-                     color:colors.primary,
-                     padding:8,
-                     borderRadius:10,
- backgroundColor: '#327AFF1A',
-                     }]}>
-                       المزيد
-                     </Text>
-                   </TouchableOpacity>
-                   <SectionHeader text={sectionName} />
-                  
-             </View>
-             
-            <FlatList
-                horizontal
-                inverted
-                showsHorizontalScrollIndicator={false}
-                data={SalePro}
-                renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item} navigate={navigate} />}
-                keyExtractor={item => item.id}
-                contentContainerStyle={componentStyles.listContentContainer}
-            />
-        </View>
-    );
+  return (
+    <View style={{ marginTop: 15 }}>
+
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          //    backgroundColor:'green',
+          position: 'relative',
+          alignItems: 'center',
+          paddingLeft: 15,
+          marginBottom: 5,
+
+
+        }}>
+        <TouchableOpacity onPress={() => navigate(PATHS.OffersPage)}>
+          <Text style={[styles.h3, {
+            fontSize: 15,
+            color: colors.BtnsColor,
+            padding: 8,
+            borderRadius: 10,
+            backgroundColor: '#327AFF1A',
+          }]}>
+            المزيد
+          </Text>
+        </TouchableOpacity>
+        <SectionHeader text={sectionName} />
+
+      </View>
+
+      <FlatList
+        horizontal
+        inverted
+        showsHorizontalScrollIndicator={false}
+        data={SalePro}
+        renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item} navigate={navigate} />}
+        keyExtractor={item => item.id}
+        contentContainerStyle={componentStyles.listContentContainer}
+      />
+    </View>
+  );
 }
 
 
