@@ -15,6 +15,7 @@ import SortFilterModal from "../../Components/Categories/SortFilterModal";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchTraderProducts } from "../../Redux/Slices/productsSlice";
 import { Building } from "iconsax-react-nativejs";
+import CartIcon from "../../Components/GlobalComponents/CartIcon";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
@@ -53,7 +54,7 @@ const TraderProducts = ({ route, navigation }) => {
   const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
   const [appliedSortOption, setAppliedSortOption] = useState("highToLow");
   const { companies } = useFetchCompanies();
-
+ const { cartItems } = useSelector((state) => state.CartItems);
 const dispatch=useDispatch();
     const allProducts=useSelector((state)=>state.products.traderProducts);
    
@@ -105,6 +106,13 @@ dispatch(fetchTraderProducts(TraderID));
 
   return (
     <SafeAreaView style={{flex:1}}>
+       {cartItems.length > 0 && (
+                <View style={{ position: "absolute", top: 30, left: 20, zIndex: 999 }}>
+                  <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
+                    <CartIcon />
+                  </TouchableOpacity>
+                </View>
+              )}
       <View style={styles.container}>
       <CustomAppBar
         title={'منتجات التاجر'}

@@ -29,14 +29,14 @@ const RenderItem = ({ item }) => (
         />
       </View>
       <View style={style.productDetails}>
-        <Text style={[styles.h2,style.productName]}>{item.product?.name ?? 'اسم المنتج غير متوفر'}</Text>
+        <Text style={[styles.h2, style.productName]}>{item.product?.name ?? 'اسم المنتج غير متوفر'}</Text>
         <View style={style.productMeta}>
-          <Text style={[styles.h3,style.productQuantity]}>الكمية: {item.quantity}</Text>
-          <Text style={[styles.h3,style.productPrice]}>
-            {item.product?.endPrice} 
+          <Text style={[styles.h3, style.productQuantity]}>الكمية: {item.quantity}</Text>
+          <Text style={[styles.h3, style.productPrice]}>
+            {item.product?.endPrice}
             جنيه
-             / 
-             {item.product?.unit}
+            /
+            {item.product?.unit}
           </Text>
         </View>
       </View>
@@ -55,13 +55,17 @@ const OrderDetails = () => {
   const { OrderData } = route.params;
   useEffect(() => {
     dispatch(fetchOrderItems(OrderData.id));
-    
+
   }, [dispatch, OrderData.id]);
 
   return (
     <View style={style.container}>
-     <HeaderPages title={'تفاصيل الطلب'} />
-    
+      <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
+        <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
+          <HeaderPages title={'تفاصيل الطلب'} />
+        </View>
+      </View>
+
 
       <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
         {/* معلومات الطلب */}
@@ -76,12 +80,12 @@ const OrderDetails = () => {
                       OrderData.status === "done"
                         ? "#D4EDDA"
                         : OrderData.status === "inprogress"
-                        ? "#E3F0FF"
-                        : OrderData.status === "pending"
-                        ? "#FFF4E5"
-                        : OrderData.status === "returns"
-                        ? "#F8D7DA"
-                        : "#F0F0F0",
+                          ? "#E3F0FF"
+                          : OrderData.status === "pending"
+                            ? "#FFF4E5"
+                            : OrderData.status === "returns"
+                              ? "#F8D7DA"
+                              : "#F0F0F0",
                   },
                 ]}
               >
@@ -94,12 +98,12 @@ const OrderDetails = () => {
                         OrderData.status === "done"
                           ? "green"
                           : OrderData.status === "inprogress"
-                          ? "#327AFF"
-                          : OrderData.status === "pending"
-                          ? "#e2980eff"
-                          : OrderData.status === "returns"
-                          ? "red"
-                          : "#327AFF",
+                            ? "#327AFF"
+                            : OrderData.status === "pending"
+                              ? "#e2980eff"
+                              : OrderData.status === "returns"
+                                ? "red"
+                                : "#327AFF",
                     },
                   ]}
                 >
@@ -146,10 +150,10 @@ const OrderDetails = () => {
 
         {/* المنتجات المطلوبة */}
         <View style={style.section}>
-          <Text style={[styles.h2,style.sectionTitle]}>المنتجات المطلوبة</Text>
+          <Text style={[styles.h2, style.sectionTitle]}>المنتجات المطلوبة</Text>
           <FlatList
             data={orderItems}
-             keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
+            keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
             renderItem={RenderItem}
             scrollEnabled={false}
           />
@@ -157,34 +161,34 @@ const OrderDetails = () => {
 
         {/* ملخص الفاتورة */}
         <View style={style.section}>
-          <Text style={[styles.h2,style.sectionTitle]}>ملخص الفاتورة</Text>
+          <Text style={[styles.h2, style.sectionTitle]}>ملخص الفاتورة</Text>
           <View style={style.billSummary}>
             <View style={style.billRow}>
-              <Text style={[styles.h3,style.billLabel]}>المجموع الفرعي</Text>
-              <Text style={[styles.h2,style.billValue]}>{OrderData.total} جنيه</Text>
+              <Text style={[styles.h3, style.billLabel]}>المجموع الفرعي</Text>
+              <Text style={[styles.h2, style.billValue]}>{OrderData.total} جنيه</Text>
             </View>
             <View style={style.billRow}>
-              <Text style={[styles.h3,style.billLabel]}>رسوم التوصيل</Text>
-              <Text style={[styles.h2,style.billValue]}>{0} جنيه</Text>
+              <Text style={[styles.h3, style.billLabel]}>رسوم التوصيل</Text>
+              <Text style={[styles.h2, style.billValue]}>{0} جنيه</Text>
             </View>
             <View style={style.billRow}>
-              <Text style={[styles.h3,style.billLabel]}>الضرائب</Text>
-              <Text style={[styles.h2,style.billValue]}>{0} جنيه</Text>
+              <Text style={[styles.h3, style.billLabel]}>الضرائب</Text>
+              <Text style={[styles.h2, style.billValue]}>{0} جنيه</Text>
             </View>
             <View style={style.divider} />
             <View style={[style.billRow, style.totalRow]}>
-              <Text style={[styles.h2,style.totalLabel]}>المجموع الكلي</Text>
-              <Text style={[styles.h2,style.totalValue]}>{OrderData.total} جنيه</Text>
+              <Text style={[styles.h2, style.totalLabel]}>المجموع الكلي</Text>
+              <Text style={[styles.h2, style.totalValue]}>{OrderData.total} جنيه</Text>
             </View>
           </View>
         </View>
 
         {/* طريقة الدفع */}
         <View style={style.section}>
-          <Text style={[styles.h2,style.sectionTitle]}>طريقة الدفع</Text>
+          <Text style={[styles.h2, style.sectionTitle]}>طريقة الدفع</Text>
           <View style={style.paymentMethod}>
-           <Wallet3 size={24} color="#000" variant="regular" />
-            <Text style={[styles.h3,style.paymentText]}>عند الإستلام</Text>
+            <Wallet3 size={24} color="#000" variant="regular" />
+            <Text style={[styles.h3, style.paymentText]}>عند الإستلام</Text>
           </View>
         </View>
       </ScrollView>
@@ -196,7 +200,9 @@ const OrderDetails = () => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    padding: 16,
+    paddingBottom: 40,
+    backgroundColor: '#fff',
   },
   header: {
     alignItems: "center",
@@ -208,7 +214,7 @@ const style = StyleSheet.create({
   headerTitle: {
     textAlign: "right",
     marginRight: 8,
-  marginTop:10
+    marginTop: 10
   },
   section: {
     marginHorizontal: 16,
@@ -253,7 +259,7 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     textAlign: "right",
-     marginTop: 10,
+    marginTop: 10,
   },
   orderDate: {
     fontSize: 14,
@@ -316,14 +322,14 @@ const style = StyleSheet.create({
     fontSize: 14,
     color: "#666",
     textAlign: "right",
-     marginTop:5
-     
+    marginTop: 5
+
   },
   productPrice: {
     fontSize: 14,
     color: "#666",
     textAlign: "right",
-    marginTop:8
+    marginTop: 8
   },
   productTotal: {
     alignItems: "center",
