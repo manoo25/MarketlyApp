@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,FlatList,
+  Text, FlatList,
   TouchableOpacity,
   Image,
   StyleSheet
@@ -40,7 +40,7 @@ const AllCompaniesCard = ({ isSelected, onPress }) => (
       onPress={onPress}
       style={[styles.imageWrapper, isSelected && styles.selected]}
     >
-      <Building size="25" color="#424047"/>
+      <Building size="25" color="#424047" />
     </TouchableOpacity>
     <Text style={styles.name}>جميع{"\n"}الشركات</Text>
   </View>
@@ -90,7 +90,7 @@ dispatch(fetchTraderProducts(TraderID));
       searchQuery.trim() === "" ||
       product.name?.toLowerCase().includes(searchQuery.trim().toLowerCase());
 
-    return  matchesCompany && matchesSearch;
+    return matchesCompany && matchesSearch;
   });
 
   const getProductPrice = (product) =>
@@ -105,54 +105,56 @@ dispatch(fetchTraderProducts(TraderID));
   }
 
   return (
-    <SafeAreaView style={{flex:1}}>
-       {cartItems.length > 0 && (
-                <View style={{ position: "absolute", top: 30, left: 20, zIndex: 999 }}>
-                  <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
-                    <CartIcon />
-                  </TouchableOpacity>
-                </View>
-              )}
-      <View style={styles.container}>
-      <CustomAppBar
-        title={'منتجات التاجر'}
-        onBack={() => navigation.goBack()}
-        showSearch={true}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onSearchClose={() => setSearchQuery("")}
-      />
+    <View style={styles.container}>
+           {cartItems.length > 0 && (
+                      <View style={{ position: "absolute", top: 28, left: 20, zIndex: 999 }}>
+                        <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
+                          <CartIcon />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+        <View style={{marginTop: 10}}>
+            <CustomAppBar
+            title={'منتجات التاجر'}
+            onBack={() => navigation.goBack()}
+            showSearch={true}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onSearchClose={() => setSearchQuery("")}
+          />
+        </View>
 
       {/* ✅ الشركات */}
       {/* <View> */}
-        <View style={{ marginTop: 10 }}>
-          <FlatList
-            data={[...filteredCompanies.slice().reverse(), { id: "all" }]}
-            horizontal
-            inverted
-            keyExtractor={(item) => item.id?.toString()}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              flexDirection: "row-reverse",
-              paddingHorizontal: 12,
-              paddingVertical: 2,
-            }}
-            renderItem={({ item }) =>
-              item.id === "all" ? (
-                <AllCompaniesCard
-                  isSelected={selectedCompanyId === null}
-                  onPress={() => handleSelectCompany(null)}
-                />
-              ) : (
-                <CompanyCard
-                  company={item}
-                  isSelected={selectedCompanyId === item.id}
-                  onPress={() => handleSelectCompany(item.id)}
-                />
-              )
-            }
-          />
-        </View>
+      <View style={{ marginTop: 10 }}>
+  
+        <FlatList
+          data={[...filteredCompanies.slice().reverse(), { id: "all" }]}
+          horizontal
+          inverted
+          keyExtractor={(item) => item.id?.toString()}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            flexDirection: "row-reverse",
+            paddingHorizontal: 12,
+            paddingVertical: 2,
+          }}
+          renderItem={({ item }) =>
+            item.id === "all" ? (
+              <AllCompaniesCard
+                isSelected={selectedCompanyId === null}
+                onPress={() => handleSelectCompany(null)}
+              />
+            ) : (
+              <CompanyCard
+                company={item}
+                isSelected={selectedCompanyId === item.id}
+                onPress={() => handleSelectCompany(item.id)}
+              />
+            )
+          }
+        />
+      </View>
       {/* </View> */}
 
       {/* ✅ مودال الفلترة */}
@@ -165,7 +167,6 @@ dispatch(fetchTraderProducts(TraderID));
       {/* ✅ المنتجات */}
       <ListProducts products={sortedProducts} />
     </View>
-    </SafeAreaView>
   );
 };
 

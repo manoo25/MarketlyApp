@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { componentStyles } from "../../../styles";
+import { colors } from "../../../styles";
 
 export default function CategoryTabs({ categories, onCategoryChange }) {
   const allCategories = [ ...categories , "الكل"];
@@ -55,13 +56,13 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   tabTextActive: {
-    color: "#46B8F0",
+    color: colors.BtnsColor,
     fontWeight: "600",
   },
   activeLine: {
     marginTop: 12,
     height: 1,
-    backgroundColor: "#46B8F0",
+    backgroundColor: colors.BtnsColor,
     width: "100%",
     borderRadius: 1,
   },

@@ -31,7 +31,7 @@ const Empty = ({ header, subHeader, icon }) => {
                     height: 70,
                     borderRadius: 16,
                 }}
-                    onPress={() => (navigate(PATHS.Home))}
+                    onPress={() => (navigate(PATHS.AllCategories))}
                 // Navigate to the home page or any other action
                 >
                     <Text

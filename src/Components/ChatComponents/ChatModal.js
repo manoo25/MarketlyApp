@@ -16,7 +16,7 @@ import { fetchMessages, sendMessage } from "../../Redux/Slices/messagesSlice";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { supabase } from "../../Redux/Supabase";
-
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 const SUPPORT_ADMIN_ID = "a157b1db-54c3-46e3-968c-b3e0be6f6392";
 const SUPPORT_ADMIN_ROLE = "admin";
 
@@ -283,7 +283,8 @@ const handleSend = async () => {
                   onPress={handleSend}
                   style={chatStyle.sendButton}
                 >
-                  <Ionicons name="send" size={20} color="#fff" />
+                  <FontAwesome name="send" size={20} color="#fff" />
+                  {/* <Ionicons name="send" size={20} color="" /> */}
                 </TouchableOpacity>
               </View>
             </>

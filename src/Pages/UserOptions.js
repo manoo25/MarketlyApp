@@ -84,7 +84,7 @@ function UserOptions({ navigation }) {
                 </View>
             </View>
             {/* محتوى الصفحة */}
-            <View style={style.container}>
+            <View style={{ flex: 1 }}>
                 <View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
                     {user?.image ? (
                         <View>
@@ -136,7 +136,7 @@ function UserOptions({ navigation }) {
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        padding: 16,
         backgroundColor: '#fff',
     },
 
