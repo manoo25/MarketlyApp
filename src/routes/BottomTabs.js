@@ -53,7 +53,7 @@ export default function BottomTabs() {
   const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeTab"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
@@ -62,7 +62,7 @@ export default function BottomTabs() {
 
           let icon;
 
-          if (route.name === "Home") {
+          if (route.name === "HomeTab") {
             icon = <Home2 size={30} color={iconColor} variant={variant} />;
           } else if (route.name === 'OffersPage') {
             icon = <DiscountShape size={30} color={iconColor} variant={variant} />;
@@ -95,7 +95,7 @@ export default function BottomTabs() {
       <Tab.Screen name="Orders" component={OrdersStack} options={{ title: 'الطلبات' }} />
       <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
       <Tab.Screen name="OffersPage" component={OffersPage} options={{ title: 'العروض' }} />
-      <Tab.Screen name="Home" component={HomeStack} options={{ title: 'الرئيسية' }} />
+      <Tab.Screen name="HomeTab" component={HomeStack} options={{ title: 'الرئيسية' }} />
     </Tab.Navigator>
   );
 }

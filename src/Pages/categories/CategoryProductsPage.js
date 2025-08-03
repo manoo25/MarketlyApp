@@ -13,6 +13,8 @@ import useFetchCompanies from "../../Components/Categories/useFetchCompanies";
 import ListProducts from "../../Components/Categories/ListProducts";
 import SortFilterModal from "../../Components/Categories/SortFilterModal";
 import { Building } from "iconsax-react-nativejs";
+import CartIcon from "../../Components/GlobalComponents/CartIcon";
+import { PATHS } from "../../routes/Paths";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
@@ -50,6 +52,7 @@ const CategoryProductsPage = ({ route, navigation }) => {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
   const [appliedSortOption, setAppliedSortOption] = useState("highToLow");
+   const { cartItems } = useSelector((state) => state.CartItems);
 
   const { companies } = useFetchCompanies();
   const allProducts = useSelector((state) => state.products.products);
@@ -99,7 +102,15 @@ const CategoryProductsPage = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <CustomAppBar
+       {cartItems.length > 0 && (
+                            <View style={{ position: "absolute", top: 28, left: 20, zIndex: 999 }}>
+                              <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
+                                <CartIcon />
+                              </TouchableOpacity>
+                            </View>
+                          )}
+    <View style={{marginTop: 10}}>
+        <CustomAppBar
         title={category.name}
         onBack={() => navigation.goBack()}
         showSearch={true}
@@ -107,6 +118,7 @@ const CategoryProductsPage = ({ route, navigation }) => {
         onSearchChange={setSearchQuery}
         onSearchClose={() => setSearchQuery("")}
       />
+    </View>
 
       {/* ✅ الشركات */}
       {/* <View> */}

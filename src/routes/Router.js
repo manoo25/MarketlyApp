@@ -26,6 +26,7 @@ import DelegatorAddToCart from "../Pages/delegator/delegatorAddTocart";
 import DelegatorOrders from "../Pages/delegator/delegatorOrders";
 import { DelegatesPaths } from "./delegatesRoute/delegatesPaths";
 import DelegatorResetPasswordForm from "../Components/ForgetPassword/delegatorResetPAss";
+import Orders from "../Pages/orders";
 
 
 
@@ -77,6 +78,10 @@ export default function Router() {
         <Stack.Screen
           name={PATHS.CartScreen}
           component={Cart}
+        />
+        <Stack.Screen
+          name={PATHS.Orders}
+          component={Orders}
         />
         <Stack.Screen
           name={PATHS.ProductDetails}

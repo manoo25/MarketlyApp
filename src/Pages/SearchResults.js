@@ -82,10 +82,10 @@ const SearchResults = ({ searchText, filteredProducts, products = [] }) => {
               <Text style={styles.deliveryText}>مجاني</Text>
             </View>
 
-            {item.onSale && (
+            {item.onSale==true  && (
               <View style={styles.saleTag}>
                 <Text style={styles.saleTagText}>
-                  خصم {(item.traderprice-item.endPrice)*(100/item.traderprice)}% علي بعض المنتجات
+                  خصم {(((item.traderprice - item.endPrice) / item.traderprice) * 100).toFixed()}% علي بعض المنتجات
                 </Text>
               </View>
             )}
