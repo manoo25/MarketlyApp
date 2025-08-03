@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from "react-native";
 import { componentStyles } from "../../../styles";
 import { colors } from "../../../styles";
 
 export default function CategoryTabs({ categories, onCategoryChange }) {
-  const allCategories = [ ...categories , "الكل"];
+  const allCategories = ["الكل", ...categories];
   const [selected, setSelected] = useState("الكل");
 
   const handleSelect = (cat) => {
@@ -12,42 +18,53 @@ export default function CategoryTabs({ categories, onCategoryChange }) {
     if (onCategoryChange) onCategoryChange(cat);
   };
 
+  const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handleSelect(item)} style={styles.tabItem}>
+      <Text
+        style={[
+          componentStyles.h2,
+          styles.tabText,
+          selected === item && styles.tabTextActive,
+        ]}
+      >
+        {item}
+      </Text>
+      {selected === item && <View style={styles.activeLine} />}
+    </TouchableOpacity>
+  );
+
   return (
-    <View style={styles.tabsContainer}>
-      {allCategories.map((cat, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={() => handleSelect(cat)}
-          style={styles.tabItem}
-        >
-          <Text
-            style={[componentStyles.h2,styles.tabText, selected === cat && styles.tabTextActive]}
-          >
-            {cat}
-          </Text>
-          {selected === cat && <View style={styles.activeLine} />}
-        </TouchableOpacity>
-      ))}
+    <View style={styles.tabsWrapper}>
+      <FlatList
+        data={allCategories}
+        horizontal
+        inverted
+
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={styles.tabsContainer}
+      />
       <View style={styles.bottomBorder} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  tabsWrapper: {
+    backgroundColor: "#fff",
+    marginBottom: 20,
+    position: "relative",
+  },
   tabsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: "#7B7686",
-    backgroundColor: "#fff",
-    marginBottom: 20,
   },
   tabItem: {
     alignItems: "center",
     justifyContent: "flex-start",
+    marginLeft: 20,
     paddingBottom: 0,
   },
   tabText: {
