@@ -23,8 +23,8 @@ function UserOptions({ navigation }) {
     const currentUser = useSelector(state => state.Users.currentUser);
     const [user, setUser] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-      const { navigate } = useNavigation();
-    
+    const { navigate } = useNavigation();
+
 
     // إعادة جلب بيانات المستخدم عند التركيز على الصفحة
     useFocusEffect(
@@ -33,10 +33,12 @@ function UserOptions({ navigation }) {
                 // استخدم currentUser من Redux أولاً، ثم AsyncStorage كـ fallback
                 if (currentUser) {
                     setUser(currentUser);
+
                 } else {
                     const userData = await AsyncStorage.getItem('userData');
                     if (userData) {
                         setUser(JSON.parse(userData));
+
                     }
                 }
             };
@@ -75,12 +77,12 @@ function UserOptions({ navigation }) {
             {/* الهيدر */}
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
-                    {user.role=='user'?
-                <HeaderPages title={'الحساب'} navigate={() => navigate(PATHS.Home)} />
-                :
-                   <HeaderPages title={'الحساب'} navigate={() => navigate(DelegatesPaths.DelegatorProducts)} /> 
-                }
-                    
+                    {user.role == 'user' ?
+                        <HeaderPages title={'الحساب'} navigate={() => navigate(PATHS.Home)} />
+                        :
+                        <HeaderPages title={'الحساب'} navigate={() => navigate(DelegatesPaths.DelegatorProducts)} />
+                    }
+
                 </View>
             </View>
             {/* محتوى الصفحة */}
@@ -112,10 +114,10 @@ function UserOptions({ navigation }) {
                     <View style={{ width: '80%', marginRight: 8 }}>
                         {/* user.name */}
                         <Text style={[styles.h3, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>
-                            {user?.name }
+                            {user?.name}
                         </Text>
                         {/* user.email */}
-                        <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>{user?.email }</Text>
+                        <Text style={[styles.h4, { textAlign: 'right', marginRight: 8, paddingBottom: 7 }]}>{user?.email}</Text>
                     </View>
                 </View>
                 <OptionsList />

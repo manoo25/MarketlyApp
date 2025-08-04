@@ -16,29 +16,29 @@ export const UserLogin = createAsyncThunk(
 
       if (error || !data) throw new Error("البريد أو كلمة المرور غير صحيحة");
 
-if (data.role === 'trader' || data.role === 'admin') {
-  Alert.alert(
-    "غير مسموح",
-    "ليس لديك صلاحية للتسجيل هنا", 
-    [
-      {
-        text: "تسجيل للوحة التحكم",
-        onPress: () => {
-          Linking.openURL("https://trendify-umber.vercel.app/");
-        },
-      },
-      {
-        text: "إلغاء",
-        style: "cancel",
-      },
-    ],
-    { cancelable: true }
-  );
-  return;
-}
-else if (data.isBlocked) {
-       Alert.alert('تنبيه!!!', 'لا يمكنك تسجيل الدخول لأن حسابك محظور.');
-       return;
+      if (data.role === 'trader' || data.role === 'admin') {
+        Alert.alert(
+          "غير مسموح",
+          "ليس لديك صلاحية للتسجيل هنا",
+          [
+            {
+              text: "تسجيل للوحة التحكم",
+              onPress: () => {
+                Linking.openURL("https://trendify-umber.vercel.app/");
+              },
+            },
+            {
+              text: "إلغاء",
+              style: "cancel",
+            },
+          ],
+          { cancelable: true }
+        );
+        return;
+      }
+      else if (data.isBlocked) {
+        Alert.alert('تنبيه!!!', 'لا يمكنك تسجيل الدخول لأن حسابك محظور.');
+        return;
       }
 
       return data;
@@ -231,7 +231,7 @@ const usersSlice = createSlice({
         state.loading = false;
         state.users.push(action.payload);
         state.currentUser = action.payload;
-       
+
       })
       .addCase(UserRegister.rejected, (state, action) => {
         state.loading = false;

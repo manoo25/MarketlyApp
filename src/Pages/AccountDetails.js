@@ -7,7 +7,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from 'react-redux';
 import LabelInpts from "../Components/GlobalComponents/LabelInpts";
-import { updateUser } from "../Redux/Slices/users";
+import { updateCurrentUser, updateUser } from "../Redux/Slices/users";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PATHS } from '../routes/Paths';
 
@@ -116,7 +116,7 @@ function AccountDetails({ navigation }) {
                     onSubmit={async (values) => {
                         try {
                             // 1. Update في Supabase
-                            await dispatch(updateUser({ id: userId, updatedData: values }));
+                            // await dispatch(updateUser({ id: userId, updatedData: values }));
 
                             // 2. هات اليوزر القديم من AsyncStorage
                             const storedUser = await AsyncStorage.getItem('userData');
@@ -128,6 +128,9 @@ function AccountDetails({ navigation }) {
                                     ...parsedUser,
                                     ...values,
                                 };
+
+                                await dispatch(updateCurrentUser(updatedUser))
+
 
                                 // 4. احفظها في AsyncStorage
                                 await AsyncStorage.setItem('userData', JSON.stringify(updatedUser));
@@ -175,7 +178,7 @@ function AccountDetails({ navigation }) {
                                     <TextInput
                                         placeholder="ادخل اسمك ثلاثى"
                                         placeholderTextColor="#7B7686"
-                                        style={[[styles.input, styles.h4], { color: isEditing ? colors.text : '#7B7686'  }]}
+                                        style={[[styles.input, styles.h4], { color: isEditing ? colors.text : '#7B7686' }]}
                                         editable={isEditing}
                                         onChangeText={handleChange("name")}
                                         onBlur={handleBlur("name")}
