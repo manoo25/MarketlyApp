@@ -18,6 +18,7 @@ import CompanyProductsScreen from '../Pages/companies/CompanyProductsScreen';
 import ProductDetails from '../Pages/ProductDetails';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CartList from '../Components/CartComponents/CartList';
+import { PATHS } from './Paths';
 
 // import Search from '../Pages/search';
 
@@ -53,7 +54,7 @@ export default function BottomTabs() {
   const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
-      initialRouteName="HomeTab"
+      initialRouteName={PATHS.Home}
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
@@ -62,7 +63,7 @@ export default function BottomTabs() {
 
           let icon;
 
-          if (route.name === "HomeTab") {
+          if (route.name === 'Home') {
             icon = <Home2 size={30} color={iconColor} variant={variant} />;
           } else if (route.name === 'OffersPage') {
             icon = <DiscountShape size={30} color={iconColor} variant={variant} />;
@@ -95,7 +96,7 @@ export default function BottomTabs() {
       <Tab.Screen name="Orders" component={OrdersStack} options={{ title: 'الطلبات' }} />
       <Tab.Screen name="Cart" component={Cart} options={{ title: 'عربة التسوق' }} />
       <Tab.Screen name="OffersPage" component={OffersPage} options={{ title: 'العروض' }} />
-      <Tab.Screen name="HomeTab" component={HomeStack} options={{ title: 'الرئيسية' }} />
+      <Tab.Screen name={PATHS.Home} component={HomeStack} options={{ title: 'الرئيسية' }} />
     </Tab.Navigator>
   );
 }
