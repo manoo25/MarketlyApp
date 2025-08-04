@@ -55,14 +55,14 @@ function MainCategories() {
   return (
     <View style={componentStyles.container}>
       <SectionHeader text="الأقسام" />
-      
+
       <FlatList
         data={displayCategories}
         renderItem={({ item }) => (
           <CategoryCard item={item} onPress={() => handleCategoryPress(item)} />
         )}
         keyExtractor={(item) => item.id}
-        numColumns={4} 
+        numColumns={4}
         columnWrapperStyle={componentStyles.columnWrapper}
         contentContainerStyle={componentStyles.listContentContainer}
         scrollEnabled={false}
@@ -75,6 +75,7 @@ function MainCategories() {
 
 const componentStyles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     paddingHorizontal: 16,
     marginBottom: 20,
   },
@@ -90,6 +91,7 @@ const componentStyles = StyleSheet.create({
     width: 77,
     height: 82,
     alignItems: 'center',
+    justifyContent: 'center',
     marginHorizontal: 8,
   },
   imageContainer: {
