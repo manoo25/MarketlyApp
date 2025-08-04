@@ -144,7 +144,7 @@ if (currentUser.email === currentUser.password) {
                   textAlign: "right",
                   marginTop: 15,
                   fontSize: 14,
-                  color: colors.primary,
+                  color: '#99BDFF',
                 },
               ]}
             >
@@ -216,7 +216,7 @@ if (currentUser.email === currentUser.password) {
                 style={[
                   styles.h3,
                   {
-                    color: colors.primary,
+                    color: '#99BDFF',
                     fontSize: 17,
                   },
                 ]}

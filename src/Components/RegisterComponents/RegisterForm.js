@@ -32,7 +32,7 @@ import { PATHS } from "../../routes/Paths";
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
-  const[IsLoading,SetIsLoading]=useState(false)
+  const [IsLoading, SetIsLoading] = useState(false)
 
   const { currentUser, error, loading } = useSelector((state) => state.Users);
   const [Show, SetShow] = useState(false);
@@ -50,24 +50,24 @@ export default function RegisterForm() {
     }
   }, [currentUser]);
 
-const handleRegister = async (userdata) => {
-  SetIsLoading(true);
-  const isLocalImage = userdata.image && userdata.image.startsWith("file://");
+  const handleRegister = async (userdata) => {
+    SetIsLoading(true);
+    const isLocalImage = userdata.image && userdata.image.startsWith("file://");
 
-  let uploadedUrl = null;
-  if (isLocalImage) {
-    const compressedUri = await compressImage(userdata.image); // ⬅️ ضغط الصورة
-    uploadedUrl = await uploadUserImage(compressedUri);         // ⬅️ رفع الصورة المضغوطة
-  }
+    let uploadedUrl = null;
+    if (isLocalImage) {
+      const compressedUri = await compressImage(userdata.image); // ⬅️ ضغط الصورة
+      uploadedUrl = await uploadUserImage(compressedUri);         // ⬅️ رفع الصورة المضغوطة
+    }
 
-  const updatedUser = {
-    ...userdata,
-    image: uploadedUrl || userdata.image,
-  }
-  SetIsLoading(false);
-  dispatch(UserRegister(updatedUser));
-  
-};
+    const updatedUser = {
+      ...userdata,
+      image: uploadedUrl || userdata.image,
+    }
+    SetIsLoading(false);
+    dispatch(UserRegister(updatedUser));
+
+  };
 
 
 
@@ -109,9 +109,9 @@ const handleRegister = async (userdata) => {
         governorate: "", // ✅ تم التعديل هنا
         city: "",
         location: "",
-        role:'user',
-        isBlocked:false,
-        image:''
+        role: 'user',
+        isBlocked: false,
+        image: ''
       }}
       validationSchema={validationSchema}
       onSubmit={handleRegister}
@@ -121,7 +121,7 @@ const handleRegister = async (userdata) => {
           <Text
             style={[
               styles.h2,
-              { marginTop: 35, color: colors.primary, paddingRight: 17 },
+              { marginTop: 35, color: '#99BDFF', paddingRight: 8 },
               Show && { display: "none" },
             ]}
           >
@@ -214,55 +214,55 @@ const handleRegister = async (userdata) => {
                     <Text style={styles.errorText}>{errors.password}</Text>
                   )}
 
-                  <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 25 }}>
+                  <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 60 }}>
                     <TouchableOpacity style={styles.Btn} onPress={() => SetShow(true)}>
                       <Text style={[styles.h3, { fontSize: 20, color: colors.white }]}>التالى</Text>
                     </TouchableOpacity>
                   </View>
                   <View
-                style={{
-                  flexDirection: "row-reverse",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: 20,
-                  gap: 4,
-                }}
-              >
-                <Text
-                  style={[
-                    styles.h3,
-                    {
-                      color: colors.gray,
-                      fontSize: 17,
-                    },
-                  ]}
-                >
-                  بالفعل لديك حساب ؟
-                </Text>
-                <TouchableOpacity onPress={() => replace(PATHS.Login)}>
-                  <Text
-                    style={[
-                      styles.h3,
-                      {
-                        color: colors.primary,
-                        fontSize: 17,
-                      },
-                    ]}
+                    style={{
+                      flexDirection: "row-reverse",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginTop: 20,
+                      gap: 4,
+                    }}
                   >
-                    {" "}
-                    تسجيل الدخول
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                    <Text
+                      style={[
+                        styles.h3,
+                        {
+                          color: colors.gray,
+                          fontSize: 17,
+                        },
+                      ]}
+                    >
+                      بالفعل لديك حساب ؟
+                    </Text>
+                    <TouchableOpacity onPress={() => replace(PATHS.Login)}>
+                      <Text
+                        style={[
+                          styles.h3,
+                          {
+                            color: '#99BDFF',
+                            fontSize: 17,
+                          },
+                        ]}
+                      >
+                        {" "}
+                        تسجيل الدخول
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </ScrollView>
               </KeyboardAvoidingView>
             )}
 
             {Show && (
               <View>
-                <ImagePickerComponent source={values.image} 
-                setSource={(val) => setFieldValue("image", val)} />
-                <Text style={[styles.h3, { fontSize: 16, color: colors.primary, textAlign: "center" }]}>
+                <ImagePickerComponent source={values.image}
+                  setSource={(val) => setFieldValue("image", val)} />
+                <Text style={[styles.h3, { fontSize: 16, color: '#99BDFF', textAlign: "center" }]}>
                   اختر صورة
                 </Text>
 
@@ -319,19 +319,19 @@ const handleRegister = async (userdata) => {
                       <Text style={styles.errorText}>{errors.location}</Text>
                     )}
 
-                      {error && (
-                                <Text style={[styles.errorText, { textAlign: 'center' }]}>
-                                  {error}
-                                </Text>
-                              )}
+                    {error && (
+                      <Text style={[styles.errorText, { textAlign: 'center' }]}>
+                        {error}
+                      </Text>
+                    )}
 
-                    <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
+                    <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 60 }}>
                       <TouchableOpacity
                         style={[styles.Btn, loading && { opacity: 0.7 }]}
                         onPress={handleSubmit}
                         disabled={loading}
                       >
-                        {loading||IsLoading && <LoadingSpinner />}
+                        {loading || IsLoading && <LoadingSpinner />}
                         <Text
                           style={[
                             styles.h3,
@@ -351,7 +351,7 @@ const handleRegister = async (userdata) => {
                         <Text
                           style={[
                             styles.h3,
-                            { textAlign: "right", fontSize: 20, color: colors.primary },
+                            { textAlign: "right", fontSize: 20, color: '#99BDFF' },
                           ]}
                         >
                           السابق

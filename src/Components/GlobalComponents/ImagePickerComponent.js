@@ -58,7 +58,7 @@ const ImagePickerComponent = ({ source, setSource }) => {
         </View>
       ) : (
         <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
-          <Ionicons name="person" size={40} color={colors.primary} />
+          <Ionicons name="person" size={40} color='#99BDFF' />
         </TouchableOpacity>
       )}
     </View>

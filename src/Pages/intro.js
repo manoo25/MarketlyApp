@@ -7,7 +7,7 @@ import {
   Easing,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Logo from "../../assets/imgs/Logo.png";
+// import Logo from "../../assets/imgs/Logo.png";
 import { useNavigation } from "@react-navigation/native";
 import { PATHS } from "../routes/Paths";
 import { UserData } from '../Redux/Slices/GetUserData';
@@ -75,7 +75,7 @@ return;
       colors={["#ab9fd5", "#b2cbdf"]}
       style={styles.introContainer}
     >
-      <Image source={Logo} style={styles.logo} resizeMode="contain" />
+      <Image source={require("../../assets/imgs/logoo.png")} style={styles.logo} resizeMode="contain" />
 
       <View style={styles.dotsContainer}>
         <Animated.View
@@ -99,8 +99,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: 250,
+    height: 270,
     marginBottom: 100,
   },
   dotsContainer: {

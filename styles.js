@@ -29,17 +29,17 @@ export const colors = {
 
 export const styles = StyleSheet.create({
   container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
-    },
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
   dividerLine: {
     height: 1,
     width: "100%",
     backgroundColor: "#aeaeae4b",
     marginVertical: 15,
   }
-  ,h1: {
+  , h1: {
     fontFamily: "Tajawal-Bold",
     fontSize: 32,
     color: colors.text,
@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
   },
   h3: {
     fontFamily: "Tajawal-Medium",
-    fontWeight:500,
+    fontWeight: 500,
     fontSize: 26,
     color: colors.text,
   },
@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
   titleNavegator: {
     fontFamily: "Tajawal-Medium",
     fontSize: 11,
-    marginTop:4
+    marginTop: 4
   },
   h5: {
     fontFamily: "Tajawal-Light",
@@ -82,51 +82,51 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.gray,
     lineHeight: 22,
-     textAlign: 'right'
+    textAlign: 'right'
   },
 
   introContainer: {
     flex: 1,
-    justifyContent:'center',
-    alignItems:"center",
+    justifyContent: 'center',
+    alignItems: "center",
   },
-paddingView: {
-  paddingTop: 25,
-  backgroundColor:'#FFFFFF',
-  flex: 1,
-  paddingHorizontal: 15,
-  alignItems: 'flex-end',
-},
-LoginLogo: {
- width: 133,
-height: 67.23076629638672,
-}
-,
+  paddingView: {
+    paddingTop: 25,
+    backgroundColor: '#FFFFFF',
+    flex: 1,
+    paddingHorizontal: 15,
+    alignItems: 'flex-end',
+  },
+  LoginLogo: {
+    width: 200,
+    height: 200,
+  }
+  ,
   container: {
     paddingVertical: 15,
-    width:'100%',
-     textAlign: 'right'
+    width: '100%',
+    textAlign: 'right'
   },
-inputWrapper: {
-  flexDirection: 'row-reverse',
-  alignItems: 'center',
-  backgroundColor: '#FAFAFA',
-  borderWidth: 1,                   
-  borderColor: '#EFECF3',           
-  paddingHorizontal: 10,
-  marginTop:15,
-  height:52,
-borderRadius:15,
+  inputWrapper: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#EFECF3',
+    paddingHorizontal: 10,
+    marginTop: 15,
+    height: 52,
+    borderRadius: 15,
 
 
-}
-,
+  }
+  ,
   input: {
     flex: 1,
     paddingHorizontal: 0,
     textAlign: 'right',
-    marginTop:5,
-    
+    marginTop: 5,
+
   },
   icon: {
     marginLeft: 10,
@@ -135,144 +135,144 @@ borderRadius:15,
     color: 'red',
     fontSize: 13,
     textAlign: 'right',
-    marginTop:4
+    marginTop: 4
   },
-  Btn:{
-    flex:1,
-    backgroundColor:colors.BtnsColor,
-    flexDirection:'row',
-    alignItems:'center',
-    gap:10,
-    justifyContent:'center',
-    paddingHorizontal:12,
-    paddingVertical:16,
-    borderRadius:12,
-  
+  Btn: {
+    flex: 1,
+    backgroundColor: colors.BtnsColor,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 16,
+    borderRadius: 12,
+
   },
   picker: {
     height: 150,
     color: "#000",
-    backgroundColor:'lightgray',
-    zIndex:2000,
-    top:0
+    backgroundColor: 'lightgray',
+    zIndex: 2000,
+    top: 0
   },
-   priceContainer: {
-        flexDirection: 'row-reverse',
-        alignItems: 'center',  
-        gap:5
-    },
-     headerContent: {
+  priceContainer: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 5
+  },
+  headerContent: {
     width: "100%",
     alignItems: "flex-end",
   },
   headerRow: {
     flexDirection: "row-reverse",
     alignItems: "center",
- position: 'relative',
+    position: 'relative',
   },
   headerTitle: {
     textAlign: "right",
     marginRight: 8,
-  marginTop:10
+    marginTop: 10
   },
-   header: {
+  header: {
     alignItems: "center",
     marginTop: 60,
     marginBottom: 16,
     paddingHorizontal: 16,
   },
-    quantityContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#F7F9FB',
-        borderRadius: 5,
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        minWidth: 90,
-        justifyContent: 'space-between',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-        elevation: 2,
-        marginLeft: 10,
-    },
-    quantityButton: {
-        borderRadius: 8,
-        width: 25,
-        height: 25,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 2,
-    },
-    quantityText: {
-        fontSize: 16,
-        color: '#333',
-        textAlign: 'center',
-        minWidth: 24,
-    },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F7F9FB',
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    minWidth: 90,
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    marginLeft: 10,
+  },
+  quantityButton: {
+    borderRadius: 8,
+    width: 25,
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 2,
+  },
+  quantityText: {
+    fontSize: 16,
+    color: '#333',
+    textAlign: 'center',
+    minWidth: 24,
+  },
 });
 
 export const componentStyles = StyleSheet.create({
-  
-    cardContainer: {
-        height: 188,
-        width: 165,
-        marginTop: 12,
-       paddingRight:15,
+
+  cardContainer: {
+    height: 188,
+    width: 165,
+    marginTop: 12,
+    paddingRight: 15,
     //    backgroundColor:'green'
-       
-    },
-      h2: {
+
+  },
+  h2: {
     fontFamily: "Tajawal-Bold",
     fontSize: 28,
     color: colors.text,
   },
-      h3: {
+  h3: {
     fontFamily: "Tajawal-Medium",
-    fontWeight:500,
+    fontWeight: 500,
     fontSize: 26,
     color: colors.text,
   },
-    imageContainer: {
-        height: 130,
-        width: '100%',
-        borderRadius: 20,
-        backgroundColor: '#EBF2FF',
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 20,
-    },
-    addButton: {
-        position: 'absolute',
-        left: 10,
-        bottom: 10,
-        backgroundColor: '#EBF2FF',
-        borderRadius: 25,
-        width: 35,
-        height: 35,
-        alignItems: 'center',
-        justifyContent: 'center',
-        elevation: 5,
-    },
-    infoContainer: {
-    
-      paddingRight:10,
-    },
-    titleText: {
-        textAlign: 'right',
-       fontSize:13,
-        marginTop: 8,
-       color:'#424047'
-    },
-    priceText: {
-        textAlign: 'right',
-         fontSize:13,
-        marginTop: 8,
-        color:'#424047'
-    },
+  imageContainer: {
+    height: 130,
+    width: '100%',
+    borderRadius: 20,
+    backgroundColor: '#EBF2FF',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 20,
+  },
+  addButton: {
+    position: 'absolute',
+    left: 10,
+    bottom: 10,
+    backgroundColor: '#EBF2FF',
+    borderRadius: 25,
+    width: 35,
+    height: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+  },
+  infoContainer: {
+
+    paddingRight: 10,
+  },
+  titleText: {
+    textAlign: 'right',
+    fontSize: 13,
+    marginTop: 8,
+    color: '#424047'
+  },
+  priceText: {
+    textAlign: 'right',
+    fontSize: 13,
+    marginTop: 8,
+    color: '#424047'
+  },
 });
 
 export const Sortstyles = StyleSheet.create({
