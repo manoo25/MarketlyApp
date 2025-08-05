@@ -89,7 +89,7 @@ if (currentUser.email === currentUser.password) {
         touched,
         handleSubmit,
       }) => (
-        <View style={styles.container}>
+        <View style={[styles.container]}>
           {/* Email Input */}
           <View style={styles.inputWrapper}>
             <Fontisto name="email" size={24} color="black" style={styles.icon} />

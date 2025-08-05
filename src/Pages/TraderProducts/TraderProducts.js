@@ -16,6 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchTraderProducts } from "../../Redux/Slices/productsSlice";
 import { Building } from "iconsax-react-nativejs";
 import CartIcon from "../../Components/GlobalComponents/CartIcon";
+import { PATHS } from "../../routes/Paths";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
