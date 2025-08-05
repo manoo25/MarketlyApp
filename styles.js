@@ -98,8 +98,8 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   LoginLogo: {
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 180,
   }
   ,
   container: {

@@ -75,7 +75,7 @@ return;
       colors={["#ab9fd5", "#b2cbdf"]}
       style={styles.introContainer}
     >
-      <Image source={require("../../assets/imgs/logoo.png")} style={styles.logo} resizeMode="contain" />
+      <Image source={require("../../assets/imgs/logo 3.png")} style={styles.logo} resizeMode="contain" />
 
       <View style={styles.dotsContainer}>
         <Animated.View
@@ -99,8 +99,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 250,
-    height: 270,
+    width: 200,
+    height: 200,
     marginBottom: 100,
   },
   dotsContainer: {

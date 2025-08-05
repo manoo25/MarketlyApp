@@ -446,9 +446,10 @@ const DelegatorOrderDetails = () => {
               }}
             >
               <TouchableOpacity
+               disabled={calculateTotal() === 0}
                 onPress={CompleteOrder}
                 style={{
-                  backgroundColor: colors.BtnsColor,
+                  backgroundColor:calculateTotal()==0?'gray': colors.BtnsColor,
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
