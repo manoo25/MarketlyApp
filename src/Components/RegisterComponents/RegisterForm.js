@@ -121,7 +121,7 @@ export default function RegisterForm() {
           <Text
             style={[
               styles.h2,
-              { marginTop: 35, color: '#99BDFF', paddingRight: 8 },
+              { marginTop: Platform.OS === "ios" ? 45 : 35, color: '#99BDFF', paddingRight: 8 },
               Show && { display: "none" },
             ]}
           >
@@ -259,7 +259,7 @@ export default function RegisterForm() {
             )}
 
             {Show && (
-              <View>
+              <View style={{ paddingTop: Platform.OS === "ios" ? 45 : 35 }}>
                 <ImagePickerComponent source={values.image}
                   setSource={(val) => setFieldValue("image", val)} />
                 <Text style={[styles.h3, { fontSize: 16, color: '#99BDFF', textAlign: "center" }]}>
