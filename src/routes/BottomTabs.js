@@ -83,7 +83,7 @@ export default function BottomTabs() {
         tabBarInactiveTintColor: "#292D32",
         tabBarLabelStyle: styles.titleNavegator,
         tabBarStyle: {
-          height: Platform.OS === "android" ? 75 + insets.bottom : 70,
+          height: Platform.OS === "android" ? 55 + insets.bottom : 70,
           alignItems: "center",
           backgroundColor: "#FFFFFF",
           justifyContent: "space-between",

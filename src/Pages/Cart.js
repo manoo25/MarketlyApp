@@ -1,4 +1,4 @@
-import  { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { StyleSheet, Text, TouchableOpacity, ScrollView, View, TextInput, Alert } from "react-native";
 import { useState } from 'react';
 import CartList from '../Components/CartComponents/CartList';
@@ -42,10 +42,10 @@ function Cart() {
     const [CartItemsArr, setCartItemsArr] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [AlertMessage, setAlertMessage] = useState('');
-const [showToast, setShowToast] = useState(false);
-const handleShowToast = () => {
-    setShowToast(true);
-  };
+    const [showToast, setShowToast] = useState(false);
+    const handleShowToast = () => {
+        setShowToast(true);
+    };
     const { navigate } = useNavigation();
     useEffect(() => {
         dispatch(fetchCartItems());
@@ -74,7 +74,7 @@ const handleShowToast = () => {
         // هنا يمكنك فعل أي شيء بالملاحظات (مثل إرسالها إلى API، تخزينها في Redux، إلخ)
         setSavedNotes(notes); // نحفظ الملاحظات في حالة مؤقتة للعرض هنا
         setIsModalVisible(false); // إخفاء الـ Modal
-      setAlertMessage('تم حفظ ملاحظتك بنجاح');
+        setAlertMessage('تم حفظ ملاحظتك بنجاح');
         handleShowToast();
     };
 
@@ -103,18 +103,18 @@ const handleShowToast = () => {
         };
 
         try {
-             setAlertMessage(' تم إرسال الطلب بنجاح');
-          handleShowToast();
+            setAlertMessage(' تم إرسال الطلب بنجاح');
+            handleShowToast();
             const resultOrder = await dispatch(addOrder(order));
             unwrapResult(resultOrder);
             const resultItems = await dispatch(addOrderItems(orderItems));
             unwrapResult(resultItems);
             const resultDelete = await dispatch(deleteCartItemsByUserId(UserId));
             unwrapResult(resultDelete);
-             setCartItemsArr([])
+            setCartItemsArr([])
             navigate(PATHS.Orders);
-           
-           
+
+
         } catch (error) {
             console.error(' Failed to complete order:', error);
             Alert.alert(' حدث خطأ أثناء إرسال الطلب');
@@ -131,13 +131,13 @@ const handleShowToast = () => {
 
     return (
         <View style={style.container}>
-          
-             <ToastMessage
-        visible={showToast}
-        message={AlertMessage}
-        onHide={() => setShowToast(false)}
-      />
-           
+
+            <ToastMessage
+                visible={showToast}
+                message={AlertMessage}
+                onHide={() => setShowToast(false)}
+            />
+
             <View style={{ alignItems: 'center', marginTop: 60, marginBottom: 24 }}>
                 <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row-reverse' }}>
                     <HeaderPages
@@ -201,83 +201,85 @@ const handleShowToast = () => {
                                 </View>
                             </View>
                         </ScrollView>
-                        <View style={styles.dividerLine} />
-                        <View style={{ alignSelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row-reverse' }}>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <TouchableOpacity style={{
-                                    backgroundColor: '#EBF2FF',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: 175,
-                                    height: 60,
-                                    borderRadius: 16
-                                }}
-
-                                    onPress={() => navigate(PATHS.TraderProducts
-                                        , { TraderID: CartItemsArr[0].product.trader_id })
-                                    }
-                                >
-                                    <Text
-                                        style={[
-                                            styles.h3,
-                                            {
-                                                textAlign: "right",
-                                                fontSize: 20,
-                                                color: colors.BtnsColor,
-
-                                            },
-                                        ]}
-                                    >
-                                        اضافة المزيد
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <TouchableOpacity
-                                    onPress={CompleteOrder}
+                        <View style={{ height: 60, marginVertical: 8 }} >
+                            <View style={styles.dividerLine} />
+                            <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row-reverse' }}>
+                                <View
                                     style={{
-                                        backgroundColor: colors.BtnsColor,
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <TouchableOpacity style={{
+                                        backgroundColor: '#EBF2FF',
                                         flexDirection: 'row',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         width: 175,
                                         height: 60,
                                         borderRadius: 16
-                                    }} >
-                                    <Text
-                                        style={[
-                                            styles.h3,
-                                            {
-                                                textAlign: "right",
-                                                fontSize: 20,
-                                                color: colors.white,
+                                    }}
 
-                                            },
-                                        ]}
+                                        onPress={() => navigate(PATHS.TraderProducts
+                                            , { TraderID: CartItemsArr[0].product.trader_id })
+                                        }
                                     >
-                                        ارسال الطلب
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                                        <Text
+                                            style={[
+                                                styles.h3,
+                                                {
+                                                    textAlign: "right",
+                                                    fontSize: 20,
+                                                    color: colors.BtnsColor,
 
+                                                },
+                                            ]}
+                                        >
+                                            اضافة المزيد
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={CompleteOrder}
+                                        style={{
+                                            backgroundColor: colors.BtnsColor,
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: 175,
+                                            height: 60,
+                                            borderRadius: 16
+                                        }} >
+                                        <Text
+                                            style={[
+                                                styles.h3,
+                                                {
+                                                    textAlign: "right",
+                                                    fontSize: 20,
+                                                    color: colors.white,
+
+                                                },
+                                            ]}
+                                        >
+                                            ارسال الطلب
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                            </View>
                         </View>
                     </>
                 )}
             </View>
-            
+
 
             <Modal
                 isVisible={isModalVisible}

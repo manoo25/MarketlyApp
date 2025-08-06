@@ -7,9 +7,11 @@ import LoginComponents from '../Components/LoginComponents/LoginComponents';
 export default function LoginPage() {
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.white,paddingVertical:45 }}>
-      <View style={styles.paddingView}>
-       
+    <ScrollView style={{ flex: 1, backgroundColor: colors.white, paddingVertical: 45 }}>
+      <View
+        style={[styles.paddingView, { paddingTop: 90 }]}
+      >
+
 
         <View
           style={{
