@@ -63,8 +63,8 @@ export const updateOrderItem = createAsyncThunk(
   "order_items/updateOrderItem",
   async ({ id, updates }, { rejectWithValue }) => {
     try {
-      console.log('Data to Update:', updates);
-      console.log('Item ID:', id);
+      // console.log('Data to Update:', updates);
+      // console.log('Item ID:', id);
       
       const { data, error } = await supabase
         .from("order_items")
@@ -77,7 +77,7 @@ export const updateOrderItem = createAsyncThunk(
         .single();
 
       if (error) throw error;
-      console.log('Updated Data:', data);
+      // console.log('Updated Data:', data);
       
       return data;
     } catch (error) {
