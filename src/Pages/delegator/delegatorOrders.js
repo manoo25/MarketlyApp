@@ -18,6 +18,9 @@ import { styles } from "../../../styles";
 import { DelegatesPaths } from "../../routes/delegatesRoute/delegatesPaths";
 import SortOrders from "../../Components/Categories/sortOrders";
 import { ReceiptText } from 'iconsax-react-nativejs';
+import SkeletonBox from "../../Components/GlobalComponents/SkeletonBox.js";
+
+
 
 
 const DelegatorOrders = () => {
@@ -28,8 +31,8 @@ const DelegatorOrders = () => {
   const [SortedOrders, setSortedOrders] = useState([]);
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.Orders);
   const orders = useSelector((state) => state.Orders.delegatesOrders);
+  const loading = useSelector((state) => state.Orders.loading);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -109,7 +112,22 @@ const DelegatorOrders = () => {
         onSave={handleSaveNotes}
         style={style}
       />
-      {SortedOrders?.length > 0 ? (
+      {SortedOrders?.length > 0 && loading === true ? (
+        <View style={style.skContainer}>
+          <FlatList
+            data={[...Array(3)]}
+            keyExtractor={(_, index) => index.toString()}
+            vertical
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <View key={index} style={style.mainProductCard}>
+                <SkeletonBox style={style.mainImage} />
+              </View>
+            )}
+          />
+        </View>
+      ) : SortedOrders?.length > 0 ? (
+
         <FlatList
           data={SortedOrders}
           keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
@@ -236,13 +254,13 @@ const DelegatorOrders = () => {
         />
       ) : (
         <View style={style.container}>
-        <View style={{ flex: 1 }}>
-          <View style={style.emptyContainer}>
-            <ReceiptText size="200" color="#424047" />
-            <Text style={[styles.h3, { marginTop: 12 }]}>لا يوجد طلبات</Text>
-            <Text style={[styles.paragraph, { marginTop: 8 }]}>يبدو انه لا يوجد أي طلبات بعد</Text>
+          <View style={{ flex: 1 }}>
+            <View style={style.emptyContainer}>
+              <ReceiptText size="200" color="#424047" />
+              <Text style={[styles.h3, { marginTop: 12 }]}>لا يوجد طلبات</Text>
+              <Text style={[styles.paragraph, { marginTop: 8 }]}>يبدو انه لا يوجد أي طلبات بعد</Text>
+            </View>
           </View>
-        </View>
         </View>
       )}
     </View>
@@ -258,11 +276,11 @@ const style = StyleSheet.create({
     backgroundColor: "#fff",
   },
   emptyContainer: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop: 93,
-    },
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 93,
+  },
   section: {
     marginBottom: 20,
     padding: 16,
@@ -357,6 +375,32 @@ const style = StyleSheet.create({
     textAlign: "center",
     textDecorationLine: "underline",
     marginTop: 4,
+  },
+  skContainer: {
+    paddingHorizontal: 12,
+    backgroundColor: '#fff',
+
+  },
+
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+
+  mainProductCard: {
+    width: '100%',
+    borderRadius: 12,
+    backgroundColor: '#F7F7F7',
+    padding: 12,
+    marginBottom: 24,
+  },
+
+  mainImage: {
+    width: '100%',
+    height: 250,
+    borderRadius: 10,
+    marginBottom: 16,
   },
 
 });

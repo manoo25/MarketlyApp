@@ -6,15 +6,14 @@ import {
   Image,
   StyleSheet
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import CustomAppBar from "../../Components/Categories/CustomAppBar";
 import useFetchCompanies from "../../Components/Categories/useFetchCompanies";
 import ListProducts from "../../Components/Categories/ListProducts";
 import SortFilterModal from "../../Components/Categories/SortFilterModal";
 import { Building } from "iconsax-react-nativejs";
-import CartIcon from "../../Components/GlobalComponents/CartIcon";
-import { PATHS } from "../../routes/Paths";
+
+import BottomCartIcon from "../../Components/GlobalComponents/bottomCartIcon";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
@@ -102,13 +101,7 @@ const CategoryProductsPage = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-       {cartItems.length > 0 && (
-                            <View style={{ position: "absolute", top: 28, left: 20, zIndex: 999 }}>
-                              <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
-                                <CartIcon />
-                              </TouchableOpacity>
-                            </View>
-                          )}
+       <BottomCartIcon />
     <View style={{marginTop: 10}}>
         <CustomAppBar
         title={category.name}

@@ -5,14 +5,11 @@ import { useSelector } from "react-redux";
 import CustomAppBar from "../../Components/Categories/CustomAppBar";
 import ListProducts from "../../Components/Categories/ListProducts";
 import SortFilterModal from "../../Components/Categories/SortFilterModal";
-import { PATHS } from "../../routes/Paths";
-import CartIcon from "../../Components/GlobalComponents/CartIcon";
-import { TouchableOpacity } from "react-native";
+import BottomCartIcon from "../../Components/GlobalComponents/bottomCartIcon";
 
 const CompanyProductsScreen = ({ route, navigation }) => {
   const { company } = route.params;
-  const allProducts = useSelector((state) => state.products.products);
-   const { cartItems } = useSelector((state) => state.CartItems);
+  const allProducts = useSelector((state) => state.products.products); 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
   const [appliedSortOption, setAppliedSortOption] = useState("highToLow");
@@ -53,13 +50,7 @@ const CompanyProductsScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-       {cartItems.length > 0 && (
-                                  <View style={{ position: "absolute", top: 28, left: 20, zIndex: 999 }}>
-                                    <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
-                                      <CartIcon />
-                                    </TouchableOpacity>
-                                  </View>
-                                )}
+       <BottomCartIcon />
           <View style={{marginTop: 10}}>
       <CustomAppBar
         title={company.name}

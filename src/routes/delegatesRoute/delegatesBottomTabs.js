@@ -1,6 +1,6 @@
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {  ProfileCircle, Receipt1, Shop } from 'iconsax-react-nativejs';
+import { ProfileCircle, Receipt1, Shop } from 'iconsax-react-nativejs';
 import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import UserOptions from '../../Pages/UserOptions';
@@ -16,8 +16,8 @@ const Tab = createBottomTabNavigator();
 
 
 export default function DelegatesBottomTabs() {
-    const insets = useSafeAreaInsets();
-  
+  const insets = useSafeAreaInsets();
+
   return (
     <Tab.Navigator
       initialRouteName="DelegatorProducts"
@@ -31,10 +31,10 @@ export default function DelegatesBottomTabs() {
 
           if (route.name === "DelegatorProducts") {
             icon = <Shop size={30} color={iconColor} variant={variant} />;
-          } 
+          }
           else if (route.name === 'DelegatorOrders') {
-                      icon = <Receipt1 size={30} color={iconColor} variant={variant} />;
-                    }
+            icon = <Receipt1 size={30} color={iconColor} variant={variant} />;
+          }
           else if (route.name === "Profile") {
             icon = (
               <ProfileCircle size={30} color={iconColor} variant={variant} />
@@ -52,7 +52,7 @@ export default function DelegatesBottomTabs() {
           backgroundColor: "#FFFFFF",
           justifyContent: "space-between",
           paddingBottom: insets.bottom > 0 ? insets.bottom : 10,
-          paddingTop: 10,
+          paddingTop: 5,
         },
       })}
     >

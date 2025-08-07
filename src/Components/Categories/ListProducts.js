@@ -11,7 +11,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors, componentStyles, styles } from "../../../styles";
 import DiscountBadge from "../../Components/OffersComponents/DiscountBadge";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addOrUpdateCartItem } from "../../Redux/Slices/CartItems";
 import { PATHS } from "../../routes/Paths";
 
@@ -97,6 +97,7 @@ const ProductCard = ({ item,AddToCart,navigate }) => {
 };
 
 function ListProducts({ products }) {
+  const { cartItems } = useSelector((state) => state.CartItems);
  const {navigate} = useNavigation();
  const dispatch=useDispatch();
     function AddToCart(ProId,traderID) {
@@ -105,7 +106,7 @@ function ListProducts({ products }) {
     }
   if (!products || products.length === 0) {
     return (
-      <View style={{ padding: 20 }}>
+      <View style={{ padding: 20}}>
         <Text
           style={{
             textAlign: "center",
@@ -120,7 +121,7 @@ function ListProducts({ products }) {
   }
 
   return (
-    <View style={{ flex: 1,  marginTop: 16 }}>
+    <View style={{ flex: 1,  marginTop: 16,marginBottom:cartItems.length>0?60:0 }}>
    <FlatList
   data={products}
   renderItem={({ item }) => <ProductCard AddToCart={AddToCart} item={item} navigate={navigate} />}
