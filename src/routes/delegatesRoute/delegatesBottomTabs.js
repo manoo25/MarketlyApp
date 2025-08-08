@@ -52,7 +52,7 @@ export default function DelegatesBottomTabs() {
           backgroundColor: "#FFFFFF",
           justifyContent: "space-between",
           paddingBottom: insets.bottom > 0 ? insets.bottom : 10,
-          paddingTop: 5,
+          paddingTop: 10,
         },
       })}
     >

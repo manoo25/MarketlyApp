@@ -21,6 +21,8 @@ import Empty from '../Components/GlobalComponents/Empty';
 import { Octicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import ToastMessage from '../Components/GlobalComponents/ToastMessage';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 
 
@@ -43,6 +45,8 @@ function Cart() {
     const [inputValue, setInputValue] = useState('');
     const [AlertMessage, setAlertMessage] = useState('');
     const [showToast, setShowToast] = useState(false);
+    const insets = useSafeAreaInsets();
+
     const handleShowToast = () => {
         setShowToast(true);
     };
@@ -201,7 +205,7 @@ function Cart() {
                                 </View>
                             </View>
                         </ScrollView>
-                        <View style={{ height: 60, marginVertical: 8 }} >
+                        <View style={{ height: 60 + insets.bottom, marginVertical: 8 }} >
                             <View style={styles.dividerLine} />
                             <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row-reverse' }}>
                                 <View
