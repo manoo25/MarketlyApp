@@ -115,7 +115,12 @@ const OrderDetails = () => {
               </View>
               <View style={style.orderInfo}>
                 <Text style={[styles.h2, style.orderNumber]}>
-                  طلب رقم: {OrderData.id}
+                  طلب رقم:
+                  <Text style={[styles.h3, style.orderNumber]}> {OrderData.id}</Text>
+                </Text>
+                <Text style={[styles.h2, style.orderNumber]}>
+                  ملاحظات العميل:
+                  <Text style={[styles.h3, style.orderNumber]}> {OrderData.note || 'لا توجد ملاحظات'}</Text>
                 </Text>
                 <Text style={[styles.h2, style.orderDate]}>
                   {new Date(OrderData.created_at).toLocaleDateString("ar-EG")} -{" "}

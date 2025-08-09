@@ -138,18 +138,18 @@ function OptionsList() {
                 setShowToast(true);
 
             } else {
-                
+
                 Alert.alert('خطأ', 'لم يتم العثور على المستخدم');
             }
         } else if (modalType === 'rating') {
             if (userId) {
-              
+
                 dispatch(createRating({ userId, feed_back: inputValue, rate: rating }));
-                 setToastMessage('تم إرسال تقييمك وشكرا لك ')
+                setToastMessage('تم إرسال تقييمك وشكرا لك ')
                 setShowToast(true);
-              
+
             } else {
-               
+
                 Alert.alert('خطأ', 'لم يتم العثور على المستخدم');
             }
         }
@@ -158,7 +158,7 @@ function OptionsList() {
     };
 
     const handleRatingCompleted = (rating) => {
-       
+
         setRating(rating);
     };
 
@@ -173,7 +173,7 @@ function OptionsList() {
         }
     }, [isCompModalVisible]);
 
-   
+
     const handleLogout = async () => {
         await AsyncStorage.removeItem("userData");
         dispatch(logoutUser());
@@ -201,7 +201,7 @@ function OptionsList() {
         { id: "2", title: "تغيير كلمة السر" },
         { id: "3", title: "ارسال شكوى" },
         { id: "4", title: "تقييم الخدمة" },
-        { id: "5", title: "الشات مع الدعم" },
+        { id: "5", title: "التواصل مع الدعم" },
         { id: "6", title: "اللغة", value: "العربية" },
     ];
 
@@ -228,114 +228,114 @@ function OptionsList() {
 
     return (
         <>
-         <View >
- <ToastMessage
-                visible={showToast}
-                message={Message}
-                onHide={() => setShowToast(false)}
-            />
-         </View>
-         <View style={style.container}>
-            
-            <FlatList
-                data={settings}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <RenderItem item={item} onPress={() => handleOptionPress(item)} />
-                )}
-                ItemSeparatorComponent={() => <View style={style.separator} />}
-            />
-            <View style={style.separator} />
-            <TouchableOpacity
-                style={[style.logout, { alignSelf: "flex-end" }]}
-                onPress={() =>
-                    Alert.alert("تأكيد", "هل تريد تسجيل الخروج؟", [
-                        { text: "إلغاء", style: "cancel" },
-                        { text: "تأكيد", onPress: handleLogout },
-                    ])
-                }
-            >
-                <LogoutCurve size="20" color="#ee3030" />
-                <Text style={[styles.h3, style.logoutText]}>تسجيل خروج</Text>
-            </TouchableOpacity>
+            <View >
+                <ToastMessage
+                    visible={showToast}
+                    message={Message}
+                    onHide={() => setShowToast(false)}
+                />
+            </View>
+            <View style={style.container}>
 
-            {/* --- استعادة مودال الشكاوى والتقييم --- */}
-            <Modal
-                isVisible={isCompModalVisible}
-                onBackdropPress={() => setIsCompModalVisible(false)}
-                onBackButtonPress={() => setIsCompModalVisible(false)}
-                style={style.modalBottom}
-                swipeDirection="down"
-                onSwipeComplete={() => setIsCompModalVisible(false)}
-                backdropOpacity={0.4}
-                animationIn="slideInUp"
-                animationOut="slideOutDown"
-                avoidKeyboard
-            >
-                <View style={style.modalView}>
-                    <Octicons name="dash" size={60} color="#dbdbdb" style={styles.icon} />
-                    <View style={{ flexDirection: 'row-reverse', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Text style={style.modalTitle}>
-                            {modalType === 'complaint' ? 'أضف شكوتك' : 'قيّم الخدمة'}
-                        </Text>
-                        <TouchableOpacity
-                            style={{ marginRight: -16, marginTop: -16 }}
-                            onPress={() => {
-                                setIsCompModalVisible(false);
-                                setInputValue('');
-                            }}>
-                            <CloseCircle size="32" color="#424047" />
-                        </TouchableOpacity>
-                    </View>
+                <FlatList
+                    data={settings}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <RenderItem item={item} onPress={() => handleOptionPress(item)} />
+                    )}
+                    ItemSeparatorComponent={() => <View style={style.separator} />}
+                />
+                <View style={style.separator} />
+                <TouchableOpacity
+                    style={[style.logout, { alignSelf: "flex-end" }]}
+                    onPress={() =>
+                        Alert.alert("تأكيد", "هل تريد تسجيل الخروج؟", [
+                            { text: "إلغاء", style: "cancel" },
+                            { text: "تأكيد", onPress: handleLogout },
+                        ])
+                    }
+                >
+                    <LogoutCurve size="20" color="#ee3030" />
+                    <Text style={[styles.h3, style.logoutText]}>تسجيل خروج</Text>
+                </TouchableOpacity>
 
-                    {modalType === 'rating' ? (
-                        <View style={{ alignItems: 'center', marginBottom: 16 }}>
-                            <Text style={[styles.h4, { marginRight: 8 }]}>تقييم الخدمة</Text>
-                            <Rating
-                                showRating={false}
-                                onFinishRating={handleRatingCompleted}
-                                style={{ paddingVertical: 10 }}
-                            />
+                {/* --- استعادة مودال الشكاوى والتقييم --- */}
+                <Modal
+                    isVisible={isCompModalVisible}
+                    onBackdropPress={() => setIsCompModalVisible(false)}
+                    onBackButtonPress={() => setIsCompModalVisible(false)}
+                    style={style.modalBottom}
+                    swipeDirection="down"
+                    onSwipeComplete={() => setIsCompModalVisible(false)}
+                    backdropOpacity={0.4}
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    avoidKeyboard
+                >
+                    <View style={style.modalView}>
+                        <Octicons name="dash" size={60} color="#dbdbdb" style={styles.icon} />
+                        <View style={{ flexDirection: 'row-reverse', width: '90%', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Text style={style.modalTitle}>
+                                {modalType === 'complaint' ? 'أضف شكوتك' : 'قيّم الخدمة'}
+                            </Text>
+                            <TouchableOpacity
+                                style={{ marginRight: -16, marginTop: -16 }}
+                                onPress={() => {
+                                    setIsCompModalVisible(false);
+                                    setInputValue('');
+                                }}>
+                                <CloseCircle size="32" color="#424047" />
+                            </TouchableOpacity>
                         </View>
-                    ) : null}
 
-                    <TextInput
-                        ref={inputRef}
-                        style={style.textInput}
-                        onChangeText={setInputValue}
-                        value={inputValue}
-                        placeholder={modalType === 'complaint' ? 'اكتب شكوتك هنا...' : 'اكتب تقييمك أو رأيك هنا...'}
-                        multiline={true}
-                        numberOfLines={4}
-                    />
+                        {modalType === 'rating' ? (
+                            <View style={{ alignItems: 'center', marginBottom: 16 }}>
+                                <Text style={[styles.h4, { marginRight: 8 }]}>تقييم الخدمة</Text>
+                                <Rating
+                                    showRating={false}
+                                    onFinishRating={handleRatingCompleted}
+                                    style={{ paddingVertical: 10 }}
+                                />
+                            </View>
+                        ) : null}
 
-                    <View style={style.buttonContainer}>
-                        <TouchableOpacity
-                            style={[style.modalButton, style.buttonSave]}
-                            onPress={handleSave}>
-                            <Text style={style.buttonText}>حفظ</Text>
-                        </TouchableOpacity>
+                        <TextInput
+                            ref={inputRef}
+                            style={style.textInput}
+                            onChangeText={setInputValue}
+                            value={inputValue}
+                            placeholder={modalType === 'complaint' ? 'اكتب شكوتك هنا...' : 'اكتب تقييمك أو رأيك هنا...'}
+                            multiline={true}
+                            numberOfLines={4}
+                        />
+
+                        <View style={style.buttonContainer}>
+                            <TouchableOpacity
+                                style={[style.modalButton, style.buttonSave]}
+                                onPress={handleSave}>
+                                <Text style={style.buttonText}>حفظ</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
 
-            <ChatModal
-                visible={isChatVisible}
-                onClose={() => setIsChatVisible(false)}
-            />
-          
-           
-          
-            {/* <CustomAlert
+                <ChatModal
+                    visible={isChatVisible}
+                    onClose={() => setIsChatVisible(false)}
+                />
+
+
+
+                {/* <CustomAlert
                 visible={showAlert}
                 title=" تأكيد "
                 message="هل انت متأكد من الارسال"
                 onClose={() => setShowAlert(false)}
                 onConfirm={handleConfirm}
             /> */}
-        </View>
+            </View>
         </>
-       
+
     );
 }
 

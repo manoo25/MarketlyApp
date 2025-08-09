@@ -17,6 +17,7 @@ import { fetchTraderProducts } from "../../Redux/Slices/productsSlice";
 import { Building } from "iconsax-react-nativejs";
 import CartIcon from "../../Components/GlobalComponents/CartIcon";
 import { PATHS } from "../../routes/Paths";
+import BottomCartIcon from "../../Components/GlobalComponents/bottomCartIcon";
 
 
 const CompanyCard = ({ company, isSelected, onPress }) => (
@@ -55,16 +56,16 @@ const TraderProducts = ({ route, navigation }) => {
   const [selectedSortOption, setSelectedSortOption] = useState("highToLow");
   const [appliedSortOption, setAppliedSortOption] = useState("highToLow");
   const { companies } = useFetchCompanies();
- const { cartItems } = useSelector((state) => state.CartItems);
-const dispatch=useDispatch();
-    const allProducts=useSelector((state)=>state.products.traderProducts);
-   
-    useEffect(()=>{
-dispatch(fetchTraderProducts(TraderID));
-    },[TraderID]);
- 
- 
-    const handleSelectCompany = (id) => {
+  const { cartItems } = useSelector((state) => state.CartItems);
+  const dispatch = useDispatch();
+  const allProducts = useSelector((state) => state.products.traderProducts);
+
+  useEffect(() => {
+    dispatch(fetchTraderProducts(TraderID));
+  }, [TraderID]);
+
+
+  const handleSelectCompany = (id) => {
     setSelectedCompanyId(id);
   };
 
@@ -107,28 +108,24 @@ dispatch(fetchTraderProducts(TraderID));
 
   return (
     <View style={styles.container}>
-           {cartItems.length > 0 && (
-                      <View style={{ position: "absolute", top: 28, left: 20, zIndex: 999 }}>
-                        <TouchableOpacity onPress={() => navigation.navigate(PATHS.CartScreen)}>
-                          <CartIcon />
-                        </TouchableOpacity>
-                      </View>
-                    )}
-        <View style={{marginTop: 10}}>
-            <CustomAppBar
-            title={'منتجات التاجر'}
-            onBack={() => navigation.goBack()}
-            showSearch={true}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onSearchClose={() => setSearchQuery("")}
-          />
-        </View>
+      {cartItems.length > 0 && (
+        <BottomCartIcon />
+      )}
+      <View style={{ marginTop: 10 }}>
+        <CustomAppBar
+          title={'منتجات التاجر'}
+          onBack={() => navigation.goBack()}
+          showSearch={true}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onSearchClose={() => setSearchQuery("")}
+        />
+      </View>
 
       {/* ✅ الشركات */}
       {/* <View> */}
       <View style={{ marginTop: 10 }}>
-  
+
         <FlatList
           data={[...filteredCompanies.slice().reverse(), { id: "all" }]}
           horizontal

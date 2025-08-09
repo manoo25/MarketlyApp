@@ -101,7 +101,7 @@ export default function ChatModal({ visible, onClose }) {
     // دالة التنظيف: إلغاء الاشتراك عند إغلاق المودال
     return () => {
       supabase.removeChannel(channel);
-   
+
     };
   }, [visible, userId, userRole]); // ✅ يعتمد على 'visible' و 'userId'
 
@@ -135,16 +135,16 @@ export default function ChatModal({ visible, onClose }) {
 
   // التأثير الرابع: التمرير لأسفل عند وصول رسالة جديدة
   // التأثير الرابع: التمرير لأسفل عند وصول رسالة جديدة
-//   useEffect(() => {
-//     if (ready && flatListRef.current) {
-//       // ✅ إضافة تأخير بسيط لإعطاء الـ FlatList فرصة كاملة للرسم
-//       setTimeout(() => {
-//         flatListRef.current?.scrollToEnd({ animated: true });
-//       }, 100); // 100 ميلي ثانية كافية جدًا
-//     }
-//   }, [messages, ready]);
+  //   useEffect(() => {
+  //     if (ready && flatListRef.current) {
+  //       // ✅ إضافة تأخير بسيط لإعطاء الـ FlatList فرصة كاملة للرسم
+  //       setTimeout(() => {
+  //         flatListRef.current?.scrollToEnd({ animated: true });
+  //       }, 100); // 100 ميلي ثانية كافية جدًا
+  //     }
+  //   }, [messages, ready]);
 
-const handleSend = async () => {
+  const handleSend = async () => {
     if (newMessage.trim() === "" || !userId || !userRole) return;
     await dispatch(
       sendMessage({
@@ -156,13 +156,13 @@ const handleSend = async () => {
       })
     );
     dispatch(
-            fetchMessages({
-              myUserId: userId,
-              myRole: userRole,
-              otherUserId: SUPPORT_ADMIN_ID,
-              otherUserRole: SUPPORT_ADMIN_ROLE,
-            })
-          );
+      fetchMessages({
+        myUserId: userId,
+        myRole: userRole,
+        otherUserId: SUPPORT_ADMIN_ID,
+        otherUserRole: SUPPORT_ADMIN_ROLE,
+      })
+    );
     setNewMessage("");
   };
 
@@ -232,7 +232,7 @@ const handleSend = async () => {
       >
         <View style={chatStyle.modalView}>
           <View style={chatStyle.header}>
-            <Text style={chatStyle.modalTitle}>الدردشة مع الدعم</Text>
+            <Text style={chatStyle.modalTitle}>التواصل مع الدعم</Text>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={28} color="#000" />
             </TouchableOpacity>

@@ -49,8 +49,12 @@ const Orders = () => {
     );
 
     if (editOrder.fulfilled.match(resultAction)) {
-      Alert.alert("تم", "تم الغاءالطلب بنجاح.");
+
+      Alert.alert("تم", "تم الغاء الطلب بنجاح.");
     }
+
+    setNote('');
+
 
     setIsModalVisible(false);
   }
